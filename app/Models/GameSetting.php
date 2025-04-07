@@ -13,12 +13,16 @@ class GameSetting extends Model
 
 
     public function addNewGameSetting( $request): GameSetting{
-    return $this->query()->create( $request->validated());
+        $fullUrl  = $this->uploadImage($request);
+        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
+    return $this->query()->create( $newRequest);
     }
 
     public function updateGameSetting($request): static
     {
-        $this->update($request->validated());
+        $fullUrl  = $this->uploadImage($request);
+        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
+        $this->update($newRequest);
         return $this;
     }
 
