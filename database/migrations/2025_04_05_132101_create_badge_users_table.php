@@ -19,7 +19,7 @@ return new class extends Migration
             ->cascadeOnUpdate();
 
             $table->foreignId("badge_id")
-            ->constrained("badge")
+            ->constrained("badges")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
             $table->timestamps();
