@@ -8,10 +8,10 @@ trait UploadImageTrait
 {
     
 
-    public function uploadImage($request,string $filename)
+    public function uploadImage($request)
     {
        $image =  $request->file("image_url"); // find its image 
-        $path  = $image->store('images/' . $filename , 'public'); // store in db and return path
+        $path  = $image->store('images/' , 'public'); // store in db and return path
         return  config('app.url') . Storage::url($path);  // return full path
     }
 

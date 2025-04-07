@@ -5,6 +5,7 @@ namespace App\Http\Requests\V1\Admin\Products;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use function response;
+use Illuminate\Validation\Rules\File;
 
 class StoreProductRequest extends FormRequest
 {
@@ -29,6 +30,8 @@ class StoreProductRequest extends FormRequest
             "min_token_value" => "required|integer|min:1",
             "max_token_value" => "required|integer|gt:min_token_value",
             "user_receive_per_hour" => "required|integer|min:1",
+            "image_url" => ["required","image",File::types(["jpg","png","jpeg","svg"])->min(1)->max(1024) ]
+
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

@@ -18,7 +18,7 @@ class Avatar extends Model
     public function addNewAvatar( $request){
 
 
-        $fullUrl  = $this->uploadImage($request,'Avatar');
+        $fullUrl  = $this->uploadImage($request);
         $newRequest = $this->addImagePath($request->validated(),$fullUrl);
 
     return $this->create( $newRequest);
@@ -29,7 +29,7 @@ class Avatar extends Model
 
     public function updateAvatar($request){
 
-    $fullUrl  = $this->uploadImage($request,"Avatar");
+    $fullUrl  = $this->uploadImage($request);
     $newRequest = $this->addImagePath($request->validated(),$fullUrl);
 
     $this->update($newRequest);

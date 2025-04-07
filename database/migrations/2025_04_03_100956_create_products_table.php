@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger("min_token_value");
             $table->unsignedBigInteger("max_token_value");
             $table->unsignedBigInteger("user_receive_per_hour");
+            $table->string("image_url");
 
             $table->timestamps();
         });

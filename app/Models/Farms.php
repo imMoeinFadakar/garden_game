@@ -22,14 +22,14 @@ class Farms extends Model
 
     public function addNewFarm($request)
     {
-        $fullUrl  = $this->uploadImage($request,'Farm');
+        $fullUrl  = $this->uploadImage($request);
         $newRequest = $this->addImagePath($request->validated(),$fullUrl);
         return $this->query()->create($newRequest);
     }
 
     public function updateFarm($request): static
     {
-        $fullUrl  = $this->uploadImage($request,'Farm');
+        $fullUrl  = $this->uploadImage($request);
         $newRequest = $this->addImagePath($request->validated(),$fullUrl);
         $this->update($newRequest);
         return $this;

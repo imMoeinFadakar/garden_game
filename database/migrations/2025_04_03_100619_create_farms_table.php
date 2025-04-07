@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("require_gem");
             $table->unsignedBigInteger("require_referral");
             $table->string("image_url");
+            $table->string("flage_image_url");
             $table->string("description");
             $table->unsignedBigInteger("power");
             $table->timestamps();

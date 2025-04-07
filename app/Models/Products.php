@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use App\Trait\UploadImageTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
 {
+    use UploadImageTrait;
     protected $fillable = [
         "name",
         "farm_id",
         "min_token_value",
         "max_token_value",
-        "user_receive_per_hour"
+        "user_receive_per_hour",
+        "image_url"
     ];
 
 
@@ -22,16 +25,20 @@ class Products extends Model
      */
     public function farm()
     {
-        return $this->belongsTo(Farms::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(Farms::class);
     }
 
     public function addNewProduct( $request){
-    return $this->query()->create( $request->validated());
+        $fullUrl  = $this->uploadImage($request);
+        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
+    return $this->query()->create( $newRequest);
     }
 
     public function updateProduct($request): static
     {
-    $this->update($request->validated());
+        $fullUrl  = $this->uploadImage($request);
+        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
+    $this->update($newRequest);
     return $this;
     }
 
