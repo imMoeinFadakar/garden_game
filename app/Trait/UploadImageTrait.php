@@ -12,7 +12,7 @@ trait UploadImageTrait
     public function uploadImage($request,$dirName)
     {
        $image =  $request->file("image_url"); // find its image 
-        $image_name = rand(10,1000) .Carbon::now()->microsecond.'.'.$image->extension();
+        $image_name = $image_name = uniqid().Carbon::now()->microsecond . rand(10,1000) . '.' . $image->extension();
         $path  = $image->storeAs('images/'.$dirName , $image_name,); // store in storage and return path
         return   Storage::url($path);  // return full path
     }
