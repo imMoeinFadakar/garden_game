@@ -24,8 +24,9 @@ class GameSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "token_image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])],
-            "gem_image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])]
+            "title" => ["required","string"],
+            "image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])],
+            "discribtion" => ["required","string"]
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
