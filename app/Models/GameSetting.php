@@ -9,8 +9,9 @@ class GameSetting extends Model
 {
     use UploadImageTrait;
     protected $fillable = [
-        "token_image_url",
-        "gem_image_url"
+       "title",
+       "image_url",
+       "discribtion"
     ];
 
 
