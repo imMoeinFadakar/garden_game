@@ -22,16 +22,32 @@ class Farms extends Model
 
     public function addNewFarm($request)
     {
-        $fullUrl  = $this->uploadImage($request);
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-        return $this->query()->create($newRequest);
+        $image_path =  $this->uploadImage($request,"farm",'image_url');
+        $flage_image_path =  $this->uploadImage($request,"farm_flag",'flage_image_url');
+
+        $validatedRequest = $request->validated();
+
+        $validatedRequest["image_url"] = $image_path;
+        $validatedRequest["flage_image_url"] = $flage_image_path;
+
+
+        return $this->query()->create($validatedRequest);
     }
+
+
+    
 
     public function updateFarm($request): static
     {
-        $fullUrl  = $this->uploadImage($request);
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-        $this->update($newRequest);
+        $image_path =  $this->uploadImage($request,"farm",'image_url');
+        $flage_image_path =  $this->uploadImage($request,"farm_flag",'flage_image_url');
+
+        $validatedRequest = $request->validated();
+
+        $validatedRequest["image_url"] = $image_path;
+        $validatedRequest["flage_image_url"] = $flage_image_path;
+        
+        $this->update($validatedRequest);
         return $this;
 
     }

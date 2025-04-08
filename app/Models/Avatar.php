@@ -15,22 +15,18 @@ class Avatar extends Model
         "image_url"
     ] ;
 
+    public function addNewAvatar( $request): Avatar{
 
-
-  
-
-    public function addNewAvatar( $request){
-
-        $image_path =  $this->uploadImage($request,"avatar");
+        $image_path =  $this->uploadImage($request,"avatar",'image_url');
         $validatedRequest = $request->validated();
         $validatedRequest["image_url"] = $image_path;
   
         return $this->query()->create( $validatedRequest);
     }
 
-    public function updateAvatar($request){
+    public function updateAvatar($request): static{
 
-        $image_path =  $this->uploadImage($request,"avatar");
+        $image_path =  $this->uploadImage($request,"avatar",'image_url');
         $validatedRequest = $request->validated();
         $validatedRequest["image_url"] = $image_path;
 
@@ -39,7 +35,7 @@ class Avatar extends Model
     }
 
 
-    public function deleteAvatar(){
+    public function deleteAvatar(): bool|null{
     return $this->delete();
     }
 

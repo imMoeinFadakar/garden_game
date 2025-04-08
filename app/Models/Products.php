@@ -29,16 +29,20 @@ class Products extends Model
     }
 
     public function addNewProduct( $request){
-        $fullUrl  = $this->uploadImage($request);
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-    return $this->query()->create( $newRequest);
+        $image_path =  $this->uploadImage($request,"product",'image_url');
+        
+       $validatedRequest = $request->validated();
+        $validatedRequest["image_url"] = $image_path;
+    return $this->query()->create( $validatedRequest);
     }
 
     public function updateProduct($request): static
     {
-        $fullUrl  = $this->uploadImage($request);
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-    $this->update($newRequest);
+        $image_path =  $this->uploadImage($request,"product",'image_url');
+        
+        $validatedRequest = $request->validated();
+         $validatedRequest["image_url"] = $image_path;
+    $this->update($validatedRequest);
     return $this;
     }
 

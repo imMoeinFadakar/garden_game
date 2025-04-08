@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('game_settings', function (Blueprint $table) {
             $table->id();
-            $table->string("token_image_url");
-            $table->string("gem_image_url");
-            
+            $table->string("title");
+            $table->string("image_url");
+            $table->string("discribtion");
             $table->timestamps();
         });
     }

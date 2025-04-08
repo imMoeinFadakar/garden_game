@@ -15,16 +15,24 @@ class GameSetting extends Model
 
 
     public function addNewGameSetting( $request): GameSetting{
-        $fullUrl  = $this->uploadImage($request);
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-    return $this->query()->create( $newRequest);
+        $token_image_url =  $this->uploadImage($request,"GameSetting",'image_url');
+
+        $validatedRequest = $request->validated();
+         $validatedRequest["image_url"] = $token_image_url;
+        
+    return $this->query()->create( $validatedRequest);
     }
 
     public function updateGameSetting($request): static
     {
-        $fullUrl  = $this->uploadImage($request);
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-        $this->update($newRequest);
+        $token_image_url =  $this->uploadImage($request,"GameSetting",'token_image_url');
+        $gem_image_url =  $this->uploadImage($request,"GameSetting",'gem_image_url');
+
+        
+        $validatedRequest = $request->validated();
+         $validatedRequest["token_image_url"] = $token_image_url;
+         $validatedRequest["gem_image_url"] = $gem_image_url;
+        $this->update($validatedRequest);
         return $this;
     }
 
