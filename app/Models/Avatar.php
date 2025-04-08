@@ -15,25 +15,28 @@ class Avatar extends Model
         "image_url"
     ] ;
 
+
+
+    public function setAvatarAttribute($value): void
+    {
+        $this->attributes['image_url'] = $this->uploadImage($value , ucfirst($this->table) , $this->image_url ?? false) ?? null;
+    }
+
+    public function getAvatarAttribute($value): ?string
+    {
+        return $this->getImage($value);
+    }
+
     public function addNewAvatar( $request){
-
-
-        $fullUrl  = $this->uploadImage($request);
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-
-    return $this->create( $newRequest);
+        return $this->query()->create( $request->validated());
     }
 
 
 
 
     public function updateAvatar($request){
-
-    $fullUrl  = $this->uploadImage($request);
-    $newRequest = $this->addImagePath($request->validated(),$fullUrl);
-
-    $this->update($newRequest);
-    return $this;
+        $this->update($request->validated());
+        return $this;
     }
 
 

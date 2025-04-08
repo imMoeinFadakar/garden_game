@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Trait\UploadImageTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class GameSetting extends Model
 {
+    use UploadImageTrait;
     protected $fillable = [
         "token_image_url",
         "gem_image_url"
