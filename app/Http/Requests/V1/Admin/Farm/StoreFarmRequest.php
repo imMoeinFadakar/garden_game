@@ -31,8 +31,13 @@ class StoreFarmRequest extends FormRequest
             "require_token" => ["required","integer"],
             "require_gem" => ["required","integer"],
             "require_referral" => ["required","integer"],
-            "image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])],
+            "image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])
+                                                                        ->min(1)
+                                                                        ->max(1024)       ],
             "description" => ["required","string"],
+            "flage_image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])
+            ->min(1)
+            ->max(1024)       ],
             "power" => ["required","integer"],
         ];
     }

@@ -46,7 +46,7 @@ class Farms extends Model
 
         $validatedRequest["image_url"] = $image_path;
         $validatedRequest["flage_image_url"] = $flage_image_path;
-        
+
         $this->update($validatedRequest);
         return $this;
 
