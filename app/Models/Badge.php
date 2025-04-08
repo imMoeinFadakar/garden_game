@@ -18,20 +18,27 @@ class Badge extends Model
 
     public function addNewBadge( $request){
 
-        $fullUrl  = $this->uploadImage($request->image_url,'badge');
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
+        
 
-        return $this->query()->create( $newRequest);
+       $image_path =  $this->uploadImage($request);
+        
+        $validatedRequest = $request->validated();
+        $validatedRequest["image_url"] = $image_path;
+  
+
+       
+      
+        return $this->query()->create($validatedRequest);
     }
 
 
     public function updateBadge($request): static
     {
 
-        $fullUrl  = $this->uploadImage($request->image_url,'badge');
-        $newRequest = $this->addImagePath($request->validated(),$fullUrl);
+        $fullUrl  = $this->uploadImage($request);
+        
 
-        $this->update($newRequest);
+        // $this->update($newRequest);
         return $this;
     }
 

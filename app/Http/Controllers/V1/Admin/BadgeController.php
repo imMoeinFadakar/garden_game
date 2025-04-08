@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Admin\Badge\StoreBadgeRequest;
 use App\Http\Resources\V1\Admin\BadgeResource;
 use App\Models\Badge;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BadgeController extends Controller
@@ -34,6 +35,11 @@ class BadgeController extends Controller
      */
     public function store(StoreBadgeRequest $request , Badge $badge)
     {
+        
+
+        
+        
+       
         $badge = $badge->addNewBadge($request);
         return $this->api(new BadgeResource($badge->toArray()),__METHOD__);
     }

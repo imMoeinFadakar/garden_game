@@ -17,22 +17,16 @@ class Avatar extends Model
 
 
 
-    public function setAvatarAttribute($value): void
-    {
-        $this->attributes['image_url'] = $this->uploadImage($value , ucfirst($this->table) , $this->image_url ?? false) ?? null;
-    }
-
-    public function getAvatarAttribute($value): ?string
-    {
-        return $this->getImage($value);
-    }
+  
 
     public function addNewAvatar( $request){
-        return $this->query()->create( $request->validated());
+        $image_path =  $this->uploadImage($request);
+        
+        $validatedRequest = $request->validated();
+        $validatedRequest["image_url"] = $image_path;
+  
+        return $this->query()->create( $validatedRequest);
     }
-
-
-
 
     public function updateAvatar($request){
         $this->update($request->validated());
