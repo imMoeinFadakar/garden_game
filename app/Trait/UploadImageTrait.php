@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 trait UploadImageTrait
 {
-    const CDN_URL = 'https://gardengame.storage.c2.liara.space/';
+    const CDN_URL = 'https://gardengame.liara.run';
     public function uploadImage($file , $path , $old_image = false): string
     {
         $path = 'image/'.$path;
