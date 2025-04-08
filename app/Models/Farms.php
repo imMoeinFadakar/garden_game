@@ -15,6 +15,7 @@ class Farms extends Model
         "require_gem",
         "require_referral",
         "image_url",
+        "flage_image_url",
         "description",
         "power",
     ];
