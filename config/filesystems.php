@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'liara'),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,6 +60,17 @@ return [
             'report' => false,
         ],
 
+
+      'liara' => [
+    'driver' => 's3',
+    'endpoint' => env('ENDPOINT_URL'),
+    'key' => env('ACCESS_KEY'),
+    'secret' => env('SECRET_KEY'),
+    'region' => env('DEFAULT_REGION'),
+    'bucket' => env('BUCKET_NAME'),
+        ],
+        
+        
     ],
 
     /*
