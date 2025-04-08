@@ -9,11 +9,11 @@ trait UploadImageTrait
 {
     
 
-    public function uploadImage($request)
+    public function uploadImage($request,$dirName)
     {
        $image =  $request->file("image_url"); // find its image 
         $image_name = rand(10,1000) .Carbon::now()->microsecond.$image->extension();
-        $path  = $image->storeAs('images' , $image_name,); // store in storage and return path
+        $path  = $image->storeAs('images/'.$dirName , $image_name,); // store in storage and return path
         return  config('app.url') . Storage::url($path);  // return full path
     }
 

@@ -20,8 +20,8 @@ class Avatar extends Model
   
 
     public function addNewAvatar( $request){
-        $image_path =  $this->uploadImage($request);
-        
+
+        $image_path =  $this->uploadImage($request,"avatar");
         $validatedRequest = $request->validated();
         $validatedRequest["image_url"] = $image_path;
   
@@ -29,7 +29,12 @@ class Avatar extends Model
     }
 
     public function updateAvatar($request){
-        $this->update($request->validated());
+
+        $image_path =  $this->uploadImage($request,"avatar");
+        $validatedRequest = $request->validated();
+        $validatedRequest["image_url"] = $image_path;
+
+        $this->update($validatedRequest);
         return $this;
     }
 

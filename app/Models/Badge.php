@@ -20,9 +20,9 @@ class Badge extends Model
 
         
 
-       $image_path =  $this->uploadImage($request);
+       $image_path =  $this->uploadImage($request,"badge");
         
-        $validatedRequest = $request->validated();
+       $validatedRequest = $request->validated();
         $validatedRequest["image_url"] = $image_path;
   
 
@@ -34,11 +34,13 @@ class Badge extends Model
 
     public function updateBadge($request): static
     {
+        $image_path =  $this->uploadImage($request,"badge");
 
-        $fullUrl  = $this->uploadImage($request);
+        $validatedRequest = $request->validated();
+        $validatedRequest["image_url"] = $image_path;
         
 
-        // $this->update($newRequest);
+        $this->update($validatedRequest);
         return $this;
     }
 
