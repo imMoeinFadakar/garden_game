@@ -4,20 +4,20 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable; 
-use Illuminate\Foundation\Auth\User as Authenticatable;  
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Admin extends Authenticatable  
+class Admin extends Authenticatable
 {
-    use HasApiTokens, Notifiable;  
+    use HasApiTokens, Notifiable;
 
-    protected $fillable = [  
-        'fullname', 'email', 'password','type'  
-    ];  
+    protected $fillable = [
+        'fullname', 'email', 'password','type'
+    ];
 
-    protected $hidden = [  
-        'password', 'remember_token',  
-    ]; 
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
     protected function casts(): array
     {

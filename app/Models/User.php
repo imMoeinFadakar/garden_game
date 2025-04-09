@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -55,12 +57,31 @@ class User extends Authenticatable
         return $this->query()->create( $request->validated());
     }
 
+    public static function addUsername($request): int
+    {
+       $userId =  self::findAuthUser();
+
+      return  self::query()
+           ->where("id",$userId)
+           ->update($request->validated());
+
+    }
+
+    public static function findAuthUser()
+    {
+        return self::query()->find(Auth::id());
+    }
+
     public function updateUser($request): static
     {
         $this->update($request->validated());
         return $this;
     }
 
+    public function createUserAccessToken($name = "USER TOKEN")
+    {
+        return $this->createToken($name,[null],carbon::now()->addHours(5))->plainTextToken;
+    }
 
     public function deleteUser(): ?bool
     {

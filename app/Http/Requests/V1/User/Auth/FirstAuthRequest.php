@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\V1\User\Auth;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class FirstAuthRequest extends FormRequest
 {
@@ -26,4 +28,15 @@ class FirstAuthRequest extends FormRequest
             "name" => "required|string",
         ];
     }
+
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            "success" => false,
+            "code" => 400,
+            "message" => "validation failed",
+            "detail" => $validator->errors()
+        ]));
+    }
+
 }

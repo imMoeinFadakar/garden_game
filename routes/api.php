@@ -20,7 +20,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
             Route::middleware(["auth:sanctum"])->group(function(){
 
                 Route::apiResource('/admin', AdminController::class)
-                ->middleware(CheckAdminManager::class); // Example route  
+                ->middleware(CheckAdminManager::class); // Example route
                 route::apiResource("avatar",App\Http\Controllers\V1\Admin\AvatarController::class);
                 Route::apiResource("badge",App\Http\Controllers\V1\Admin\BadgeController::class);
                 Route::apiResource("badge-farm",App\Http\Controllers\V1\Admin\BadgeFarmsController::class);
@@ -44,29 +44,14 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
                 Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
                 Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
-        
-
 
             });
 
-
-               
-         
         });
 
+        // user-apis
 
-
-
-        // // Route::post("first-auth",[App\Http\Controllers\V1\User\FirstAuthController::class,"store"]);
-        // Route::get("policies",[App\Http\Controllers\V1\User\PoliciesController::class,"index"]);
-        // Route::get("avatar",[App\Http\Controllers\V1\User\AvatarController::class,"index"]);
-        // Route::post("registration",[App\Http\Controllers\V1\User\RegistrationController::class,"store"]);
-
-        // // user auth
-
-        // Route::get("tasks",[App\Http\Controllers\V1\User\TasksController::class,"index"]);
-        // Route::post("User_task",[App\Http\Controllers\V1\User\UserTasksController::class,"store"]);
-
+        include  "user-api.php";
     });
 
 

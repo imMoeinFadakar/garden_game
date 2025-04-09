@@ -2,10 +2,14 @@
 
 namespace App\Http\Requests\V1\User\Auth;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RegistrationRequest extends FormRequest
+class SecondStepAuth extends FormRequest
 {
+
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -25,5 +29,16 @@ class RegistrationRequest extends FormRequest
             "username" => "required|unique:users,username",
             "avatar_id" => "required|exists:avatars,id",
         ];
+    }
+
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            "success" => false,
+            "code" => 401,
+            "message" => "validation failed",
+            "detail" => $validator->errors()
+        ]));
     }
 }
