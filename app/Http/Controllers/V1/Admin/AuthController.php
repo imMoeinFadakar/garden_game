@@ -21,18 +21,24 @@ class AuthController extends BaseAdminController
         try{
 
             if(! $this->attemptLogin($request))
-                return $this->api('Email & password are not correct.', false, 401);
+                return $this->api(null, __METHOD__,
+                    'Email & password are not correct.',
+                    false,
+                    401);
 
            $admin = $this->getAdmin($request->email);
            if(! $admin){
-                return $this->api('Admin Not found!.', false, 400);
+                return $this->api(null, __METHOD__,
+                    'User not found',
+                    false,
+                    400);
            }
 
            $admin->access_token = $admin->createAccessToken();
 
-           return $this->api( $admin, message: 'Admin Login Successfully');
+           return $this->api( $admin,  'Admin Login Successfully',__METHOD__);
         }catch(Throwable $ex){
-            return $this->api($ex->getMessage(), false,500);
+            return $this->api(null, __METHOD__,$ex->getMessage());
 
         }
     }

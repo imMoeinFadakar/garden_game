@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("token_amount")->default(800);
             $table->unsignedBigInteger("gem_amount")->default(0);
-            $table->uuid("Referral_code");
+            $table->uuid("Referral_code")->default("garden");
             $table->foreignId("user_id")
             ->constrained("users")
             ->cascadeOnDelete()

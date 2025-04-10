@@ -2,40 +2,31 @@
 
 namespace App\Http\Controllers\V1\User;
 
-use App\Http\Requests\V1\User\Tasks\StoreUserTaskRequest;
-use App\Http\Requests\V1\User\UserTask\UserTaskRequest;
-use App\Http\Resources\V1\User\TaskResource;
-use App\Models\Tasks;
-use App\Models\UserTask;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\User\FarmResource;
+use App\Models\Farms;
 use Illuminate\Http\Request;
 
-class TasksController extends BaseUserController
+class FarmController extends BaseUserController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $AllTask = Tasks::query()
-        ->orderBy("id")
-        ->get();
+        $farms = Farms::query()
+            ->orderBy("id")
+            ->get();
 
-        return $this->api(TaskResource::collection($AllTask),__METHOD__);
+        return $this->api(FarmResource::collection($farms),__METHOD__);
     }
-
-
-
-
-
-
-
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function store(Request $request)
     {
-        // not exists
+        //
     }
 
     /**
@@ -43,7 +34,7 @@ class TasksController extends BaseUserController
      */
     public function show(string $id)
     {
-        // not exists
+        //
     }
 
     /**
@@ -51,7 +42,7 @@ class TasksController extends BaseUserController
      */
     public function update(Request $request, string $id)
     {
-        // not exists
+        //
     }
 
     /**
@@ -59,6 +50,6 @@ class TasksController extends BaseUserController
      */
     public function destroy(string $id)
     {
-        // not exists
+        //
     }
 }

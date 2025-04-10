@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1\User\UserTask;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserTasksRequest extends FormRequest
+class UserTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,6 @@ class StoreUserTasksRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => "required|unique:user_tasks,user_id",
             "task_id" => "required|unique:user_tasks,task_id",
         ];
     }
