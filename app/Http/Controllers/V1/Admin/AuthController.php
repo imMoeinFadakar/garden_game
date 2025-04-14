@@ -36,7 +36,7 @@ class AuthController extends BaseAdminController
 
            $admin->access_token = $admin->createAccessToken();
 
-           return $this->api( $admin,  'Admin Login Successfully',__METHOD__);
+           return $this->api( $admin,  __METHOD__,"admin login succesfuly" );
         }catch(Throwable $ex){
             return $this->api(null, __METHOD__,$ex->getMessage());
 
