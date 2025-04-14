@@ -34,7 +34,7 @@ class UserFarms extends Model
 
     public function addNewUserFarms($request): UserFarms
     {
-        return $this->query()->create($request->all());
+        return $this->query()->create($request);
     }
 
     public function updateUserFarms($request)

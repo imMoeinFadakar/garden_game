@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserReferral extends Model
 {
+
+    protected  $fillable = [
+        "invading_user",
+        "invented_user"
+    ];
     /**
      * Get the reffred that owns the UserReffral
      *
@@ -25,4 +30,11 @@ class UserReferral extends Model
     {
         return $this->belongsTo(User::class, 'invating_user', 'id');
     }
+
+    public function addNewUserReferral($request)
+    {
+        return $this->query()->create($request);
+    }
+
+
 }

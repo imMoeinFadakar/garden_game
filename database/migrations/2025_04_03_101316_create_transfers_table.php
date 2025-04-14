@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("gem_amount");
-            
-            $table->foreignId('from_user')
-            ->constrained("users")
+
+            $table->foreignId('from_wallet')
+            ->constrained("wallets")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 
-            $table->foreignId('to_user')
-            ->constrained("users")
+            $table->foreignId('to_wallet')
+            ->constrained("wallets")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 

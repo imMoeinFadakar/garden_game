@@ -13,15 +13,23 @@ return new class extends Migration
     {
         Schema::create('user_referrals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invented_user')
-            ->constrained("users")
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+            $table->unsignedBigInteger('invented_user')->unique();
+
+            $table->foreign('invented_user')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->foreignId('invading_user')
             ->constrained("users")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
             $table->timestamps();
+
+
+
+
         });
     }
 

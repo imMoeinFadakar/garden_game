@@ -35,7 +35,7 @@ class UserAvatarController extends BaseAdminController
      */
     public function store(StoreUserAvatar $request , UserAvatar $userAvatar)
     {
-        $userAvatar = $userAvatar->addNewUserAvatar($request);
+        $userAvatar = $userAvatar->addNewUserAvatar($request->validated());
         return $this->api(new UserAvatarResource($userAvatar->toArray()) ,__METHOD__ );
     }
     /**

@@ -23,6 +23,7 @@ return new class extends Migration
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
             $table->unsignedBigInteger("warehouse_cap_left");
+            $table->unsignedBigInteger("overcapacity");
 
             $table->timestamps();
         });

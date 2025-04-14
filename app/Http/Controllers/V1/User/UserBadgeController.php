@@ -16,7 +16,7 @@ class UserBadgeController extends BaseUserController
     {
         $userBadge = BadgeUser::query()
             ->orderBy("created_at")
-            ->where("user_id",1)
+            ->where("user_id",Auth::id())
             ->get();
 
         return $this->api(UserBadgeResource::collection($userBadge),__METHOD__);
@@ -27,7 +27,7 @@ class UserBadgeController extends BaseUserController
      */
     public function store(StoreUserBadgeRequest $request, BadgeUser $badgeUser)
     {
-        $newRequest = $request->merge(["user_id"=> 1 ]);
+        $newRequest = $request->merge(["user_id"=> Auth::id() ]);
         $badgeUser = $badgeUser->addNewBadgeUser($newRequest);
 
         return $this->api(new UserBadgeResource($badgeUser->toArray()),__METHOD__);

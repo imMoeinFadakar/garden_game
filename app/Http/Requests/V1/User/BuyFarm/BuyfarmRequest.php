@@ -3,6 +3,7 @@
 namespace App\Http\Requests\V1\User\BuyFarm;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BuyfarmRequest extends FormRequest
 {
@@ -25,4 +26,16 @@ class BuyfarmRequest extends FormRequest
             "farm_id" => "required|integer|exists:farms,id"
         ];
     }
+
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+
+            "success" => false,
+            "code" => 400,
+            "message" => "validation error",
+            "detail" => $validator->errors()
+        ]));
+    }
+
 }

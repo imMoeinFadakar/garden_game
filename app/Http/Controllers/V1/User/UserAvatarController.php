@@ -3,35 +3,31 @@
 namespace App\Http\Controllers\V1\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\User\BuyFarm\BuyfarmRequest;
-use App\Http\Resources\V1\User\UserFarmResource;
-use App\Models\UserFarms;
+use App\Http\Requests\V1\User\UserAvatar\StoreUserAvatarRequest;
+use App\Http\Resources\V1\User\UserAvatarResource;
+use App\Models\UserAvatar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserFarmController extends BaseUserController
+class UserAvatarController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $userFarm = UserFarms::query()
-            ->orderBy("id")
-            ->where("user_id",Auth::id())
-            ->get();
-
-        return $this->api(UserFarmResource::collection($userFarm),__METHOD__);
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(BuyfarmRequest $request,UserFarms $userFarms)
+    public function store(StoreUserAvatarRequest $request,UserAvatar $userAvatar)
     {
-
-
-
+        $validatedRequest = $request->validated();
+        $validatedRequest["user_id"] = Auth::id();
+        $userAvatar = $userAvatar->addNewUserAvatar($validatedRequest);
+        return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
     }
 
     /**

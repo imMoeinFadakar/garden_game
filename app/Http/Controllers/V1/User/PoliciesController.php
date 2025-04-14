@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\User;
 
 use App\Http\Resources\V1\User\PoliciesResource;
 use App\Models\Policies;
+use App\Models\Policy;
 use Illuminate\Http\Request;
 
 class PoliciesController extends BaseUserController
@@ -13,7 +14,7 @@ class PoliciesController extends BaseUserController
      */
     public function index()
     {
-        $policies = Policies::query()
+        $policies = Policy::query()
         ->orderBy("id")
         ->get();
 

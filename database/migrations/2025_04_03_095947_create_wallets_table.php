@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("token_amount")->default(800);
             $table->unsignedBigInteger("gem_amount")->default(0);
-            $table->uuid("Referral_code")->default("garden");
-            $table->foreignId("user_id")
-            ->constrained("users")
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+            $table->uuid("referral_code")->default("garden");
+
+            $table->unsignedBigInteger("user_id")->unique();
+
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->timestamps();
         });

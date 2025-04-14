@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Transfer extends Model
 {
     //
-
+    protected $fillable = [
+        "gem_amount",
+        "from_wallet",
+        "to_wallet"
+    ];
     /**
      * Get the user that owns the Transfer
      *
@@ -29,5 +33,9 @@ class Transfer extends Model
         return $this->belongsTo(User::class, 'to_user', 'id');
     }
 
+    public function addNewTransfer($request)
+    {
+        return $this->query()->create($request);
+    }
 
 }

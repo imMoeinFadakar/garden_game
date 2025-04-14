@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\V1\User\UserTask;
+namespace App\Http\Requests\V1\User\Warehouse;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UserTaskRequest extends FormRequest
+class UpdatewarehouseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +23,16 @@ class UserTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "task_id" => "required|unique:user_tasks,task_id",
+            "level_number" => "required|integer|min:2"
         ];
     }
-    protected function failedValidation(Validator $validator)
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         throw new HttpResponseException(response()->json([
+
             "success" => false,
-            "code" => 401,
-            "message" => "validation failed",
+            "code" => 400,
+            "message" => "validation error",
             "detail" => $validator->errors()
         ]));
     }

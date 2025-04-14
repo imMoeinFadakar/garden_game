@@ -33,7 +33,7 @@ class UserAvatar extends Model
 
     public function addNewUserAvatar($request)
     {
-        return   $this->query()->create($request->validated());
+        return   $this->query()->create($request);
     }
 
     public function updateUserAvatar($request): static

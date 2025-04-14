@@ -34,7 +34,7 @@ class WalletController extends BaseUserController
      */
     public function store(Request $request)
     {
-        //
+        // create a new wallet for user
     }
 
     /**

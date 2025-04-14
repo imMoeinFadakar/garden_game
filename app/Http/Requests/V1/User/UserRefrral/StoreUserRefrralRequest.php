@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\V1\User\UserTask;
+namespace App\Http\Requests\V1\User\UserRefrral;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UserTaskRequest extends FormRequest
+class StoreUserRefrralRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class UserTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "task_id" => "required|unique:user_tasks,task_id",
+            "Referral_code" => "required|exists:wallets,Referral_code"
         ];
     }
     protected function failedValidation(Validator $validator)
