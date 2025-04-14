@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
+use App\Http\Resources\V1\AuthAdminResource;
 use App\Models\Admin;
 use Throwable;
 use Illuminate\Http\Request;
@@ -35,8 +36,8 @@ class AuthController extends BaseAdminController
            }
 
            $admin->access_token = $admin->createAccessToken();
-
-           return $this->api( $admin,  __METHOD__,"admin login succesfuly" );
+            
+           return $this->api( new AuthAdminResource($admin->toArray()),  __METHOD__,"admin login successfuly" );
         }catch(Throwable $ex){
             return $this->api(null, __METHOD__,$ex->getMessage());
 
