@@ -64,9 +64,9 @@ class AuthController extends BaseAdminController
     {
         $admin = auth()->user()->tokens()->delete();
         if ($admin) {
-            return $this->api(message: 'Admin logged out');
+            return $this->api(null,message: 'Admin logged out');
         }
-        return $this->api(message: 'Error', status: false, code: 500);
+        return $this->api(null,message: 'Error', status: false, code: 500);
     }
 
 
