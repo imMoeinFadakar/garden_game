@@ -17,6 +17,8 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::post("logout","logout")->middleware(["auth:sanctum"]);
             });
 
+            Route::post("deposit_check",[App\Http\Controllers\V1\Admin\CryptoCurrencyController::class,"transactionRequest"]);
+
             Route::middleware(["auth:sanctum"])->group(function(){
 
                 Route::apiResource('/admin', AdminController::class)

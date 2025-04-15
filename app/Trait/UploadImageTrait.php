@@ -8,13 +8,7 @@ use Illuminate\Support\Facades\Storage;
 trait UploadImageTrait
 {
     
-    /**
-     * add image in storage dir 
-     * @param mixed $request // the request has image file
-     * @param mixed $dirName // find or create directory for new image
-     * @param mixed $image_key // key name of image attr in request array 
-     * @return string // image full path
-     */
+ 
 
      const CDN_URL = 'https://moein81.storage.c2.liara.space/';
      public function uploadImage($file , $path , $old_image = false): string

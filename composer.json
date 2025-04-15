@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9",
         "knuckleswtf/scribe": "^5.1",
         "laravel/framework": "^12.8",
         "laravel/sanctum": "^4.0",
