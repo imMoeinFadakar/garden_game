@@ -16,7 +16,7 @@ class CryptoCurrencyController extends Controller
             'hash' => $transaction->hash,
         ]);
 
-        dd($response);
+        return $response->json();
     }
 
 
