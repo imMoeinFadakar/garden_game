@@ -15,14 +15,53 @@ trait UploadImageTrait
      * @param mixed $image_key // key name of image attr in request array 
      * @return string // image full path
      */
-    public function uploadImage($request,$dirName,$image_key)
-    {
-       $image =  $request->file($image_key); // find its image 
-        $image_name = $image_name = uniqid().Carbon::now()->microsecond . rand(10,1000) . '.' . $image->extension();
-        $path  = $image->storeAs('images/'.$dirName , $image_name,); // store in storage and return path
-        return   Storage::url($path);  // return full path
-    }
 
+     const CDN_URL = 'https://moein81.storage.c2.liara.space/';
+     public function uploadImage($file , $path , $old_image = false): string
+     {
+         $path = 'image/'.$path;
+         $this->removeImage($path , $old_image);
+         $fileExtension = $file->extension();
+         $image_name = uniqid().Carbon::now()->microsecond . rand(10,1000) . '.' . $fileExtension;
+         $file->storeAs($path, $image_name);
+         return $path.'/'.$image_name;
+     }
+ 
+     public function getImage($name): ?string
+     {
+ 
+         return ($name) ? $this->getUrl($name) : NUll;
+     }
+ 
+     public function removeImage($path , $old_image): void
+     {
+         if (!empty($old_image)){
+             if (storage::exists($this->deleteUrl($path , $old_image))){
+                 Storage::delete($this->deleteUrl($path , $old_image));
+             }
+         }
+     }
+ 
+ 
+     public function getUrl($name)
+     {
+         if (in_array(env('FILESYSTEM_DISK') , ['local','public'])){
+             return url('storage/'. $name);
+         }
+         else{
+             return self::CDN_URL.$name;
+         }
+     }
+ 
+     public function deleteUrl($path , $old_image): string
+     {
+         if (in_array(env('FILESYSTEM_DISK') , ['local','public'])){
+             return  $path .'/' . basename($old_image);
+         }
+         else{
+             return str_replace(self::CDN_URL,'',$old_image);
+         }
+     }
 
  
 }

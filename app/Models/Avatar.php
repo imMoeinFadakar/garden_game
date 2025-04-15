@@ -17,7 +17,7 @@ class Avatar extends Model
 
     public function addNewAvatar( $request): Avatar{
 
-        $image_path =  $this->uploadImage($request,"avatar",'image_url');
+        $image_path =  $this->uploadImage($request->image_url,"avatar");
         $validatedRequest = $request->validated();
         $validatedRequest["image_url"] = $image_path;
   
