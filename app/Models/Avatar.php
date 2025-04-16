@@ -10,32 +10,36 @@ class Avatar extends Model
 {
     use UploadImageTrait;
 
+    protected $table = "avatars";
+
+
     protected $fillable = [
         "gender",
         "image_url"
     ] ;
 
-    public function addNewAvatar( $request): Avatar{
+    public function setAvatarImage($value): void
+    {
+        $this->attributes["image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->image_url ?? false) ?? null;    
+    }
 
-        $image_path =  $this->uploadImage($request->image_url,"avatar");
-        $validatedRequest = $request->validated();
-        $validatedRequest["image_url"] = $image_path;
+    public function getImageUrlAttribute($value): ?string
+    {
+        return $this->getImage($value);
+    }
+
+    public function addNewAvatar( $request): Avatar{
   
-        return $this->query()->create( $validatedRequest);
+        return $this->query()->create( $request->validated());
     }
 
     public function updateAvatar($request): static{
-
-        $image_path =  $this->uploadImage($request,"avatar",'image_url');
-        $validatedRequest = $request->validated();
-        $validatedRequest["image_url"] = $image_path;
-
-        $this->update($validatedRequest);
+        $this->update($request->validated());
         return $this;
     }
 
 
-    public function deleteAvatar(): bool|null{
+    public function deleteAvatar(): ?bool{
     return $this->delete();
     }
 
