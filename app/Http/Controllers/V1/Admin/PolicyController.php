@@ -25,9 +25,9 @@ class PolicyController extends BaseAdminController
     }
 
     /**
-     * policy/store
+     * Summary of store
      * @param \App\Http\Requests\V1\Admin\Policies\storePoliciesRequest $request
-     * @param \App\Models\Policy $policies
+     * @param \App\Models\Policy $policy
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(storePoliciesRequest $request,Policy $policy)

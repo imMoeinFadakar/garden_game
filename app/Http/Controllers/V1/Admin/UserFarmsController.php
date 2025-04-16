@@ -34,9 +34,9 @@ class UserFarmsController extends BaseAdminController
      * @param \App\Models\UserFarms $userFarms
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request,UserFarms $userFarm)
+    public function store(StoreUserFarmRequest $request,UserFarms $userFarm)
     {
-        $userFarm = $userFarm->addNewUserFarms($request);
+        $userFarm = $userFarm->addNewUserFarms($request->validated());
         $userFarm->load(["user:id,name,username","farm:id,name"]);
         return $this->api(new UserFarmsResource($userFarm->toArray()),__METHOD__);
     }

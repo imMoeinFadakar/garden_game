@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\V1\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\Admin\CryptoCurrencyResource;
 use App\Models\cryptocurrency;
 use Illuminate\Http\Request;
 
-class CryptoCurrencyController extends Controller
+class CryptoCurrencyController extends BaseUserController
 {
     /**
      * get list of user crypto currency history
@@ -15,8 +16,11 @@ class CryptoCurrencyController extends Controller
      */
     public function index(Request $request)
     {
-        // $cryptocurrency = cryptocurrency::where("user_id",1) // add auth::id() later
-         
+       $cryptocurrency = cryptocurrency::where("user_id",1) // add auth::id() later
+         ->orderBy("id")
+         ->get();
+
+         return $this->api(CryptoCurrencyResource::collection($cryptocurrency),__METHOD__);
     }
 
     /**

@@ -44,9 +44,8 @@ class Farms extends Model
 
     public function addNewFarm($request)
     {
-        $validatedRequest = $request->validated();
-
-        return $this->query()->create($validatedRequest);
+        
+        return $this->query()->create($request->validated());
     }
 
     public function updateFarm($request): static
