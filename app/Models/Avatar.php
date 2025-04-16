@@ -23,7 +23,7 @@ class Avatar extends Model
         $this->attributes["image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->image_url ?? false) ?? null;    
     }
 
-    public function getImageUrlAttribute($value): ?string
+    public function getAvatarAttribute($value): ?string
     {
         return $this->getImage($value);
     }
@@ -37,7 +37,6 @@ class Avatar extends Model
         $this->update($request->validated());
         return $this;
     }
-
 
     public function deleteAvatar(): ?bool{
     return $this->delete();

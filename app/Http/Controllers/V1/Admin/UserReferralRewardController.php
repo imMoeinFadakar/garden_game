@@ -10,9 +10,6 @@ use Illuminate\Http\Request;
 
 class UserReferralRewardController extends BaseAdminController
 {   
-
-   
-
     /**
      * Display a listing of the resource.
      */
@@ -35,11 +32,13 @@ class UserReferralRewardController extends BaseAdminController
     public function store(StoreUserReffralRewardRequest $request, UserReferralReward $userReferralReward)
     {
        $userReferralReward =  $userReferralReward->addNewUserReffralReward($request);
+       $userReferralReward->load(["farm:id,name"]);
         return $this->api(new UserReffralRewardResource($userReferralReward->toArray()),__METHOD__);
     }
 
     public function show(UserReferralReward $userReferralReward)
     {
+       $userReferralReward->load(["farm:id,name"]);
         return $this->api(new UserReffralRewardResource($userReferralReward->toArray()),__METHOD__);
 
     }
@@ -49,6 +48,7 @@ class UserReferralRewardController extends BaseAdminController
     public function update(UpdateUserReffralRewardRequest $request, UserReferralReward $userReferralReward)
     {
         $userReferralReward->updateUserReffralReward($request);
+       $userReferralReward->load(["farm:id,name"]);
         return $this->api(new UserReffralRewardResource($userReferralReward->toArray()),__METHOD__);
 
     }

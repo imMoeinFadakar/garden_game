@@ -37,6 +37,7 @@ class WarehouseController extends BaseAdminController
     public function store(StorewherehouseRequest $request,Wherehouse $warehouse)
     {
         $warehouse =  $warehouse->addnewWherehouse($request);
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
     }
 
@@ -47,6 +48,7 @@ class WarehouseController extends BaseAdminController
      */
     public function show(Wherehouse $warehouse)
     {
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
 
     }
@@ -60,6 +62,7 @@ class WarehouseController extends BaseAdminController
     public function update(UpdatewherehouseRequest $request, Wherehouse $warehouse)
     {
         $warehouse->updateWherehouse($request);
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
 
     }
@@ -72,6 +75,7 @@ class WarehouseController extends BaseAdminController
     public function destroy(Wherehouse $warehouse)
     {
         $warehouse->deleteWherehouse();
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
 
     }

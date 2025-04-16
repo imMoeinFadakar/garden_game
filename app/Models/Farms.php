@@ -9,6 +9,7 @@ class Farms extends Model
 {
     use UploadImageTrait;
 
+    protected $table = "farms";
     protected  $fillable =[
         "name",
         "require_token",
@@ -20,37 +21,39 @@ class Farms extends Model
         "power",
     ];
 
+    public function setFarmImage($value): void
+    {
+        $this->attributes["image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->image_url ?? false) ?? null;    
+    }
+
+    public function getFarmImageAttribute($value): ?string
+    {
+        return $this->getImage($value);
+    }
+
+    public function setFarmFlageImage($value): void
+    {
+        $this->attributes["flage_image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->flage_image_url ?? false) ?? null;    
+    }
+
+    public function getFarmFlageAttribute($value): ?string
+    {
+        return $this->getImage($value);
+    }
+
 
     public function addNewFarm($request)
     {
-        $image_path =  $this->uploadImage($request,"farm",'image_url');
-        $flage_image_path =  $this->uploadImage($request,"farm_flag",'flage_image_url');
-
         $validatedRequest = $request->validated();
-
-        $validatedRequest["image_url"] = $image_path;
-        $validatedRequest["flage_image_url"] = $flage_image_path;
-
 
         return $this->query()->create($validatedRequest);
     }
 
-
-    
-
     public function updateFarm($request): static
     {
-        $image_path =  $this->uploadImage($request,"farm",'image_url');
-        $flage_image_path =  $this->uploadImage($request,"farm_flag",'flage_image_url');
-
         $validatedRequest = $request->validated();
-
-        $validatedRequest["image_url"] = $image_path;
-        $validatedRequest["flage_image_url"] = $flage_image_path;
-
         $this->update($validatedRequest);
         return $this;
-
     }
 
     public function deleteFarm(): ?bool

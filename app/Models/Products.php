@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use App\Trait\UploadImageTrait;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
 {
     use UploadImageTrait;
+
+    protected $table ="products";
     protected $fillable = [
         "name",
         "farm_id",
@@ -28,22 +31,26 @@ class Products extends Model
         return $this->belongsTo(Farms::class);
     }
 
+    public function setProductImage($value): void
+    {
+        $this->attributes["image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->image_url ?? false) ?? null;    
+    }
+
+    public function getProductAttribute($value): ?string
+    {
+        return $this->getImage($value);
+    }
+
+
     public function addNewProduct( $request){
-        $image_path =  $this->uploadImage($request,"product",'image_url');
-        
-       $validatedRequest = $request->validated();
-        $validatedRequest["image_url"] = $image_path;
-    return $this->query()->create( $validatedRequest);
+  
+    return $this->query()->create( $request->Validated());
     }
 
     public function updateProduct($request): static
     {
-        $image_path =  $this->uploadImage($request,"product",'image_url');
-        
-        $validatedRequest = $request->validated();
-         $validatedRequest["image_url"] = $image_path;
-    $this->update($validatedRequest);
-    return $this;
+        $this->update($$request->Validated());
+        return $this;
     }
 
     public function deleteProducts(): ?bool

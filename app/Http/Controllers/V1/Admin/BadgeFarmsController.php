@@ -37,6 +37,7 @@ class BadgeFarmsController extends BaseAdminController
     public function store(StoreBadgeFarmsRequest $request,BadgeFarm $badgeFarm)
     {
         $badgeFarm = $badgeFarm->addNewBadgeFarm($request);
+        $badgeFarm->load(["badge:id,image_url","farm:id,name"]);
         return $this->api(new BadgeFarmsResource($badgeFarm->toArray()),__METHOD__);
 
     }
@@ -46,7 +47,8 @@ class BadgeFarmsController extends BaseAdminController
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function show(BadgeFarm $badgeFarm)
-    {
+    {   
+        $badgeFarm->load(["badge:id,image_url","farm:id,name"]);
         return $this->api(new BadgeFarmsResource($badgeFarm->toArray()),__METHOD__);
 
     }
@@ -60,6 +62,7 @@ class BadgeFarmsController extends BaseAdminController
     public function update(UpdateBadgeFarmsRequest $request,BadgeFarm $badgeFarm)
     {
         $badgeFarm->updateBadgeFarm($request);
+        $badgeFarm->load(["badge:id,image_url","farm:id,name"]);
         return $this->api(new BadgeFarmsResource($badgeFarm->toArray()),__METHOD__);
     }
 

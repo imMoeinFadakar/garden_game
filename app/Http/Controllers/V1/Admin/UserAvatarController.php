@@ -36,6 +36,7 @@ class UserAvatarController extends BaseAdminController
     public function store(StoreUserAvatar $request , UserAvatar $userAvatar)
     {
         $userAvatar = $userAvatar->addNewUserAvatar($request->validated());
+        $userAvatar->load(["user:id,name","avatar:id,image_url"]);
         return $this->api(new UserAvatarResource($userAvatar->toArray()) ,__METHOD__ );
     }
     /**
@@ -45,6 +46,7 @@ class UserAvatarController extends BaseAdminController
      */
     public function show(UserAvatar $userAvatar)
     {
+        $userAvatar->load(["user:id,name","avatar:id,image_url"]);
         return $this->api(new UserAvatarResource($userAvatar->toArray()) ,__METHOD__ );
     }
 
@@ -54,10 +56,11 @@ class UserAvatarController extends BaseAdminController
      * @param \App\Models\UserAvatar $user_avatar
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function update(StoreUserAvatar $request , UserAvatar $user_avatar)
+    public function update(StoreUserAvatar $request , UserAvatar $userAvatar)
     {
-        $user_avatar->updateUserAvatar($request);
-        return $this->api(new UserAvatarResource($user_avatar->toArray()) ,__METHOD__ );
+        $userAvatar->updateUserAvatar($request);
+        $userAvatar->load(["user:id,name","avatar:id,image_url"]);
+        return $this->api(new UserAvatarResource($userAvatar->toArray()) ,__METHOD__ );
 
     }
     /**

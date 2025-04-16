@@ -24,7 +24,7 @@ class ProductController extends BaseAdminController{
         ->when(isset($request->min_token_value),fn($query) =>  $query->where("min_token_value", $request->min_token_value))
         ->when(isset($request->max_token_value	),fn($query) =>  $query->where("max_token_value", $request->max_token_value))
         ->when(isset($request->user_recive_per_hour),fn($query) =>  $query->where("user_recive_per_hour", $request->user_recive_per_hour))
-        ->with(["farm:name"])
+        ->with(["farm:id,name"])
         ->get();
 
         return $this->api(ProductResource::collection($product),__METHOD__);
@@ -39,6 +39,7 @@ class ProductController extends BaseAdminController{
     public function store(StoreProductRequest $request,Products $product)
     {
         $product = $product->addNewProduct($request);
+        $product->load("farm:id,name");
         return $this->api(new ProductResource($product->toArray()),__METHOD__);
     }
 
@@ -49,8 +50,8 @@ class ProductController extends BaseAdminController{
      */
     public function show(Products $product)
     {
+        $product->load("farm:id,name");
         return $this->api(new ProductResource($product->toArray()),__METHOD__);
-
     }
 
     /**
@@ -62,6 +63,7 @@ class ProductController extends BaseAdminController{
     public function update(UpdateProductRequest $request, Products $product)
     {
         $product->updateProduct($request);
+        $product->load("farm:id,name");
         return $this->api(new ProductResource($product->toArray()),__METHOD__);
     }
 
@@ -73,6 +75,7 @@ class ProductController extends BaseAdminController{
     public function destroy(Products $product)
     {
         $product->deleteProducts();
+        $product->load("farm:id,name");
         return $this->api(new ProductResource($product->toArray()),__METHOD__);
     }
 }

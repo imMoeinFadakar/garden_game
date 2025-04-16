@@ -37,6 +37,7 @@ class BadgeUserController extends BaseAdminController
     public function store(StoreUserBadgeRequest $request, BadgeUser  $badgeUser)
     {
        $badgeUser =  $badgeUser->addNewBadgeUser($request);
+       $badgeUser->load(["user:id,name","badge:id,image_url"]);
         return $this->api(new UserBadgeResource($badgeUser->toArray()),__METHOD__);
     }
 
@@ -47,6 +48,7 @@ class BadgeUserController extends BaseAdminController
      */
     public function show(BadgeUser  $badgeUser)
     {
+       $badgeUser->load(["user:id,name","badge:id,image_url"]);
         return $this->api(new UserBadgeResource($badgeUser->toArray()),__METHOD__);
 
     }
@@ -60,6 +62,7 @@ class BadgeUserController extends BaseAdminController
     public function update(Request $request, BadgeUser  $badgeUser)
     {
         $badgeUser->updateBadgeUser($request);
+       $badgeUser->load(["user:id,name","badge:id,image_url"]);
         return $this->api(new UserBadgeResource($badgeUser->toArray()),__METHOD__);
 
     }

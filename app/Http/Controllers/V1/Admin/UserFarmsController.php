@@ -34,10 +34,11 @@ class UserFarmsController extends BaseAdminController
      * @param \App\Models\UserFarms $userFarms
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request,UserFarms $userFarms)
+    public function store(Request $request,UserFarms $userFarm)
     {
-        $userFarms = $userFarms->addNewUserFarms($request);
-        return $this->api(new UserFarmsResource($userFarms->toArray()),__METHOD__);
+        $userFarm = $userFarm->addNewUserFarms($request);
+        $userFarm->load(["user:id,name,username","farm:id,name"]);
+        return $this->api(new UserFarmsResource($userFarm->toArray()),__METHOD__);
     }
 
     /**
@@ -47,8 +48,8 @@ class UserFarmsController extends BaseAdminController
      */
     public function show(UserFarms $userFarm)
     {
+        $userFarm->load(["user:id,name,username","farm:id,name"]);
         return $this->api(new UserFarmsResource($userFarm->toArray()),__METHOD__);
-
     }
 
     /**
@@ -57,10 +58,11 @@ class UserFarmsController extends BaseAdminController
      * @param \App\Models\UserFarms $userFarms
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function update(UpdateUserFarmRequest $request,UserFarms $userFarms)
+    public function update(UpdateUserFarmRequest $request,UserFarms $userFarm)
     {
-        $userFarms->updateUserFarms($request);
-        return $this->api(new UserFarmsResource($userFarms->toArray()),__METHOD__);
+        $userFarm->updateUserFarms($request);
+        $userFarm->load(["user:id,name,username","farm:id,name"]);
+        return $this->api(new UserFarmsResource($userFarm->toArray()),__METHOD__);
 
     }
 

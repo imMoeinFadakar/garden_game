@@ -35,11 +35,6 @@ class BadgeController extends Controller
      */
     public function store(StoreBadgeRequest $request , Badge $badge)
     {
-        
-
-        
-        
-       
         $badge = $badge->addNewBadge($request);
         return $this->api(new BadgeResource($badge->toArray()),__METHOD__);
     }

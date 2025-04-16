@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('cryptocurrencies', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId("user_id")
+            ->constrained("users")
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
+
             $table->string("tx_hash");
             $table->string("usdt_amount");
             $table->string("user_address");

@@ -33,6 +33,7 @@ class WarehouseProductController extends BaseAdminController
      */
     public function show(WarehouseProducts $warehouseProduct)
     {
+        $warehouseProduct->load(['product:id,name','wherehouse.user:id,name,username']);
         return $this->api(new WarehouseProductResource($warehouseProduct->toArray()),__METHOD__);
     }
 }
