@@ -10,10 +10,10 @@ trait UploadImageTrait
 {
     const CDN_URL = 'https://garden2.storage.c2.liara.space/';
     
-    public function uploadMedia($request,$dirName)
+    public function uploadMedia($request,$dirName,$index = "image_url")
     {
        
-        $image =  $request->file("image_url"); // find its image 
+        $image =  $request->file($index); // find its image 
         $image_name = uniqid() .  rand(10,1000) .Carbon::now()->microsecond.'.'.$image->extension();
         $path  = $image->storeAs('images/'.$dirName , $image_name,); // store in storage and return path
         $saveImage = Storage::disk("liara")->put($path,$image);

@@ -15,30 +15,26 @@ class Badge extends Model
         "image_url"
     ];
 
-    public function setBadgeImage($value): void
-    {
-        $this->attributes["image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->image_url ?? false) ?? null;    
-    }
 
-    public function getBadgeAttribute($value): ?string
-    {
-        return $this->getImage($value);
-    }
 
     public function addNewBadge( $request){
-        return $this->query()->create($$request->validated());
+        
+        $uploadImage = $this->uploadMedia($request,"badge");
+        $validtedRequest = $request->validated();
+        $validtedRequest["image_url"] = $uploadImage;
+        
+        return $this->query()->create($validtedRequest);
     }
 
 
     public function updateBadge($request): static
     {
-        $image_path =  $this->uploadImage($request,"badge",'image_url'); /// add 
-
-        $validatedRequest = $request->validated();
-        $validatedRequest["image_url"] = $image_path;
+        $uploadImage = $this->uploadMedia($request,"badge");
+        $validtedRequest = $request->validated();
+        $validtedRequest["image_url"] = $uploadImage;
         
 
-        $this->update($validatedRequest);
+        $this->update($validtedRequest);
         return $this;
     }
 

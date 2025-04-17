@@ -21,37 +21,34 @@ class Farms extends Model
         "power",
     ];
 
-    public function setFarmImage($value): void
-    {
-        $this->attributes["image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->image_url ?? false) ?? null;    
-    }
+  
 
-    public function getFarmImageAttribute($value): ?string
-    {
-        return $this->getImage($value);
-    }
-
-    public function setFarmFlageImage($value): void
-    {
-        $this->attributes["flage_image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->flage_image_url ?? false) ?? null;    
-    }
-
-    public function getFarmFlageAttribute($value): ?string
-    {
-        return $this->getImage($value);
-    }
+  
 
 
     public function addNewFarm($request)
     {
-        
-        return $this->query()->create($request->validated());
+      
+        $uploadImage = $this->uploadMedia($request,"farm");
+        $uploadFlageImage = $this->uploadMedia($request,"flage_farm","flage_image_url");
+
+        $validtedRequest = $request->validated();
+        $validtedRequest["image_url"] = $uploadImage;
+        $validtedRequest["flage_image_url"] = $uploadFlageImage;
+
+        return $this->query()->create($validtedRequest);
     }
 
     public function updateFarm($request): static
     {
-        $validatedRequest = $request->validated();
-        $this->update($validatedRequest);
+        $uploadImage = $this->uploadMedia($request,"farm");
+        $uploadFlageImage = $this->uploadMedia($request,"flage_farm","flage_image_url");
+
+        $validtedRequest = $request->validated();
+        $validtedRequest["image_url"] = $uploadImage;
+        $validtedRequest["flage_image_url"] = $uploadFlageImage;
+
+        $this->update($validtedRequest);
         return $this;
     }
 

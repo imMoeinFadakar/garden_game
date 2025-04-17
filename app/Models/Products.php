@@ -31,25 +31,24 @@ class Products extends Model
         return $this->belongsTo(Farms::class);
     }
 
-    public function setProductImage($value): void
-    {
-        $this->attributes["image_url"] = $this->uploadImage($value,ucfirst($this->table),$this->image_url ?? false) ?? null;    
-    }
-
-    public function getProductAttribute($value): ?string
-    {
-        return $this->getImage($value);
-    }
-
 
     public function addNewProduct( $request){
   
-    return $this->query()->create( $request->Validated());
+
+        $uploadImage = $this->uploadMedia($request,"product");
+        $validtedRequest = $request->validated();
+        $validtedRequest["image_url"] = $uploadImage;
+
+    return $this->query()->create( $validtedRequest);
     }
 
     public function updateProduct($request): static
-    {
-        $this->update($$request->Validated());
+    {   
+        $uploadImage = $this->uploadMedia($request,"product");
+        $validtedRequest = $request->validated();
+        $validtedRequest["image_url"] = $uploadImage;
+
+        $this->update($validtedRequest);
         return $this;
     }
 
