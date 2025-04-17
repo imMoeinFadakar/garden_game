@@ -44,7 +44,7 @@ class CryptoCurrencyController extends BaseAdminController
 
         try{
             $response = Http::get("https://apilist.tronscanapi.com/api/transaction-info", [
-                'hash' => $transaction
+                'hash' => $transaction->hash
             ]);
     
             return $response->json();
@@ -52,7 +52,7 @@ class CryptoCurrencyController extends BaseAdminController
         }catch(Exception $e){
 
             throw new HttpResponseException(response()->json([
-                "message" => "connection failed",
+                "message" => "connection failed".$e->getMessage()
             ]));
 
         }
