@@ -7,6 +7,7 @@ use App\Http\Requests\V1\Admin\CryptoCurrency\CryptoCurrencyRequest;
 use App\Http\Resources\V1\Admin\CryptoCurrencyResource;
 use App\Models\cryptocurrency;
 use Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -33,21 +34,28 @@ class CryptoCurrencyController extends BaseAdminController
     }
 
 
-    public function transactionRequest($transaction)
+
+
+
+
+
+    public function transactionRequest(CryptoCurrencyRequest $transaction)
     {   
 
-        // try{
-        //     $response = Http::get("https://apilist.tronscanapi.com/api/transaction-info", [
-        //         'hash' => $transaction
-        //     ]);
+        try{
+            $response = Http::get("https://apilist.tronscanapi.com/api/transaction-info", [
+                'hash' => $transaction
+            ]);
     
-        //     return $response->json();
+            return $response->json();
 
-        // }catch(Exception $e){
+        }catch(Exception $e){
 
-        //     return $this
+            throw new HttpResponseException(response()->json([
+                "message" => "connection failed",
+            ]));
 
-        // }
+        }
      
     }
 
