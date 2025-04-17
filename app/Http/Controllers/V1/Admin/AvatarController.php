@@ -35,7 +35,6 @@ class AvatarController extends BaseAdminController
      */
     public function store(StoreAvatarRequest $request,Avatar $avatar)
     {
-        
         $avatar = $avatar->addNewAvatar($request);
         return $this->api( new AvatarResource($avatar->toArray()),__METHOD__);
     }
