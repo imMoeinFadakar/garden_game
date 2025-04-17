@@ -31,8 +31,6 @@ class Avatar extends Model
     public function addNewAvatar($request): Avatar{
         
         $uploadImage = $this->uploadMedia($request,"avatar");
-        dd("true");
-
         $validtedRequest = $request->validated();
         $validtedRequest["image_url"] = $uploadImage;
         
