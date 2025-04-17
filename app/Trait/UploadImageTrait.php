@@ -15,6 +15,7 @@ trait UploadImageTrait
         $image =  $request->file("image_url"); // find its image 
         $image_name = uniqid() .  rand(10,1000) .Carbon::now()->microsecond.'.'.$image->extension();
         $path  = $image->storeAs('images/'.$dirName , $image_name,); // store in storage and return path
+        $saveImage = Storage::disk("liara")->put($path,"avatrat images");
         return self::CDN_URL . $path;
     }
 

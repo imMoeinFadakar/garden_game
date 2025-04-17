@@ -28,7 +28,7 @@ class Avatar extends Model
     //     return $this->getImage($value);
     // }
 
-    public function addNewAvatar( $request): Avatar{
+    public function addNewAvatar($request): Avatar{
         
         $uploadImage = $this->uploadMedia($request,"avatar");
         $validtedRequest = $request->validated();
