@@ -3,14 +3,25 @@
 namespace App\Trait;
 
 use Carbon\Carbon;
+use Faker\Core\Uuid;
 use Illuminate\Support\Facades\Storage;
 
 trait UploadImageTrait
 {
+    const CDN_URL = 'https://bucketgarden.storage.c2.liara.space/';
     
- 
+    public function uploadMedia($request,$dirName)
+    {
+        $image =  $request->file("image_url"); // find its image 
+        $image_name = uniqid() .  rand(10,1000) .Carbon::now()->microsecond.'.'.$image->extension();
+        $path  = $image->storeAs('images/'.$dirName , $image_name,); // store in storage and return path
+        return self::CDN_URL . $path;
+    }
 
-     const CDN_URL = 'https://moein81.storage.c2.liara.space/';
+
+
+
+
      public function uploadImage($file , $path , $old_image = false): string
      {
          $path = 'image/'.$path;

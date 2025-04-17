@@ -28,7 +28,6 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("badge-farm",App\Http\Controllers\V1\Admin\BadgeFarmsController::class);
                 Route::apiResource("farm",App\Http\Controllers\V1\Admin\FarmController::class);
                 Route::apiResource("mailbox",App\Http\Controllers\V1\Admin\MailboxController::class);
-                Route::apiResource("policy",App\Http\Controllers\V1\Admin\PolicyController::class);
                 Route::apiResource("product",App\Http\Controllers\V1\Admin\ProductController::class);
                 Route::apiResource("task",App\Http\Controllers\V1\Admin\TasksController::class);
                 Route::apiResource("transaction",App\Http\Controllers\V1\Admin\TransactionController::class);
@@ -46,7 +45,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
                 Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
                 Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
-
+                Route::apiResource("policy",App\Http\Controllers\V1\Admin\PolicyController::class);
             });
 
         });

@@ -64,6 +64,7 @@ return [
         'liara' => [
             'driver' => 's3',
             'endpoint' => env('ENDPOINT_URL'),
+            'root' => storage_path('app/public'),
             'key' => env('ACCESS_KEY'),
             'secret' => env('SECRET_KEY'),
             'region' => env('DEFAULT_REGION'),

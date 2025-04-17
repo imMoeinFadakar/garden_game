@@ -2,72 +2,64 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Admin\Policies\storePoliciesRequest;
 use App\Http\Requests\V1\Admin\Policies\UpdatePoliciesRequest;
-use App\Http\Resources\V1\User\PoliciesResource;
-use App\Models\Policies;
+use App\Http\Resources\V1\Admin\PolicyResource;
 use App\Models\Policy;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Http\Request;
 
 class PolicyController extends BaseAdminController
 {
     /**
-     * policy/index
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * Display a listing of the resource.
      */
     public function index()
     {
-        $policies = Policy::query()
+        $policy = Policy::query()
         ->orderBy("id")
         ->get();
 
-        return $this->api(PoliciesResource::collection($policies),__METHOD__);
-
+        return $this->api(PolicyResource::collection($policy),__METHOD__);
     }
 
     /**
-     * Summary of store
-     * @param \App\Http\Requests\V1\Admin\Policies\storePoliciesRequest $request
-     * @param \App\Models\Policy $policy
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * Store a newly created resource in storage.
      */
     public function store(storePoliciesRequest $request,Policy $policy)
     {
-        $policy = $policy->addNewPolicy($request);
-        return $this->api(new PoliciesResource($policy->toArray()),__METHOD__);
+        $policy = $policy->addNewPolicy($request->validated());
+        return $this->api(new PolicyResource($policy->toArray()),__METHOD__);
     }
+
     /**
-     * policy/show
-     * @param \App\Models\Policy $policies
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * Display the specified resource.
      */
     public function show(Policy $policy)
     {
-        return $this->api(new PoliciesResource($policy->toArray()),__METHOD__);
-
+        return $this->api(new PolicyResource($policy->toArray()),__METHOD__);
+        
     }
 
     /**
-     * policy/update
-     * @param \App\Http\Requests\V1\Admin\Policies\UpdatePoliciesRequest $request
-     * @param \App\Models\Policy $policy
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * Update the specified resource in storage.
      */
     public function update(UpdatePoliciesRequest $request, Policy $policy)
     {
-        $policy->UpdatePolicies($request->validated());
-        return $this->api(new PoliciesResource($policy->toArray()),__METHOD__);
-
+        
+        $policy->updatePolicy($request->validated());
+        return $this->api(new PolicyResource($policy->toArray()),__METHOD__);
+        
     }
 
     /**
-     * policy/destroy
-     * @param \App\Models\Policy $policy
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * Remove the specified resource from storage.
      */
     public function destroy(Policy $policy)
     {
-        $policy->deletePolicies();
-        return $this->api(new PoliciesResource($policy->toArray()),__METHOD__);
+        $policy->deletePolicy();
+        return $this->api(new PolicyResource($policy->toArray()),__METHOD__);
 
     }
 }
