@@ -26,9 +26,14 @@ trait Response
         return $model . ' ' . explode('::',$method)[1] . ' successfully';
     }
 
+    /**
+     * Summary of errorResponse
+     * @param mixed $code
+     * @param mixed $message
+     */
     public function errorResponse($code,$message)
     {
-        return throw new HttpResponseException(response()->json([
+        throw new HttpResponseException(response()->json([
             "success" => false,
             "code" => $code,
             "message" => $message

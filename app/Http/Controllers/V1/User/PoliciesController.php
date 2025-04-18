@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\User;
 use App\Http\Resources\V1\User\PoliciesResource;
 use App\Models\Policies;
 use App\Models\Policy;
+use App\Models\PolicyAndRule;
 use Illuminate\Http\Request;
 
 class PoliciesController extends BaseUserController
@@ -14,9 +15,7 @@ class PoliciesController extends BaseUserController
      */
     public function index()
     {
-        $policies = Policy::query()
-        ->orderBy("id")
-        ->get();
+        $policies = PolicyAndRule::all();
 
         return $this->api(PoliciesResource::collection($policies),__METHOD__);
     }

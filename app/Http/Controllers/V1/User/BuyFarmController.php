@@ -12,6 +12,7 @@ use App\Models\Wallet;
 use App\Models\WarehouseLevel;
 use App\Models\WarehouseProducts;
 use App\Models\Wherehouse;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
@@ -184,7 +185,11 @@ class BuyFarmController extends BaseUserController
     public function userHaveEnoughResource(int $UserResource,int $farmRequireResource,string $resourceName): bool
     {
         if($UserResource < $farmRequireResource)
-            return $this->errorResponse(422,"you dont have enough: $resourceName");
+            throw new HttpResponseException(response()->json([
+                "success" => false,
+                "message" => "you dont have enough $resourceName",
+                "data" => null
+            ]));
 
 
         return true;

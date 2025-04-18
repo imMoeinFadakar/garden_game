@@ -29,7 +29,7 @@ class UserFarms extends Model
      */
     public function farm()
     {
-        return $this->belongsTo(User::class, 'farm_id', 'id');
+        return $this->belongsTo(Farms::class, 'farm_id', 'id');
     }
 
     public function addNewUserFarms($request): UserFarms

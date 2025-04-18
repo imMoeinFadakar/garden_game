@@ -28,7 +28,7 @@ Route::prefix("user")->group(function() {
     Route::get("avatar", [App\Http\Controllers\V1\User\AvatarController::class, "index"]);
     Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"store"]);
     Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
-    Route::post("User_task", [App\Http\Controllers\V1\User\UserTasksController::class, "store"]);
+    Route::post("user_task", [App\Http\Controllers\V1\User\UserTasksController::class, "store"]);
 
     //get user warehouse products
     Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseProductController::class,"index"]);

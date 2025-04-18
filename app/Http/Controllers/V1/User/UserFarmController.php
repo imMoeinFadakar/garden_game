@@ -18,7 +18,8 @@ class UserFarmController extends BaseUserController
     {
         $userFarm = UserFarms::query()
             ->orderBy("id")
-            ->where("user_id",Auth::id())
+            ->where("user_id",1)
+            ->with(["farm:id,image_url,flage_image_url,description,power"])
             ->get();
 
         return $this->api(UserFarmResource::collection($userFarm),__METHOD__);

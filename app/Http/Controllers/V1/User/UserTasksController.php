@@ -19,6 +19,7 @@ class UserTasksController extends BaseUserController
         $userTask = UserTask::query()
             ->orderBy("id")
             ->where("user_id", 1)
+            ->with(["task:id,title,gem_reward,token_reward"])
             ->get();
 
         return $this->api(UserTaskResource::collection($userTask),__METHOD__);

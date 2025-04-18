@@ -51,7 +51,7 @@ class TransferController extends BaseUserController
 
     public function findUserWallet($param, $value)
     {
-        return Wallet::query()->where("$param",$value)->first();
+        return Wallet::query()->where($param,$value)->first();
     }
 
     public function hasUserEnoughToken(int $userGem,int $amount)
