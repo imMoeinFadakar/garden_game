@@ -17,7 +17,7 @@ class Transfer extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function from_user()
+    public function from_wallet()
     {
         return $this->belongsTo(Wallet::class, 'from_wallet','id');
     }
@@ -28,7 +28,7 @@ class Transfer extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function to_user()
+    public function to_wallet()
     {
         return $this->belongsTo(Wallet::class, 'to_wallet', 'id');
     }

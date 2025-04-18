@@ -22,7 +22,7 @@ class TransferController extends Controller
         ->when(isset($request->gem_amount),fn($query) =>  $query->where("gem_amount", $request->gem_amount))
         ->when(isset($request->from_user),fn($query) =>  $query->where("from_user", $request->from_user))
         ->when(isset($request->to_user),fn($query) =>  $query->where("to_user", $request->to_user))
-        ->with(["from_user:id,name","to_user:id,name"])
+        ->with(["from_wallet.user","to_wallet.user"])
         ->get();
 
         return $this->api(TransferResource::collection($Transfer),__METHOD__);
