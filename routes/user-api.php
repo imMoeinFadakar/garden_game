@@ -19,7 +19,7 @@ Route::prefix("user")->group(function() {
     Route::get("badge", [App\Http\Controllers\V1\User\UserBadgeController::class, "index"]); // user badge
 
     // map part
-    Route::get("map",[App\Http\Controllers\V1\User\FarmController::class,"index"]); // all farms
+    Route::get("farm",[App\Http\Controllers\V1\User\FarmController::class,"index"]); // all farms
     Route::get("user_farm",[App\Http\Controllers\V1\User\UserFarmController::class,"index"]); // user farms have
     Route::post("buy_farm",[App\Http\Controllers\V1\User\BuyFarmController::class,"store"]);
 
