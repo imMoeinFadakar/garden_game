@@ -15,9 +15,9 @@ class Policy extends Model
     /**
      * Add new policy in database
      * @param mixed $request
-     * @return Policy
+     *
      */
-    public function addNewPolicy($request): Policy
+    public function addNewPolicy($request)
     {
       return  $this->query()->create($request);
     }
@@ -26,16 +26,16 @@ class Policy extends Model
     /**
      * Update an exists policy
      * @param mixed $request
-     * @return Policy
+     *
      */
-    public function updatePolicy($request): static
+    public function updatePolicy($request)
     {
         $this->update($request);
         return $this;
     }
 
 
-    public function deletePolicy(): ?bool
+    public function deletePolicy()
     {
         return $this->delete();
     }
