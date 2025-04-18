@@ -62,10 +62,10 @@ class CryptoCurrencyController extends BaseAdminController
 
     public function getNeededInformation(CryptoCurrencyRequest $request)
     {
-        // $transactionData = $this->transactionRequest($request->hash);
-        // $transactionData[""]
-
-
+        $transactionData = $this->transactionRequest($request->hash);
+       $amount =  $transactionData["transfersAllList"]["amount_str"] / 1000;
+        $destnation =  $transactionData["transfersAllList"]["to_address"];
+        
 
     }
 

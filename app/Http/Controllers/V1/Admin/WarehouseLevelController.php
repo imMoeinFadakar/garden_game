@@ -22,7 +22,8 @@ class WarehouseLevelController extends BaseAdminController
         ->orderBy("id")
         ->when(isset($request->id), fn($query)=> $query->where("id", $request->id))
         ->when(isset($request->level_number), fn($query)=> $query->where("level_number",$request->level_number))
-        ->get();
+        ->with(["product:id,name"])
+            ->get();
 
         return $this->api(WhereHosueLevelResource::collection($WarehouseLevel),__METHOD__);
     }
@@ -36,6 +37,7 @@ class WarehouseLevelController extends BaseAdminController
     public function store(StorewherehouselevelRequest $request, WarehouseLevel $warehouseLevel)
     {
         $warehouseLevel= $warehouseLevel->addNewWarehouseLevel($request);
+        $warehouseLevel->load(["product:id,name"]);
         return $this->api(new WhereHosueLevelResource($warehouseLevel->toArray()),__METHOD__);
     }
     /**
@@ -45,6 +47,7 @@ class WarehouseLevelController extends BaseAdminController
      */
     public function show(WarehouseLevel $warehouseLevel)
     {
+        $warehouseLevel->load(["product:id,name"]);
         return $this->api(new WhereHosueLevelResource($warehouseLevel->toArray()),__METHOD__);
 
     }
@@ -58,6 +61,7 @@ class WarehouseLevelController extends BaseAdminController
     public function update(UpdatewherehouselevelRequest $request, WarehouseLevel $warehouseLevel)
     {
         $warehouseLevel->updateWarehouseLevel($request);
+        $warehouseLevel->load(["product:id,name"]);
         return $this->api(new WhereHosueLevelResource($warehouseLevel->toArray()),__METHOD__);
 
     }
@@ -70,6 +74,7 @@ class WarehouseLevelController extends BaseAdminController
     public function destroy(WarehouseLevel $warehouseLevel)
     {
         $warehouseLevel->deleteWarehouseLevel();
+        $warehouseLevel->load(["product:id,name"]);
         return $this->api(new WhereHosueLevelResource($warehouseLevel->toArray()),__METHOD__);
 
     }

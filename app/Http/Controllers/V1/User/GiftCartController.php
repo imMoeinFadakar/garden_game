@@ -14,22 +14,38 @@ class GiftCartController extends BaseUserController
     public function useGiftCart(UseGiftCartRequest $request,Giftcart $giftcart)
     {
         $giftcart = $this->findGiftcart($request->code);
+
         if(! $giftcart)
             return $this->errorResponse(400,"gift cart not find");
 
         $userWallet = $this->findUserWallet();
+        if($userWallet){
 
-        $deletedGiftcart = $this->deleteGiftcart($request->code);
-        if($deletedGiftcart){
+            $giftCartAmount = $giftcart->value;
 
-            $userWallet->gem_amount += $giftcart->value;
-            $userWallet->save();
 
-            return $this->api(new GiftcartResource($userWallet->toArray()),__METHOD__);
+            $deletedGiftcart = $this->deleteGiftcart($request->code);
+            if($deletedGiftcart){
+
+                $userWallet->gem_amount += $giftcart->value;
+                $userWallet->save();
+                $userWallet["giftcart_amount"] =$giftCartAmount;
+
+                return $this->api(new GiftcartResource($userWallet->toArray()),__METHOD__);
+
+            }
+
+            return $this->errorResponse(400,"gift cart operation failed");
+
+
+        }else{
+
+            return $this->errorResponse(400,"wallet is not found!");
+
 
         }
 
-         return $this->errorResponse(400,"gift cart operation failed");
+
 
     }
 

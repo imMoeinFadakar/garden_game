@@ -26,11 +26,11 @@ class WarehouseController extends BaseUserController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UpdatewarehouseRequest $request)
+    public function store(Request $request)
     {
         $userWallet = $this->findUserWallet(); // user wallet
         $userWarehouse = $this->findUserWarehouse(); // user warhouse
-        $warehouseLevel = $this->findNextLevel($request->level_number); // new level
+        $warehouseLevel = $this->findNextLevel($userWarehouse); // new level
         if (! $warehouseLevel){
             return $this->errorResponse(400,"level is not found");
         }
@@ -125,10 +125,17 @@ class WarehouseController extends BaseUserController
      * @param int $levelNumber
      * @return WarehouseLevel|null
      */
-    public function findNextLevel(int $levelNumber)
+    public function findNextLevel($userWarehouse)
     {
-        return WarehouseLevel::where("level_number",$levelNumber)->first() ?: null;
+        $userWarehouseLevel = $userWarehouse->warehouse_level_id;
+        $warehouseLevel = $this->findWarehouseLevel();
     }
+
+    public function findWarehouseLevel(int $wareHouseLevelId)
+    {
+        return WarehouseLevel::query()->find($wareHouseLevelId);
+    }
+
 
     /**
      * find the wallet that user own
@@ -145,7 +152,7 @@ class WarehouseController extends BaseUserController
      */
     public function findUserWarehouse()
     {
-        return Wherehouse::query()->where("user_id",1)->first();
+        return Wherehouse::query()->where("user_id",1)->first(); //auth::id
     }
 
 

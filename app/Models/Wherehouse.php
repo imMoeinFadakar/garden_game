@@ -10,7 +10,10 @@ class Wherehouse extends Model
     protected $fillable = [
         "user_id",
         "warehouse_level_id",
-        "warehouse_cap_left"
+        "warehouse_cap_left",
+        "product_id",
+        'overcapacity',
+        'max_cap_left'
     ];
 
 
@@ -24,7 +27,10 @@ class Wherehouse extends Model
        return $this->belongsTo(WarehouseLevel::class, 'warehouse_level_id', 'id');
    }
 
-
+    public function product()
+    {
+        return $this->belongsTo(Products::class,"product_id",'id');
+    }
 
     /**
      * Get all of the wherehouse_product for the Wherehouse

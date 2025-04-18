@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string("username");
             $table->unsignedBigInteger("telegram_id");
+            $table->string('name');
+
+            $table->string("username")->unique()->nullable();
+            $table->enum("gender",["male","female"])->nullable();
             $table->enum("market_status",["active","inactive"])
             ->default("inactive");
 

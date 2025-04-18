@@ -20,9 +20,9 @@ class GiftcartController extends BaseAdminController
         $farms = Giftcart::query()
         ->orderBy("id")
         ->when(isset($request->id), fn($query)=>$query->where("id",$request->id))
-        ->when(isset($request->value), fn($query)=>$query->where("require_token",$request->value))
+        ->when(isset($request->value), fn($query)=>$query->where("value",$request->value))
         ->get();
- 
+
         return $this->api(GiftcartResource::collection($farms),__METHOD__);
     }
 

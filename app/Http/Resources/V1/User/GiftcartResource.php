@@ -14,6 +14,11 @@ class GiftcartResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+
+
+        return [
+            "new balance" => $request["gem_amount"],
+            "giftcart amount" => $request["giftcart_amount"],
+        ];
     }
 }

@@ -23,7 +23,7 @@ class UpdatewarehouseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "level_number" => "required|integer|min:2"
+
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

@@ -27,6 +27,8 @@ class UpdatewherehouselevelRequest extends FormRequest
             "level_number" => "required|integer|unique:warehouse_levels,id",
             "Overcapacity" => "required|integer",
             "cost_for_buy" => "required|integer",
+            "product_id" => "required|integer|exists:products,id"
+
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
