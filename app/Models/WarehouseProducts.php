@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class WarehouseProducts extends Model
 {
     protected $fillable = [
-        "warehouse_id"
-        ,"product_id"
-        ,"amount"
+        "warehouse_id",
+        "product_id",
+        "amount"
     ];
 
     /**
