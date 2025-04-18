@@ -46,7 +46,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
                 Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
                 Route::post("token_expire",[App\Http\Controllers\V1\Admin\AuthController::class,"isTokenValied"]);
-                Route::apiResource("policy",App\Http\Controllers\V1\Admin\PolicyController::class);
+                Route::apiResource("policy",App\Http\Controllers\V1\Admin\PolicyAndRuleController::class);
 
 
 
