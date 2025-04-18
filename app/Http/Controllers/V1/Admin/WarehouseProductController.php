@@ -19,7 +19,7 @@ class WarehouseProductController extends BaseAdminController
         ->when(isset($request->id), fn($query)=> $query->where("id", $request->id))
         ->when(isset($request->wherehouse_id), fn($query)=> $query->where("warehouse_id", $request->wherehouse_id))
         ->when(isset($request->product_id), fn($query)=> $query->where("product_id", $request->product_id))
-        ->with(['product:id,name','wherehouse.user'])
+        // ->with(['product:id,name','wherehouse.user'])
         ->get();
 
         return $this->api(WarehouseProductResource::collection($WarehouseProducts),__METHOD__);
