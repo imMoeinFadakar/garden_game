@@ -17,6 +17,7 @@ return new class extends Migration
             ->constrained("users")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
+            $table->enum("status",["pending","rejected","done"])->default('pending');
             $table->enum("type",["withdraw","deposit"]);
             $table->unsignedBigInteger("amount");
             $table->timestamps();

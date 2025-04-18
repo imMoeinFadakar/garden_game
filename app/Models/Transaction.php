@@ -18,5 +18,11 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function updateTransaction($request){
+    $this->update($request->validated());
+    return $this;
+    }
+
+
 
 }
