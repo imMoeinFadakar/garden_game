@@ -17,6 +17,8 @@ Route::prefix("user")->group(function() {
     Route::get("tasks", [App\Http\Controllers\V1\User\TasksController::class, "index"]); // all tasks
     Route::get("user_task",[App\Http\Controllers\V1\User\UserTasksController::class, "index"]); // user tasks
     Route::get("badge", [App\Http\Controllers\V1\User\UserBadgeController::class, "index"]); // user badge
+    
+
 
     // map part
     Route::get("farm",[App\Http\Controllers\V1\User\FarmController::class,"index"]); // all farms

@@ -14,9 +14,6 @@ class UserStatusResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            "market_status" => $this->market_status,
-            "warehouse_status" => $this->warehouse_status
-        ];
+        return  parent::toArray($request);
     }
 }

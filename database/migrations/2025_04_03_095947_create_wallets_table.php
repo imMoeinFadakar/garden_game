@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("token_amount")->default(800);
+            $table->unsignedBigInteger("token_amount")->default(1000);
             $table->unsignedBigInteger("gem_amount")->default(0);
             $table->uuid("referral_code")->default("garden");
 

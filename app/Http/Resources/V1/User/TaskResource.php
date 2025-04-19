@@ -14,11 +14,6 @@ class TaskResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            "title" => $this->title,
-            "attachment_url" => $this->attachment_url,
-            "gem_reward" => $this->gem_reward,
-            "token_reward" => $this->token_reward
-        ];
+        return  parent::toArray($request);
     }
 }

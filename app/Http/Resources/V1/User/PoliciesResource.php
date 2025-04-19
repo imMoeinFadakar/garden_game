@@ -14,8 +14,6 @@ class PoliciesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            "text" => $this->text
-        ];
+        return  parent::toArray($request);
     }
 }
