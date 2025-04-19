@@ -14,13 +14,6 @@ class UserTaskResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            "task" => $this->task->title,
-            "gem_reward" => $this->task->gem_reward,
-            "token_reward" => $this->task->token_reward,
-            "created_at" => $this->task->created_at,
-           
-
-        ];
+        return parent::toArray($request);
     }
 }

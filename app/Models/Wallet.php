@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Wallet extends Model
 {
     //
-
+    protected $fillable = [
+        "user_id"
+    ];
 
     /**
      * Get the user that owns the Wallet

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest;
+use App\Http\Requests\V1\User\Warehouse\WarehouseUPdateRequest;
 use App\Http\Resources\V1\User\WalletResource;
 use App\Http\Resources\V1\User\warehouseResource;
 use App\Models\Wallet;
@@ -26,30 +27,30 @@ class WarehouseController extends BaseUserController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UpdatewarehouseRequest $request)
     {
         $userWallet = $this->findUserWallet(); // user wallet
         $userWarehouse = $this->findUserWarehouse(); // user warhouse
-        $warehouseLevel = $this->findNextLevel($userWarehouse); // new level
-        if (! $warehouseLevel){
-            return $this->errorResponse(400,"level is not found");
-        }
-
-        $price =  $warehouseLevel->cost_for_buy; // new level cost
+        $currentLevel = $this->findCurrentLevel($userWarehouse,$request);  // get current user level 
+        $newLevel = $this->findNewLevel($currentLevel->level_number);// get new level 
+      
+        $price =  $newLevel->cost_for_buy; // new level cost
         $balance = $userWallet->token_amount; // user token balance
 
-
+        
         // has user enough token??
         $userTokenStatus = $this->hasUserEnoughToken($balance,$price);
+
         if($userTokenStatus){
 
             $newBalance = $this->warehouseCost($balance,$price); // minus the price from user wallet
-            $payment = $this->newUserBalanceToken($userWallet,$newBalance); // add new user token balance
+            $payment = $this->newUserBalanceToken($userWallet,$newBalance); // add new user token balance to wallet
 
             if($payment){
 
-                $this->newUserWarehouseLevel($userWarehouse,$warehouseLevel->id);
-
+                // dd($newLevel);
+                $this->newUserWarehouseLevel($userWarehouse,$newLevel);
+                $userWarehouse->load(["product:id,name","warehouse_level:id,level_number"]);
                 return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
 
 
@@ -67,9 +68,40 @@ class WarehouseController extends BaseUserController
 
     }
 
+    public function findCurrentLevel($userWarehouse,$request)
+    {
+        $userwarehouselevel = WarehouseLevel::query()
+        ->where("id",$userWarehouse->warehouse_level_id)
+        ->where("product_id",$request->product_id)
+        ->first();
 
+        // dd($userwarehouselevel);
+        if(! $userwarehouselevel)
+            throw new HttpResponseException(response()->json([
+                "succes" => false,
+                "message" => "you dont have a warehouse level yet, call support"
+            ]));
 
+        return $userwarehouselevel;
 
+    }
+
+    public function findNewLevel(int $currentLevelNumber)
+    {   
+        
+        $newLevel = WarehouseLevel::query()
+        ->where("level_number" , $currentLevelNumber+1)
+        ->first();
+
+        if(! $newLevel)
+            throw new HttpResponseException(response()->json([
+                "succes" => false,
+                "message" => "you reached to max level"
+            ]));
+      
+            
+        return $newLevel;    
+    }
 
 
     /**
@@ -80,6 +112,7 @@ class WarehouseController extends BaseUserController
      */
     public function hasUserEnoughToken(int $userToken,int $newLevelCost): bool
     {
+
         if($userToken < $newLevelCost)
             return false;
 
@@ -92,9 +125,12 @@ class WarehouseController extends BaseUserController
      * @param mixed $userWarehouse
      * @param mixed $newLevelId
      */
-    public function newUserWarehouseLevel($userWarehouse,$newLevelId)
-    {
-        $userWarehouse->warehouse_level_id = $newLevelId;
+    public function newUserWarehouseLevel($userWarehouse,$newLevel)
+    {   
+        // dd($newLevel->overcapacity);
+        $userWarehouse->warehouse_level_id = $newLevel->id;
+        $userWarehouse->warehouse_cap_left = $newLevel->max_cap_left;
+        $userWarehouse->overcapacity = $newLevel->overcapacity;
         return $userWarehouse->save();
     }
 
@@ -128,7 +164,7 @@ class WarehouseController extends BaseUserController
     public function findNextLevel($userWarehouse)
     {
         $userWarehouseLevel = $userWarehouse->warehouse_level_id;
-        $warehouseLevel = $this->findWarehouseLevel();
+        $warehouseLevel = $this->findWarehouseLevel($userWarehouseLevel);
     }
 
     public function findWarehouseLevel(int $wareHouseLevelId)
@@ -143,16 +179,33 @@ class WarehouseController extends BaseUserController
      */
     public function findUserWallet()
     {
-        return Wallet::where("user_id",1)->first();
+        $userWallet =  Wallet::where("user_id",1)->first();
+
+       if(! $userWallet){
+           $userWallet =  Wallet::create(["user_id"=> 1]);
+            return  $userWallet;
+       }
+
+        return $userWallet;    
     }
 
     /**
-     * find user warehouse that user own
-     * @return Wallet|null
+     * find user warehouse
+     * @return Wherehouse
      */
-    public function findUserWarehouse()
+    public function findUserWarehouse(): Wherehouse
     {
-        return Wherehouse::query()->where("user_id",1)->first(); //auth::id
+        $warehouse =  Wherehouse::query()->where("user_id",1)->firstOrNew(); //auth::id
+        if(! $warehouse)
+            throw new HttpResponseException(response()->json([
+                "success" => false,
+                "message" => "you dont have a warehouse , call support" 
+            ]));
+
+
+           
+        return $warehouse;
+
     }
 
 

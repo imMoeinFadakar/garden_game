@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('warehouse_levels', function (Blueprint $table) {
             $table->id();
-            $table->integer('level_number')->unsigned();
+            $table->integer('level_number')->unique();
             $table->unsignedBigInteger("overcapacity");
             $table->unsignedBigInteger("cost_for_buy");
             $table->unsignedBigInteger("product_id");

@@ -16,7 +16,8 @@ class UserBadgeController extends BaseUserController
     {
         $userBadge = BadgeUser::query()
             ->orderBy("created_at")
-            ->where("user_id",Auth::id())
+            ->where("user_id",1)
+            ->with(["badge:id,image_url"])
             ->get();
 
         return $this->api(UserBadgeResource::collection($userBadge),__METHOD__);

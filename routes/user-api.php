@@ -21,10 +21,13 @@ Route::prefix("user")->group(function() {
     // map part
     Route::get("farm",[App\Http\Controllers\V1\User\FarmController::class,"index"]); // all farms
     Route::get("user_farm",[App\Http\Controllers\V1\User\UserFarmController::class,"index"]); // user farms have
+
+    ///////
     Route::post("buy_farm",[App\Http\Controllers\V1\User\BuyFarmController::class,"store"]);
+    ///////
 
 //    Route::post
-    Route::get("policies", [App\Http\Controllers\V1\User\PoliciesController::class, "index"]);
+    // Route::get("policies", [App\Http\Controllers\V1\User\PoliciesController::class, "index"]);
     Route::get("avatar", [App\Http\Controllers\V1\User\AvatarController::class, "index"]);
     Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"store"]);
     Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);

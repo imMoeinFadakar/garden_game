@@ -35,7 +35,7 @@ class UserTask extends Model
 
     public function addNewUserTask($request)
     {
-        return $this->create($request->validated());
+        return $this->create($request);
     }
 
 }

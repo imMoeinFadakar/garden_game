@@ -24,7 +24,7 @@ class UserTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "task_id" => "required|unique:user_tasks,task_id",
+            "task_id" => "required|integer|exists:tasks,id",
         ];
     }
     protected function failedValidation(Validator $validator)
