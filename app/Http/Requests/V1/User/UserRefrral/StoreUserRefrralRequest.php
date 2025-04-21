@@ -24,7 +24,7 @@ class StoreUserRefrralRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "Referral_code" => "required|exists:wallets,Referral_code"
+            "Referral_code" => "required|exists:users,Referral_code"
         ];
     }
     protected function failedValidation(Validator $validator)

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UserReferral extends Model
 {
@@ -36,5 +37,22 @@ class UserReferral extends Model
         return $this->query()->create($request);
     }
 
+    // user referral 
+
+    public static function userReferralNum()
+    {
+        return self::query()->where("invading_user",1)->count();
+    }
+    public static function findUserReferral($userId)
+    {   
+        if($userId){
+            return self::query()->where("invented_user",$userId) // add auth
+            ->first()->invading_user;
+        }
+       
+        return null;
+
+
+    }
 
 }

@@ -18,6 +18,9 @@ return new class extends Migration
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 
+            $table->unsignedBigInteger("farm_power");
+
+
             $table->foreignId('farm_id')
             ->constrained("farms")
             ->cascadeOnDelete()

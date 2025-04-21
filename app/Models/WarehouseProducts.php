@@ -8,7 +8,7 @@ class WarehouseProducts extends Model
 {
     protected $fillable = [
         "warehouse_id",
-        "product_id",
+        "farm_id",
         "amount"
     ];
 
@@ -28,9 +28,9 @@ class WarehouseProducts extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function farm()
     {
-        return $this->belongsTo(Products::class,'product_id','id');
+        return $this->belongsTo(Farms::class,'farm_id','id');
     }
 
     public function addNewWarehouseProduct($request)

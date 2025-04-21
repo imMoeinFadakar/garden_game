@@ -19,7 +19,7 @@ class Transfer extends Model
      */
     public function from_wallet()
     {
-        return $this->belongsTo(Wallet::class, 'from_wallet','id');
+        return $this->belongsTo(User::class, 'from_wallet','id');
     }
 
 
@@ -30,7 +30,7 @@ class Transfer extends Model
      */
     public function to_wallet()
     {
-        return $this->belongsTo(Wallet::class, 'to_wallet', 'id');
+        return $this->belongsTo( User::class, 'to_wallet', 'id');
     }
 
     public function addNewTransfer($request)

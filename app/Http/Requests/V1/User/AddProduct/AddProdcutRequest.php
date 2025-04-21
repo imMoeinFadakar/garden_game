@@ -24,8 +24,7 @@ class AddProdcutRequest extends FormRequest
     {
         return [
             "amount" => "required|integer|min:1",
-            "product_id" => "required|integer|exists:products,id",
-
+            "farm_id" => "required|integer|exists:farms,id",
         ];
     }
 

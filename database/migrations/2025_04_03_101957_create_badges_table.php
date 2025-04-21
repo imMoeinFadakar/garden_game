@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('badges', function (Blueprint $table) {
             $table->id();
-
-
             $table->string("description");
             $table->unsignedBigInteger("reward");
             $table->string("image_url");

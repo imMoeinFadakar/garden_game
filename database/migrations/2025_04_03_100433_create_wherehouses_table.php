@@ -18,14 +18,16 @@ return new class extends Migration
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 
-            $table->unsignedBigInteger("product_id");
+            $table->foreignId('farm_id')
+            ->constrained("farms")
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
 
             $table->foreignId("warehouse_level_id")
             ->constrained("warehouse_levels")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
-            $table->unsignedBigInteger("warehouse_cap_left");
-            $table->unsignedBigInteger("overcapacity");
+
 
             $table->timestamps();
         });

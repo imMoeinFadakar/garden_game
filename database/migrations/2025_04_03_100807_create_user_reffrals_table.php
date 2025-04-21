@@ -21,6 +21,7 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->tinyInteger("gender");
             $table->foreignId('invading_user')
             ->constrained("users")
             ->cascadeOnDelete()

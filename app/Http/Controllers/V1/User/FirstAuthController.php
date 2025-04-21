@@ -22,7 +22,7 @@ class FirstAuthController extends BaseUserController
     }
 
 
-    public function firstStepLogin(FirstAuthRequest $request,Wallet $wallet)
+    public function firstStepLogin(FirstAuthRequest $request,User $user)
     {
 
         $user = $this->findOrNewUser($request);
@@ -30,29 +30,14 @@ class FirstAuthController extends BaseUserController
         $this->loginUser($user);
 
         $token = $user->createUserAccessToken();
-        $wallet->createNewWallet();
+        
 
         return $this->api(new RegisterResource(["user" => $user,"token"=>$token]),__METHOD__);
     }
 
-    public function createNewWallet()
-    {
-        $userWallet = $this->hasUserWallet();
-        if(! $userWallet){
-            return Wallet::query()->create(["user_id"=>1]);
-        }
-        return true;
-    }
+ 
 
-    public function hasUserWallet(): bool
-    {
-        $userWallet = Wallet::query()->where("user_id",1)->first(); // add Auth::id()
-        if(! $userWallet)
-            return false;
-
-
-        return true;
-    }
+   
 
 
     public function loginUser($user)
@@ -67,19 +52,6 @@ class FirstAuthController extends BaseUserController
     }
 
 
-    public function secondStepLogin(SecondStepAuth $request)
-    {
-
-
-        $user = User::addUsername($request->username);
-
-        $avatar = UserAvatar::query(["user_id" => Auth::id(),"avatar_id" => $request]);
-
-        return $this->api(new RegisterResource($user->toArray()),__METHOD__);
-
-
-
-    }
 
 
 

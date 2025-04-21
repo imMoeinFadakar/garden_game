@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    //
+    protected $fillable = [
+        "user_id",
+        "status",
+        "type",
+        "amount"
+    ];
 
     /**
      * Get the user that owns the Transaction
@@ -23,6 +28,8 @@ class Transaction extends Model
     return $this;
     }
 
-
+    public function addNewTransaction( $request){
+    return $this->create( $request);
+    }
 
 }

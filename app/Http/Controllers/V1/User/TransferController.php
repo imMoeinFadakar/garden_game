@@ -14,24 +14,24 @@ class TransferController extends BaseUserController
     public function store(\App\Http\Requests\V1\User\Transfer\TransferRequest $request,Transfer $transfer)
     {
         $validatedRequest = $request->validated();
-        $userwallet = $this->findUserWallet("user_id",1);
+        $userwallet = $this->findUserWallet();
 
         // has user enough token
-        $request = $this->hasUserEnoughToken($userwallet->gem_amount,$validatedRequest["gem_amount"]);
-        $reciverWallet = $this->findUserWallet("referral_code",$validatedRequest["user_address"]);
-        $minusGem = $this->minusUserGem($validatedRequest["gem_amount"],$userwallet);
+        $request = $this->hasUserEnoughToken($userwallet->gem_amount,$validatedRequest["token_amount"]);
+        $reciverWallet = $this->findUserWallet();
+        $minusToken = $this->minusUserGem($validatedRequest["token_amount"],$userwallet);
 
-        if(! $minusGem)
+        if(! $minusToken)
             return $this->errorResponse(400,"Receiver user not found!");
 
-        $addGemToWallet = $this->plusUserReceiverGem($reciverWallet,$validatedRequest["gem_amount"]);
+        $addGemToWallet = $this->plusUserReceiverGem($reciverWallet,$validatedRequest["token_amount"]);
 
         if(! $addGemToWallet){
-            $this->plusUserReceiverGem($userwallet,$validatedRequest["gem_amount"]);
+            $this->plusUserReceiverGem($userwallet,$validatedRequest["token_amount"]);
             return $this->errorResponse(400,"operation failed! gem has been returned to your wallet");
         }
 
-        $validatedRequest["from_wallet"] = 1;
+        $validatedRequest["from_wallet"] = 1; //auth::id()
         $validatedRequest["to_wallet"] = $reciverWallet->id;
         $transfer = $transfer->addNewTransfer($validatedRequest);
         return $this->api(new TransferResource($transfer->toArray()),__METHOD__);
@@ -49,9 +49,9 @@ class TransferController extends BaseUserController
         return $wallet->save();
     }
 
-    public function findUserWallet($param, $value)
+    public function findUserWallet()
     {
-        return Wallet::query()->where($param,$value)->first();
+        return auth()->user();
     }
 
     public function hasUserEnoughToken(int $userGem,int $amount)

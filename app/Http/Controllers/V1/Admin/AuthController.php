@@ -9,6 +9,7 @@ use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\V1\Auth\AuthRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AuthController extends BaseAdminController
 {
@@ -94,7 +95,7 @@ class AuthController extends BaseAdminController
         if($user)
             return $user;
 
-        throw new \HttpResponseException(response()->json([
+        throw new HttpResponseException(response()->json([
             "success" => false,
             "message" => "user is not found"
         ]));
@@ -108,7 +109,7 @@ class AuthController extends BaseAdminController
             return $token;
 
 
-        throw new \HttpResponseException(response()->json([
+        throw new HttpResponseException(response()->json([
             "success" => false,
             "message" => "token is not found"
         ]));

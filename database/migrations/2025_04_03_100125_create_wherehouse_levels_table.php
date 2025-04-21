@@ -16,8 +16,14 @@ return new class extends Migration
             $table->integer('level_number')->unique();
             $table->unsignedBigInteger("overcapacity");
             $table->unsignedBigInteger("cost_for_buy");
-            $table->unsignedBigInteger("product_id");
-            $table->unsignedBigInteger("max_cap_left");
+            
+            $table->foreignId('farm_id')
+            ->constrained("farms")
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
+
+
+        
             $table->timestamps();
         });
     }

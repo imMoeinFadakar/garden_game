@@ -24,8 +24,8 @@ class TransferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "gem_amount" => "required|integer|min:5000",
-            "user_address" => "required|exists:wallets,referral_code"
+            "token_amount" => "required|integer|min:5000",
+            "user_address" => "required|exists:users,referral_code"
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

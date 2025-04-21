@@ -5,7 +5,7 @@ namespace App\Http\Resources\V1\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GiftcartResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Requests\V1\Admin\Transaction;
+namespace App\Http\Requests\V1\User\Withdrawal;
 
-
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTransactionRequest extends FormRequest
+class WithdrawalRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,8 +22,7 @@ class UpdateTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "status" => Rule::in(["pending","rejected","done"]),
-            // "user_id" => "required|integer|exists:users,id"
+            "amount" => "required|integer|min:5000"
         ];
     }
 }

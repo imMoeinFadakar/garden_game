@@ -21,12 +21,16 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'telegram_id',
         'name',
         'username',
-        'telegram_id',
+        'gender',
         'market_status',
+        'warehouse_status',
         'user_status',
-        'avatar_id',
+        'token_amount',
+        'gem_amount',
+        'referral_code',
         'remember_token',
     ];
 
@@ -71,6 +75,13 @@ class User extends Authenticatable
     {
         return self::query()->find(Auth::id());
     }
+
+    public static function insertNewUserValue($gem,$token)
+    {
+        $user = self::find(1);
+       return  $user->update(["token_amount" => $token,"gem_amount" => $gem]);
+    }
+
 
     public function updateUser($request): static
     {

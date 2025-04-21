@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger("min_token_value");
+            $table->unsignedBigInteger("max_token_value");
+            $table->string("farm_image_url");
             $table->unsignedBigInteger("require_token");
             $table->unsignedBigInteger("require_gem");
             $table->unsignedBigInteger("require_referral");
-            $table->string("image_url");
+            $table->string("prodcut_image_url");
             $table->string("flage_image_url");
             $table->string("description");
             $table->unsignedBigInteger("power");

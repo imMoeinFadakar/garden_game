@@ -11,7 +11,7 @@ class Wherehouse extends Model
         "user_id",
         "warehouse_level_id",
         "warehouse_cap_left",
-        "product_id",
+        "farm_id",
         'overcapacity',
         'max_cap_left'
     ];
@@ -27,9 +27,9 @@ class Wherehouse extends Model
        return $this->belongsTo(WarehouseLevel::class, 'warehouse_level_id', 'id');
    }
 
-    public function product()
+    public function farm()
     {
-        return $this->belongsTo(Products::class,"product_id",'id');
+        return $this->belongsTo(Farms::class,"farm_id",'id');
     }
 
     /**
@@ -51,6 +51,16 @@ class Wherehouse extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+
+    public static function findUserWarehouse($userId,$productId)
+    {
+        return  self::query()
+        ->where("user_id",$userId)
+        ->where("farm_id",$productId)
+        ->first();
+
     }
 
 

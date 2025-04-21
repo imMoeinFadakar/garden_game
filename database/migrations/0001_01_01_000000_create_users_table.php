@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("telegram_id");
+            $table->unsignedBigInteger("telegram_id")->unique();
             $table->string('name');
 
             $table->string("username")->unique()->nullable();
@@ -26,6 +26,10 @@ return new class extends Migration
 
             $table->enum("user_status",["active","banned"])
             ->default("active");
+
+            $table->unsignedBigInteger("token_amount")->default(1000);
+            $table->unsignedBigInteger("gem_amount")->default(0);
+            $table->uuid("referral_code")->default("garden");
 
             $table->rememberToken();
             $table->timestamps();

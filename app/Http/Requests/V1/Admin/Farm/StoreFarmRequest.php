@@ -26,12 +26,11 @@ class StoreFarmRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|unique:farms,id",
-            "price" => "required|integer|min:1",
+            "name" => "required|string|unique:farms,name",
             "require_token" => ["required","integer"],
             "require_gem" => ["required","integer"],
             "require_referral" => ["required","integer"],
-            "image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])
+            "farm_image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])
                                                                         ->min(1)
                                                                         ->max(1024)       ],
             "description" => ["required","string"],
@@ -39,6 +38,11 @@ class StoreFarmRequest extends FormRequest
             ->min(1)
             ->max(1024)       ],
             "power" => ["required","integer"],
+            
+            "min_token_value" => "required|integer|min:1",
+            "max_token_value" => "required|integer|gt:min_token_value",
+            "prodcut_image_url" => ["required","image",File::types(["jpg","png","jpeg","svg"])->min(1)->max(1024) ]
+
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

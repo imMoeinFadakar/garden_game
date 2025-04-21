@@ -11,18 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('temporary_rewards', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            $table->foreignId("user_id")
+            ->constrained("users")
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
+
             $table->foreignId('farm_id')
             ->constrained("farms")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 
-            $table->unsignedBigInteger("min_token_value");
-            $table->unsignedBigInteger("max_token_value");
-            $table->unsignedBigInteger("user_receive_per_hour");
-            $table->string("image_url");
+            $table->unsignedBigInteger("amount");
+            $table->dateTime("ex_time");
 
             $table->timestamps();
         });
@@ -33,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('temporary_rewards');
     }
 };

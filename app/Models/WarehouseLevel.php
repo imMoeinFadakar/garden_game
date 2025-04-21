@@ -11,13 +11,13 @@ class WarehouseLevel extends Model
         "level_number",
         "Overcapacity",
         "cost_for_buy",
-        "product_id",
+        "farm_id",
         'max_cap_left'
     ];
 
-    public function product()
+    public function farm()
     {
-        return $this->belongsTo(Products::class,"product_id",'id');
+        return $this->belongsTo(Farms::class,"farm_id",'id');
     }
 
     public function addNewWarehouseLevel($request)

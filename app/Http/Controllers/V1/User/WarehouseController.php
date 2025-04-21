@@ -2,26 +2,98 @@
 
 namespace App\Http\Controllers\V1\User;
 
+use App\Models\Farms;
+use App\Models\User;
+use App\Models\Wallet;
+use App\Models\UserFarms;
+use App\Models\Wherehouse;
+use Illuminate\Http\Request;
+use App\Models\WarehouseLevel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest;
-use App\Http\Requests\V1\User\Warehouse\WarehouseUPdateRequest;
 use App\Http\Resources\V1\User\WalletResource;
 use App\Http\Resources\V1\User\warehouseResource;
-use App\Models\Wallet;
-use App\Models\WarehouseLevel;
-use App\Models\Wherehouse;
+use App\Http\Requests\V1\User\createwarehouseRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Request;
+use App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest;
+use App\Http\Requests\V1\User\Warehouse\WarehouseUPdateRequest;
 
 class WarehouseController extends BaseUserController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+  
+
+
+    public function create(createwarehouseRequest $request)
     {
-        $warehouse = Wherehouse::query()->where("user_id",1)->first();
-        return $this->api(new warehouseResource($warehouse->toArray()),__METHOD__);
+        $user = User::find(1);
+        if($user->warehouse_status === "inactive")
+            return $this->api(null,__METHOD__,'you have to active your Warehouse');
+
+
+        $farmIsValied = $this->isFamValied($request->farm_id);    
+
+        if(! $farmIsValied)
+            return $this->api(null,__METHOD__,'farm is not found');
+ 
+
+
+
+        $warehouseExists = $this->isWarehouseExists($request->farm_id);
+        if($warehouseExists)
+            return $this->api(null,__METHOD__,'you already have this warehouse');
+
+        $haveUserFarm = $this->hasUserFarm($request->farm_id);
+
+        if(! $haveUserFarm)
+            return $this->api(null,__METHOD__,'you have to buy farm first');
+
+
+        $warehouseLevel = $this->WarehouseLevel($request->farm_id);
+        if(! $warehouseLevel)
+            return $this->api(null,__METHOD__,'operation failed , call support');
+
+
+
+
+            $newWarehouse = [
+                "user_id" => 1,
+                "farm_id" => $request->farm_id,
+                "warehouse_level_id" => $warehouseLevel->id
+            ];
+           $warehouse =   Wherehouse::query()->create($newWarehouse);
+            return $this->api(new warehouseResource($warehouse->toArray()),__METHOD__);
+            
+    }
+
+    public function isFamValied($farmId)
+    {
+        return   Farms::find($farmId) ?: null;
+    
+    }
+
+
+
+    public function hasUserFarm($farmId): bool
+    {
+        return UserFarms::query()
+        ->where("farm_id",$farmId)
+        ->where("user_id",1)
+        ->exists();
+        
+    }
+    public function WarehouseLevel($farmId)
+    {
+        return  WarehouseLevel::query()
+        ->where("farm_id",$farmId)
+        ->where("level_number",1)
+        ->first();
+    }
+
+    public function isWarehouseExists($farmId): bool
+    {
+        return Wherehouse::query()
+        ->where("farm_id",$farmId)
+        ->where("user_id",1) //auth::id()
+        ->exists();
     }
 
     /**
@@ -29,7 +101,7 @@ class WarehouseController extends BaseUserController
      */
     public function store(UpdatewarehouseRequest $request)
     {
-        $userWallet = $this->findUserWallet(); // user wallet
+        $userWallet = User::find(1);  // user wallet
         $userWarehouse = $this->findUserWarehouse(); // user warhouse
         $currentLevel = $this->findCurrentLevel($userWarehouse,$request);  // get current user level 
         $newLevel = $this->findNewLevel($currentLevel->level_number);// get new level 
@@ -48,7 +120,7 @@ class WarehouseController extends BaseUserController
 
             if($payment){
 
-                // dd($newLevel);
+             
                 $this->newUserWarehouseLevel($userWarehouse,$newLevel);
                 $userWarehouse->load(["product:id,name","warehouse_level:id,level_number"]);
                 return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
@@ -173,21 +245,7 @@ class WarehouseController extends BaseUserController
     }
 
 
-    /**
-     * find the wallet that user own
-     * @return Wallet|null
-     */
-    public function findUserWallet()
-    {
-        $userWallet =  Wallet::where("user_id",1)->first();
 
-       if(! $userWallet){
-           $userWallet =  Wallet::create(["user_id"=> 1]);
-            return  $userWallet;
-       }
-
-        return $userWallet;    
-    }
 
     /**
      * find user warehouse

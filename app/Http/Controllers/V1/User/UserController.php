@@ -2,31 +2,22 @@
 
 namespace App\Http\Controllers\V1\User;
 
-use App\Http\Resources\V1\User\WalletResource;
-use App\Models\Wallet;
+use App\Http\Resources\V1\User\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class WalletController extends BaseUserController
+class UserController extends BaseUserController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $user = User::find(1);
 
-    }
-
-    /**
-     * wallet that own by user
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function userWallet()
-    {
-        $UserWallet = Wallet::query()
-        ->where("user_id", auth()->id())
-        ->first();
-
-        return $this->api(new WalletResource($UserWallet->toArray()),__METHOD__);
+        return $this->api(new UserResource($user->toArray()),__METHOD__);
+        
     }
 
     /**
@@ -34,13 +25,13 @@ class WalletController extends BaseUserController
      */
     public function store(Request $request)
     {
-        // create a new wallet for user
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(string $id)
     {
         //
     }

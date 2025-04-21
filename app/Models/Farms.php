@@ -12,13 +12,17 @@ class Farms extends Model
     protected $table = "farms";
     protected  $fillable =[
         "name",
+        "min_token_value",
+        "max_token_value",
+        "farm_image_url",
         "require_token",
         "require_gem",
         "require_referral",
-        "image_url",
+        "prodcut_image_url",
         "flage_image_url",
         "description",
         "power",
+        
     ];
 
   
@@ -29,24 +33,32 @@ class Farms extends Model
     public function addNewFarm($request)
     {
       
-        $uploadImage = $this->uploadMedia($request,"farm");
-        $uploadFlageImage = $this->uploadMedia($request,"flage_farm","flage_image_url");
+        $uploadImageFarm = $this->uploadMedia($request,"farm_image_url","farm_image_url");
+        $uploadFlageImage = $this->uploadMedia($request,"flage_image_url","flage_image_url");
+        $uploadProduct = $this->uploadMedia($request,"prodcut_image_url","prodcut_image_url");
+
 
         $validtedRequest = $request->validated();
-        $validtedRequest["image_url"] = $uploadImage;
+        $validtedRequest["farm_image_url"] = $uploadImageFarm;
         $validtedRequest["flage_image_url"] = $uploadFlageImage;
+        $validtedRequest["prodcut_image_url"] = $uploadProduct;
 
         return $this->query()->create($validtedRequest);
     }
 
     public function updateFarm($request): static
     {
-        $uploadImage = $this->uploadMedia($request,"farm");
-        $uploadFlageImage = $this->uploadMedia($request,"flage_farm","flage_image_url");
+        $uploadImageFarm = $this->uploadMedia($request,"farm_image_url","farm_image_url");
+        $uploadFlageImage = $this->uploadMedia($request,"flage_image_url","flage_image_url");
+        $uploadProduct = $this->uploadMedia($request,"prodcut_image_url","prodcut_image_url");
+
 
         $validtedRequest = $request->validated();
-        $validtedRequest["image_url"] = $uploadImage;
+        $validtedRequest["farm_image_url"] = $uploadImageFarm;
         $validtedRequest["flage_image_url"] = $uploadFlageImage;
+        $validtedRequest["prodcut_image_url"] = $uploadProduct;
+        
+
 
         $this->update($validtedRequest);
         return $this;
@@ -56,4 +68,11 @@ class Farms extends Model
     {
         return $this->delete();
     }
+
+    public static function findFarm($farmId)
+    {
+        return self::query()->find($farmId) ?:null;
+    }
+
+
 }

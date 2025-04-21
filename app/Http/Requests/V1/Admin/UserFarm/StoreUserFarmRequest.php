@@ -25,6 +25,7 @@ class StoreUserFarmRequest extends FormRequest
         return [
             "user_id" => "required|integer|exists:users,id",
             "farm_id"=> "required|integer|exists:farms,id",
+            "farm_power" => "required|integer"
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

@@ -43,7 +43,7 @@ class UserStatusController extends BaseUserController
         $minusUserGem = $this->minusUserGem(20); // minus user gem
         if($minusUserGem){
 
-            $user =  $this->activeUserOptions('warehouse_status'); // active user market
+            $user =  $this->activeUserOptions('market_status'); // active user market
             return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
         }
 
@@ -64,21 +64,17 @@ class UserStatusController extends BaseUserController
 
     public function minusUserGem($gemPrice)
     {
-        $userWallet = $this->getUserWallet();
-        $userWallet->gem_amount -= $gemPrice;
-       return  $userWallet->save();
+        $user = User::query()->where("id",1)->first();
+        $user->gem_amount -= $gemPrice;
+       return  $user->save();
 
     }
 
-    public function getUserWallet()
-    {
-        return Wallet::query()->where("user_id",1)->first(); // add Auth::id()
-    }
 
     public function hasUserEnoughGem($gemPrice)
     {
-        $userWallet = $this->getUserWallet();
-        if($userWallet->gem_amount < $gemPrice)
+        $user = User::query()->where("id",1)->first();
+        if($user->gem_amount < $gemPrice)
             throw new HttpResponseException(response()->json([
                 "success" => false,
                 "code" => 422,

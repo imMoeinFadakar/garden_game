@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\Giftcart\UseGiftCartRequest;
 use App\Http\Resources\V1\User\GiftcartResource;
 use App\Models\Giftcart;
+use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 
@@ -16,31 +17,29 @@ class GiftCartController extends BaseUserController
         $giftcart = $this->findGiftcart($request->code);
 
         if(! $giftcart)
-            return $this->errorResponse(400,"gift cart not find");
+            return $this->errorResponse("gift cart not find",401);
 
-        $userWallet = $this->findUserWallet();
-        if($userWallet){
+        $user = $this->findUser();
+        if($user){
 
-            $giftCartAmount = $giftcart->value;
-
-
+           
             $deletedGiftcart = $this->deleteGiftcart($request->code);
             if($deletedGiftcart){
 
-                $userWallet->gem_amount += $giftcart->value;
-                $userWallet->save();
-                $userWallet["giftcart_amount"] =$giftCartAmount;
+                $user->token_amount += $giftcart->value;
+                $user->save();
+                
 
-                return $this->api(new GiftcartResource($userWallet->toArray()),__METHOD__);
+                return $this->api(new GiftcartResource($user->toArray()),__METHOD__);
 
             }
 
-            return $this->errorResponse(400,"gift cart operation failed");
+            return $this->errorResponse("gift cart operation failed",400);
 
 
         }else{
 
-            return $this->errorResponse(400,"wallet is not found!");
+            return $this->errorResponse("wallet is not found!",400);
 
 
         }
@@ -55,11 +54,9 @@ class GiftCartController extends BaseUserController
         return Giftcart::where("code",$code)->delete();
     }
 
-    public function findUserWallet()
+    public function findUser()
     {
-        return Wallet::query()
-        ->where("user_id",1)
-        ->first();
+        return User::find(1);
     }
 
     public function findGiftcart($code)

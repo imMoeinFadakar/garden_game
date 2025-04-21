@@ -34,11 +34,6 @@ class CryptoCurrencyController extends BaseAdminController
     }
 
 
-
-
-
-
-
     public function transactionRequest(CryptoCurrencyRequest $transaction)
     {   
 

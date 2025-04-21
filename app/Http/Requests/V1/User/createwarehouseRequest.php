@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Requests\V1\Admin\Products;
-
-
-use function response;
-use Illuminate\Validation\Rules\File;
+namespace App\Http\Requests\V1\User;
 use Illuminate\Foundation\Http\FormRequest;
+
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateProductRequest extends FormRequest
+class createwarehouseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,19 +24,14 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|unique:products,name",
-            "farm_id" => "required|integer|exists:farms,id",
-            "min_token_value" => "required|integer|min:1",
-            "max_token_value" => "required|integer|gt:min_token_value",
-            "user_receive_per_hour" => "required|integer|min:1",
-            "image_url" => ["required","image",File::types(["jpg","png","jpeg","svg"])->min(1)->max(1024) ]
+            "farm_id" => "required|integer|exists:farms,id"
         ];
     }
-    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
             "success" => false,
-            "code" => 400,
+            "code" => 401,
             "message" => "validation failed",
             "detail" => $validator->errors()
         ]));

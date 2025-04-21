@@ -22,7 +22,7 @@ class WarehouseController extends BaseAdminController
         ->when(isset($request->id), fn($query)=> $query->where("id", $request->id))
         ->when(isset($request->user_id), fn($query)=> $query->where("user_id", $request->user_id))
         ->when(isset($request->wherehouse_level_id), fn($query)=> $query->where("warehouse_level_id", $request->wherehouse_level_id))
-        ->with(['user:id,name','warehouse_level:id,level_number','product:id,name'])
+        ->with(['user:id,name','warehouse_level:id,level_number','farm:id,name'])
         ->get();
 
         return $this->api(WhereHouseResource::collection($warehouse),__METHOD__);
@@ -37,7 +37,7 @@ class WarehouseController extends BaseAdminController
     public function store(StorewherehouseRequest $request,Wherehouse $warehouse)
     {
         $warehouse =  $warehouse->addnewWherehouse($request);
-        $warehouse->load(['user:id,name','warehouse_level:id,level_number','product:id,name']);
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number','farm:id,name']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
     }
 
@@ -48,7 +48,7 @@ class WarehouseController extends BaseAdminController
      */
     public function show(Wherehouse $warehouse)
     {
-        $warehouse->load(['user:id,name','warehouse_level:id,level_number','product:id,name']);
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number','farm:id,name']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
 
     }
@@ -62,7 +62,7 @@ class WarehouseController extends BaseAdminController
     public function update(UpdatewherehouseRequest $request, Wherehouse $warehouse)
     {
         $warehouse->updateWherehouse($request);
-        $warehouse->load(['user:id,name','warehouse_level:id,level_number','product:id,name']);
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number','farm:id,name']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
 
     }
@@ -75,7 +75,7 @@ class WarehouseController extends BaseAdminController
     public function destroy(Wherehouse $warehouse)
     {
         $warehouse->deleteWherehouse();
-        $warehouse->load(['user:id,name','warehouse_level:id,level_number','product:id,name']);
+        $warehouse->load(['user:id,name','warehouse_level:id,level_number','farm:id,name']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
 
     }

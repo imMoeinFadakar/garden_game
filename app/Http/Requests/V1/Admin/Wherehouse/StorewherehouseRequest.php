@@ -27,7 +27,8 @@ class StorewherehouseRequest extends FormRequest
             "user_id" => "required|integer|exists:users,id",
             "warehouse_level_id"=> "required|integer|exists:warehouse_levels,id",
             "warehouse_cap_left" => "required|integer",
-            "product_id" => "required|integer|exists:products,id",
+            "farm_id" => ["required","integer","exists:farms,id"],
+
             "overcapacity" => "required|integer"
 
 

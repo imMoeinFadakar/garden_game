@@ -31,12 +31,17 @@ trait Response
      * @param mixed $code
      * @param mixed $message
      */
-    public function errorResponse($code,$message)
+    public function errorResponse($message,$code = 404)
     {
-        throw new HttpResponseException(response()->json([
-            "success" => false,
-            "code" => $code,
-            "message" => $message
-        ]));
+       $apiErrorResponse = [
+        "success" =>  false,
+        "code" => $code,
+        "message" => $message,
+        "data" => null
+       ];
+
+       return response()->json($apiErrorResponse,$code);
+
+
     }
 }

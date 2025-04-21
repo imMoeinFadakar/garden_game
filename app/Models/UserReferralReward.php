@@ -41,4 +41,12 @@ class UserReferralReward extends Model
     return $this->delete();
     }
 
+
+    public static function findReferralReward($farmId)
+    {
+        return self::query()
+        ->where("farm_id",$farmId)
+        ->first();
+    }
+
 }

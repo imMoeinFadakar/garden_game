@@ -24,7 +24,7 @@ class FirstAuthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "telegram_id" => "required|integer",
+            "telegram_id" => "required|integer|unique:users,telegram_id",
             "name" => "required|string",
         ];
     }

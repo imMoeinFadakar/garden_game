@@ -9,7 +9,8 @@ class UserFarms extends Model
     //
     protected $fillable =[
         "user_id",
-        "farm_id"
+        "farm_id",
+        "farm_power"
     ];
 
     /**

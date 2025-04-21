@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string("tx_hash");
             $table->string("usdt_amount");
             $table->string("user_address");
-            $table->enum("status",["success","failed"]);
+            $table->enum("type",["withdraw","deposite"]);
+            $table->enum("status",["success","failed","pending"]);
             $table->timestamps();
         });
     }

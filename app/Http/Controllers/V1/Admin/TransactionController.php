@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
-use App\Http\Requests\V1\Admin\Transaction\UpdateTransactionRequest;
-use App\Http\Resources\V1\Admin\TransactionResource;
+use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Resources\V1\Admin\TransactionResource;
+use App\Http\Requests\V1\Admin\Transaction\UpdateTransactionRequest;
 
 class TransactionController extends BaseAdminController
 {
@@ -31,6 +32,7 @@ class TransactionController extends BaseAdminController
 
     public function update(UpdateTransactionRequest $request,Transaction $transaction)
     {
+  
         $transaction->updateTransaction($request);
         return $this->api(new TransactionResource($transaction->toArray()),__METHOD__);
     }
