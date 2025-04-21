@@ -71,6 +71,27 @@ class User extends Authenticatable
 
     }
 
+    public function findOrNewUser($request)
+    {
+        $user =  $this->query()
+        ->where("telegram_id",$request["telegram_id"])
+        ->first();
+
+        if($user){
+            return $user;
+        }else{
+            $newUser = $this->query()->create($request);
+
+            return $newUser;
+
+        }
+
+       
+
+
+    }
+
+
     public static function findAuthUser()
     {
         return self::query()->find(Auth::id());

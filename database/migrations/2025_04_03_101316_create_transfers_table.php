@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("gem_amount");
 
-            $table->foreignId('from_wallet')
-            ->constrained("wallets")
+            $table->foreignId('from_user')
+            ->constrained("users")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 
-            $table->foreignId('to_wallet')
-            ->constrained("wallets")
+            $table->foreignId('to_user')
+            ->constrained("users")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckAdminManager;
 use App\Http\Middleware\Managment;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
             });
 
 
-            Route::middleware(["auth:sanctum"])->group(function(){
+            Route::middleware(["auth:sanctum",CheckAdmin::class])->group(function(){
                 Route::post("deposit_check",[App\Http\Controllers\V1\Admin\CryptoCurrencyController::class,"transactionRequest"]);
                 Route::apiResource('/admin', AdminController::class)
                 ->middleware(CheckAdminManager::class); // Example route
@@ -27,7 +28,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("badge-farm",App\Http\Controllers\V1\Admin\BadgeFarmsController::class);
                 Route::apiResource("farm",App\Http\Controllers\V1\Admin\FarmController::class);
                 Route::apiResource("mailbox",App\Http\Controllers\V1\Admin\MailboxController::class);
-                Route::apiResource("product",App\Http\Controllers\V1\Admin\ProductController::class);
+                // Route::apiResource("product",App\Http\Controllers\V1\Admin\ProductController::class);
                 Route::apiResource("task",App\Http\Controllers\V1\Admin\TasksController::class);
                 Route::apiResource("transaction",App\Http\Controllers\V1\Admin\TransactionController::class);
                 Route::apiResource("transfer",App\Http\Controllers\V1\Admin\TransferController::class);
@@ -53,7 +54,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
 
         });
 
-        // user-apis
+       // user-apis
 
         include  "user-api.php";
     });

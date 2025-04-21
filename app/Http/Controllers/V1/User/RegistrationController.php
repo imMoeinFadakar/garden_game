@@ -13,4 +13,10 @@ class RegistrationController extends BaseUserController
         $user = $user->addnewUser($request);
         return $this->api(new UserRegistrationResource($user->toArray()),__METHOD__);
     }
+
+    public function register()
+    {
+        
+    }
+
 }

@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\Auth\FirstAuthRequest;
 use App\Http\Requests\V1\User\Auth\SecondStepAuth;
 use App\Http\Resources\V1\Admin\RegisterResource;
+use App\Http\Resources\V1\User\AuthResource;
 use App\Models\User;
 use App\Models\UserAvatar;
 use App\Models\Wallet;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class FirstAuthController extends BaseUserController
@@ -22,21 +24,29 @@ class FirstAuthController extends BaseUserController
     }
 
 
-    public function firstStepLogin(FirstAuthRequest $request,User $user)
-    {
+    public function userLogin(FirstAuthRequest $request,User $user)
+    {   
 
-        $user = $this->findOrNewUser($request);
+        $findOrNewUser =  $user->findOrNewUser($request->validated());
 
-        $this->loginUser($user);
+        
+        Auth::login($findOrNewUser);
 
-        $token = $user->createUserAccessToken();
+        $token = $findOrNewUser->createToken("USER TOKEN",[null],Carbon::now()->addHours(6))->plainTextToken;
+          
+        return $this->api(new AuthResource(['user'=>$findOrNewUser,"token"=>$token]),__METHOD__);
+
         
 
-        return $this->api(new RegisterResource(["user" => $user,"token"=>$token]),__METHOD__);
+     
+
+
+
+        //  return $this->api(new AuthResource(['user'=>$findOrNewUser,"token"=>$token]),__METHOD__);
+        
     }
 
  
-
    
 
 

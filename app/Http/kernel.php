@@ -38,8 +38,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check.admin.manager' => \App\Http\Middleware\CheckAdminManager::class,
-        'managment' => \App\Http\Middleware\managment::class
-
+        'managment' => \App\Http\Middleware\managment::class,
+        'checkAdmin' => \App\Http\Middleware\CheckAdmin::class, 
 
     ];
 

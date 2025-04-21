@@ -1,16 +1,22 @@
 <?php
 
+use App\Http\Middleware\player;
 use Illuminate\Support\Facades\Route;
 
 
 Route::prefix("user")->group(function() {
 
-//    Route::post("first-auth", [App\Http\Controllers\V1\User\FirstAuthController::class, "firstStepLogin"]);
-//    //auth
-//    Route::post("second-auth", [App\Http\Controllers\V1\User\FirstAuthController::class, "secondStepLogin"]);
+    Route::middleware(['auth:sanctum'])->group(function(){
 
-   
+
+        // auth
+
+
+
+    });
     Route::get("policy",[App\Http\Controllers\V1\User\PoliciesController::class,"index"]); // all policy
+    Route::post("auth_user",[App\Http\Controllers\V1\User\FirstAuthController::class,"userLogin"]);
+    Route::post("register",[App\Http\Controllers\V1\User\RegistrationController::class,"register"]);
     Route::get("tasks", [App\Http\Controllers\V1\User\TasksController::class, "index"]); // all tasks
     Route::get("user_task",[App\Http\Controllers\V1\User\UserTasksController::class, "index"]); // user tasks
     Route::get("badge", [App\Http\Controllers\V1\User\UserBadgeController::class, "index"]); // user badge

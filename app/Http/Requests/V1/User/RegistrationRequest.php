@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\V1\User\Auth;
+namespace App\Http\Requests\V1\User;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FirstAuthRequest extends FormRequest
+class RegistrationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +23,18 @@ class FirstAuthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "telegram_id" => "required|integer",
-            "name" => "required|string",
+            "username" => "required|unique:users,username",
+            "gender" => "required|in:male,female"
         ];
     }
-
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         throw new HttpResponseException(response()->json([
+
             "success" => false,
             "code" => 400,
-            "message" => "validation failed",
+            "message" => "validation error",
             "detail" => $validator->errors()
         ]));
     }
-
 }
