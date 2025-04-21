@@ -19,7 +19,7 @@ class GiftCartController extends BaseUserController
         if(! $giftcart)
             return $this->errorResponse("gift cart not find",401);
 
-        $user = $this->findUser();
+        $user = auth()->user();
         if($user){
 
            
@@ -54,10 +54,7 @@ class GiftCartController extends BaseUserController
         return Giftcart::where("code",$code)->delete();
     }
 
-    public function findUser()
-    {
-        return User::find(1);
-    }
+ 
 
     public function findGiftcart($code)
     {

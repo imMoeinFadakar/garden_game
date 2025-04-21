@@ -19,7 +19,7 @@ class WarehouseProductController extends BaseUserController
     {   
 
         $warehouse = Wherehouse::query()
-        ->where("user_id",1)
+        ->where("user_id",auth()->id())
         ->get('id')->toArray();
 
         $warehouse = WarehouseProducts::query()

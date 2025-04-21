@@ -31,7 +31,7 @@ class TransferController extends BaseUserController
             return $this->errorResponse(400,"operation failed! gem has been returned to your wallet");
         }
 
-        $validatedRequest["from_user"] = 1; //auth::id()
+        $validatedRequest["from_user"] = auth()->user(); //auth::id()
         $validatedRequest["to_user"] = $reciverWallet->id;
         $transfer = $transfer->addNewTransfer($validatedRequest);
         return $this->api(new TransferResource($transfer->toArray()),__METHOD__);

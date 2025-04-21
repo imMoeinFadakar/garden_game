@@ -34,7 +34,7 @@ class BuyFarmController extends BaseUserController
     public function store(BuyfarmRequest $request,UserFarms $userFarms)
     {
         // get:user referral , farm , user Wallet
-        $user = $this->findUser(1); // find or 
+        $user = $this->findUser(auth()->id()); // find or 
         $farm = $this->getFarm($request->farm_id);
         
         $userFarm = $this->userFarmeExists($farm->id,$user->id);
@@ -66,7 +66,7 @@ class BuyFarmController extends BaseUserController
 
 
     $userFarmRequest = $request->validated();
-    $userFarmRequest["user_id"] = 1;
+    $userFarmRequest["user_id"] = auth()->id();
     $userFarmRequest["farm_power"] = $farm->power  ;
     $userFarm = $userFarms->addNewUserFarms($userFarmRequest);
     
@@ -106,17 +106,10 @@ class BuyFarmController extends BaseUserController
         return null;
     }
 
-
-
-
-    
-
-   
-
     public function createNewWarehouse($farmId,$firstLevel)
     {
         $credential = [
-             "user_id" => Auth::id(),
+             "user_id" => auth()->id(),
              "farm_id" => $farmId,
              "warehouse_level_id" => $firstLevel->id,
              "warehouse_cap_left" => $firstLevel->max_cap_left,
@@ -177,7 +170,7 @@ class BuyFarmController extends BaseUserController
     {
         $farm = Farms::findFarm($farmId);
         if(! $farm)
-            return $this->errorResponse(403,"farm does not exists");
+            return $this->errorResponse("farm does not exists",403);
 
         return $farm;
     }

@@ -10,7 +10,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\Withdrawal\WithdrawalRequest;
 
 class WithdrawalControler extends BaseUserController
-{
+{   
+
+    public function index()
+    {
+        $transaction = Transaction::query()
+        ->where("user_id",auth()->id())
+        ->get();
+
+        return $this->api(WithdrawalResource::collection($transaction),__METHOD__);
+    }
+
+
     public function withdrawal(WithdrawalRequest $request,Transaction $transaction)
     {
         // has user enough token
@@ -24,7 +35,7 @@ class WithdrawalControler extends BaseUserController
 
             $newWithdrawalRequest = 
             [
-                "user_id" => 1,
+                "user_id" => auth()->id(),
                 "status" => "pending",
                 "type" => "withdraw",
                 "amount" => $request->amount
@@ -38,21 +49,18 @@ class WithdrawalControler extends BaseUserController
 
         return $this->errorResponse("operation failed"); 
     }
-    public function getUser()
-    {
-        return User::find(1);
-    }
+ 
 
     public function minusUserToken(int $amount): bool
     {
-        $user = $this->getUser();
+        $user = auth()->user();
         $user->token_amount -= $amount;
         return $user->save();
     }
 
     public function hasUserToken(int $amount): bool
     {
-        $user = $this->getUser();
+        $user = auth()->user();
         if($user->token_amount < $amount)
             return false;
 

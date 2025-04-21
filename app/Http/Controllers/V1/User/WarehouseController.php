@@ -24,7 +24,7 @@ class WarehouseController extends BaseUserController
 
     public function create(createwarehouseRequest $request)
     {
-        $user = User::find(1);
+        $user = User::find(auth()->id());
         if($user->warehouse_status === "inactive")
             return $this->api(null,__METHOD__,'you have to active your Warehouse');
 
@@ -55,7 +55,7 @@ class WarehouseController extends BaseUserController
 
 
             $newWarehouse = [
-                "user_id" => 1,
+                "user_id" => auth()->id(),
                 "farm_id" => $request->farm_id,
                 "warehouse_level_id" => $warehouseLevel->id
             ];
@@ -76,7 +76,7 @@ class WarehouseController extends BaseUserController
     {
         return UserFarms::query()
         ->where("farm_id",$farmId)
-        ->where("user_id",1)
+        ->where("user_id",auth()->id())
         ->exists();
         
     }
@@ -92,7 +92,7 @@ class WarehouseController extends BaseUserController
     {
         return Wherehouse::query()
         ->where("farm_id",$farmId)
-        ->where("user_id",1) //auth::id()
+        ->where("user_id",auth()->id()) //auth::id()
         ->exists();
     }
 

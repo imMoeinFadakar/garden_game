@@ -23,37 +23,4 @@ class TasksController extends BaseUserController
         return $this->api(TaskResource::collection($AllTask),__METHOD__);
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store()
-    {
-        // not exists
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        // not exists
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        // not exists
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        // not exists
-    }
 }

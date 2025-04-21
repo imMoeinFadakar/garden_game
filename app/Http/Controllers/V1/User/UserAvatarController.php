@@ -25,7 +25,7 @@ class UserAvatarController extends Controller
     public function store(StoreUserAvatarRequest $request,UserAvatar $userAvatar)
     {
         $validatedRequest = $request->validated();
-        $validatedRequest["user_id"] = 1;
+        $validatedRequest["user_id"] = auth()->id();
         $userAvatar = $userAvatar->addNewUserAvatar($validatedRequest);
         return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
     }

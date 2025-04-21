@@ -32,17 +32,11 @@ class FirstAuthController extends BaseUserController
         
         Auth::login($findOrNewUser);
 
+
         $token = $findOrNewUser->createToken("USER TOKEN",[null],Carbon::now()->addHours(6))->plainTextToken;
           
         return $this->api(new AuthResource(['user'=>$findOrNewUser,"token"=>$token]),__METHOD__);
 
-        
-
-     
-
-
-
-        //  return $this->api(new AuthResource(['user'=>$findOrNewUser,"token"=>$token]),__METHOD__);
         
     }
 

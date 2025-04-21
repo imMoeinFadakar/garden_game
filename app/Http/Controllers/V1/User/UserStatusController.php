@@ -20,16 +20,12 @@ class UserStatusController extends BaseUserController
             return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
         }
 
-        throw new HttpResponseException(response()->json([
-            "success" => false,
-            "code" => 422,
-            "message" => "operation failed",
-        ]));
+       return $this->errorResponse("operation failed");
     }
 
     public function activeUserOptions($option)
     {
-        $user = $this->findUser();
+        $user = auth()->user();
         if($user->$option === "inactive")
             $user->$option = "active";
 
@@ -57,14 +53,11 @@ class UserStatusController extends BaseUserController
 
 
     ///////////
-    public function findUser()
-    {
-        return User::query()->find(1); // add auth::id()
-    }
+  
 
     public function minusUserGem($gemPrice)
     {
-        $user = User::query()->where("id",1)->first();
+        $user = auth()->user();
         $user->gem_amount -= $gemPrice;
        return  $user->save();
 
@@ -73,7 +66,7 @@ class UserStatusController extends BaseUserController
 
     public function hasUserEnoughGem($gemPrice)
     {
-        $user = User::query()->where("id",1)->first();
+        $user = auth()->user();
         if($user->gem_amount < $gemPrice)
             throw new HttpResponseException(response()->json([
                 "success" => false,

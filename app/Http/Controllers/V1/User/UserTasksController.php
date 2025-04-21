@@ -19,7 +19,7 @@ class UserTasksController extends BaseUserController
 
         $userTask = UserTask::query()
             ->orderBy("id")
-            ->where("user_id", 1)
+            ->where("user_id", auth()->id())
             ->with(["task:id,title,gem_reward,token_reward"])
             ->get();
 
@@ -37,10 +37,15 @@ class UserTasksController extends BaseUserController
     public function store(UserTaskRequest $request, UserTask $userTask)
     {   
 
-        $this->isTaskDoneBefore($request);
-    
+        $done =  $this->isTaskDoneBefore($request);
+
+        if(! $done)
+            return $this->errorResponse('you had done this task before',400);
+
+
+
         $validatedRequest = $request->validated();
-        $validatedRequest["user_id"] = 1; // auth::id()
+        $validatedRequest["user_id"] = auth()->id(); // auth::id()
         $userTask = $userTask->addNewUserTask($validatedRequest);
         return $this->api(new UserTaskResource($userTask->toArray()), __METHOD__);
     }
@@ -48,42 +53,15 @@ class UserTasksController extends BaseUserController
     public function isTaskDoneBefore($request): bool
     {
         $task =  UserTask::query()
-        ->where("user_id",1)
+        ->where("user_id",auth()->id())
         ->where("task_id",$request->task_id)
         ->exists();
 
         if($task)
-            throw new HttpResponseException(response()->json([
-            "success" => false,
-            "message" => "ypu had done this task before"
-            ]));
+           return false;
 
         return true;
     }
 
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        // not
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        // not
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        // not
-    }
 }

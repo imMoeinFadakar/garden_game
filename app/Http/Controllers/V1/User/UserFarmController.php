@@ -18,7 +18,7 @@ class UserFarmController extends BaseUserController
     {
         $userFarm = UserFarms::query()
             ->orderBy("id")
-            ->where("user_id",1)
+            ->where("user_id",auth()->id())
             ->with(["farm:id,name,farm_image_url,flage_image_url,description,power,prodcut_image_url"])
             ->get();
 
@@ -26,28 +26,4 @@ class UserFarmController extends BaseUserController
     }
 
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
