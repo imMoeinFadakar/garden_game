@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Route;
 Route::prefix("user")->group(function() {
 
 
+
     Route::post("auth_user",[App\Http\Controllers\V1\User\FirstAuthController::class,"userLogin"]);
     Route::get("policy",[App\Http\Controllers\V1\User\PoliciesController::class,"index"]); // all policy
 
     Route::middleware(['auth:sanctum','auth'])->group(function(){
 
+        Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findingUser"]);
         Route::post("register",[App\Http\Controllers\V1\User\RegistrationController::class,"register"]);
         Route::get("tasks", [App\Http\Controllers\V1\User\TasksController::class, "index"]); // all tasks
         Route::get("user_task",[App\Http\Controllers\V1\User\UserTasksController::class, "index"]); // user tasks
@@ -36,7 +38,7 @@ Route::prefix("user")->group(function() {
   
 
 
-    // Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
+    Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
     // Route::get("get_gen_one_reffral",[App\Http\Controllers\V1\User\UserReferralController::class,"index"]);
     // Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"index"]);
    

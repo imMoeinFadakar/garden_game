@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Models\UserFarms;
 use App\Models\Wherehouse;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use App\Models\WarehouseLevel;
 use App\Http\Controllers\Controller;
@@ -101,44 +102,87 @@ class WarehouseController extends BaseUserController
      */
     public function store(UpdatewarehouseRequest $request)
     {
-        $userWallet = User::find(1);  // user wallet
-        $userWarehouse = $this->findUserWarehouse(); // user warhouse
-        $currentLevel = $this->findCurrentLevel($userWarehouse,$request);  // get current user level 
-        $newLevel = $this->findNewLevel($currentLevel->level_number);// get new level 
-      
-        $price =  $newLevel->cost_for_buy; // new level cost
-        $balance = $userWallet->token_amount; // user token balance
+        $user = auth()->user(); // find auth user
+        $validared = $request->Validated();
+        $userWarehouse = $this->findUserWarehouse($validared["farm_id"]); // find user warehouse
+        if(! $userWarehouse)
+            return $this->errorResponse("you dont have warehouse  for this farm");
 
+            // find user wareouse level
+        $wrehouseLevel = $this->currentWarehouseLevel($userWarehouse,$validared["farm_id"]);
+        if(! $wrehouseLevel)
+            return $this->errorResponse("you wrehouseLevel level is not found,call support");
+
+        $newLevel = $this->findNextLevel($wrehouseLevel,$validared["farm_id"]);
+        if(! $newLevel)
+            return $this->api(null,__METHOD__,'you reached to max level in this farm');
+
+
+            
+    }
+      /**
+     * fidn the warehouse level that user want to achive
+     * @param int $levelNumber
+     * @return WarehouseLevel|false
+     */
+    public function findNextLevel($currentLevel,$farmId)
+    {
+        $level = WarehouseLevel::query()
+        ->where("level_number",$currentLevel->level_number + 1)
+        ->where("farm_id",$farmId)
+        ->first();
+
+        if(! $level)
+            return false;
+
+
+        return $level;
+    }
+  
+
+    public function currentWarehouseLevel($warehouse,$farmId)
+    {   
+    
+      $warehouseLevel =   WarehouseLevel::query()
+        ->where("id",$warehouse->warehouse_level_id)
+        ->where("farm_id",$farmId)
+        ->first();
+
+        if(! $warehouseLevel)
+        return false;
+
+        return $warehouseLevel;
+    }
+
+
+    public function findUserWarehouse($farmId)
+    {
         
-        // has user enough token??
-        $userTokenStatus = $this->hasUserEnoughToken($balance,$price);
+       $userWarehouse =  Wherehouse::query()
+        ->where("user_id",auth()->id())
+        ->where("farm_id",$farmId)
+        ->first();
 
-        if($userTokenStatus){
+        if(! $userWarehouse)
+            return false;
 
-            $newBalance = $this->warehouseCost($balance,$price); // minus the price from user wallet
-            $payment = $this->newUserBalanceToken($userWallet,$newBalance); // add new user token balance to wallet
-
-            if($payment){
-
-             
-                $this->newUserWarehouseLevel($userWarehouse,$newLevel);
-                $userWarehouse->load(["product:id,name","warehouse_level:id,level_number"]);
-                return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
-
-
-            }
-
-
-            return $this->errorResponse(422,"payment operation failed");
-
-
-
-        }
-
-        return $this->errorResponse(422,"you dont have enough token");
-
+        return $userWarehouse;
 
     }
+
+
+
+
+
+
+
+
+
+/////////////////////////
+
+    
+
+
 
     public function findCurrentLevel($userWarehouse,$request)
     {
@@ -228,16 +272,7 @@ class WarehouseController extends BaseUserController
         return  $balance - $price;
     }
 
-    /**
-     * fidn the warehouse level that user want to achive
-     * @param int $levelNumber
-     * @return WarehouseLevel|null
-     */
-    public function findNextLevel($userWarehouse)
-    {
-        $userWarehouseLevel = $userWarehouse->warehouse_level_id;
-        $warehouseLevel = $this->findWarehouseLevel($userWarehouseLevel);
-    }
+  
 
     public function findWarehouseLevel(int $wareHouseLevelId)
     {
@@ -247,24 +282,7 @@ class WarehouseController extends BaseUserController
 
 
 
-    /**
-     * find user warehouse
-     * @return Wherehouse
-     */
-    public function findUserWarehouse(): Wherehouse
-    {
-        $warehouse =  Wherehouse::query()->where("user_id",1)->firstOrNew(); //auth::id
-        if(! $warehouse)
-            throw new HttpResponseException(response()->json([
-                "success" => false,
-                "message" => "you dont have a warehouse , call support" 
-            ]));
-
-
-           
-        return $warehouse;
-
-    }
+  
 
 
     /**
