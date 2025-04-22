@@ -16,8 +16,9 @@ class UserController extends BaseUserController
      */
     public function index()
     {
+        $user = User::find(auth()->id());
 
-        return $this->api(new UserResource(auth()->user()),__METHOD__);
+        return $this->api(new UserResource($user->toArray()),__METHOD__);
         
     }
 

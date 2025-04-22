@@ -37,7 +37,7 @@ Route::prefix("user")->group(function() {
        
         // test
 
-        Route::get("first_generation",[App\Http\Controllers\V1\User\UserReferralController::class,"firstGenerationReffral"]);
+        // Route::get("first_generation",[App\Http\Controllers\V1\User\UserReferralController::class,"firstGenerationReffral"]);
 
     });
  
