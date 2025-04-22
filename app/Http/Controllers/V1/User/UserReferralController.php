@@ -10,37 +10,44 @@ use Illuminate\Http\Request;
 
 class UserReferralController extends BaseUserController
 {
-    public function index()
+    public function firstGenerationReffral()
     {
-        $mensFirstGen = $this->findGenOneGender(1)->count(); // find men in user referral 
-        $womenFirstGen = $this->findGenOneGender(0)->count();  
+       
+        $womens = $this->findFirstReferral(0); // 0 = male
+        $male = $this->findFirstReferral(1); // 1 = female
 
-        
 
             $result =
             [
-                "male" => $mensFirstGen,
-                "female" => $womenFirstGen
+                "male" => $male,
+                "female" => $womens
             ];
          
 
-        return $this->api($result,__METHOD__,'user first generation gender');
+        return $this->api(new UserReferralResource($result),__METHOD__,'user first generation referral');
 
     }
 
-    public function findSecondGen($firstGen)
+  
+
+
+
+
+    public function findFirstReferral(int $gender): int
+    {
+        return  UserReferral::query()
+        ->where("invading_user",auth()->id())
+        ->where("gender",$gender)
+        ->count();
+
+
+    }
+
+    public function findSecondReferral( )
     {
         
     }
 
-
-    public function findGenOneGender($gender)
-    {   
-        
-        return UserReferral::query()
-        ->where("invading_user",1)
-        ->where("gender",$gender)
-        ->get('id');
-    }
+  
 
 }

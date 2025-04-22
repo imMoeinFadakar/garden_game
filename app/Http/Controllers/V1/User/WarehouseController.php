@@ -102,24 +102,57 @@ class WarehouseController extends BaseUserController
      */
     public function store(UpdatewarehouseRequest $request)
     {
-        $user = auth()->user(); // find auth user
+         // find auth user
         $validared = $request->Validated();
         $userWarehouse = $this->findUserWarehouse($validared["farm_id"]); // find user warehouse
         if(! $userWarehouse)
             return $this->errorResponse("you dont have warehouse  for this farm");
 
             // find user wareouse level
-        $wrehouseLevel = $this->currentWarehouseLevel($userWarehouse,$validared["farm_id"]);
+        $wrehouseLevel = $this->currentWarehouseLevel($userWarehouse,$validared["farm_id"]); // current level warehouse
         if(! $wrehouseLevel)
             return $this->errorResponse("you wrehouseLevel level is not found,call support");
 
-        $newLevel = $this->findNextLevel($wrehouseLevel,$validared["farm_id"]);
+        $newLevel = $this->findNextLevel($wrehouseLevel,$validared["farm_id"]); // new level warehouse
         if(! $newLevel)
             return $this->api(null,__METHOD__,'you reached to max level in this farm');
 
+        $hasUserenoughToken = $this->hasUserToken($newLevel->cost_for_buy); // check  user have enough token
+        if(! $hasUserenoughToken)
+            return $this->api(null,__METHOD__,'you dont have enough token');
 
-            
+        $minusUserToken = $this->minusUserToken($newLevel->cost_for_buy);
+        if($minusUserToken){
+
+            $userWarehouse->warehouse_level_id = $newLevel->id;
+            $userWarehouse->save();
+
+            return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
+        }
+
     }
+
+    public function hasUserToken(int $price): bool
+    {
+        $user = auth()->user();
+        if($price > $user->token_amount)
+            return false;
+
+        return true;    
+    }
+
+
+    public function minusUserToken(int $price): bool
+    {
+        $user = auth()->user();
+        $user->token_amount -= $price;
+        return $user->save();
+
+    }
+
+
+
+
       /**
      * fidn the warehouse level that user want to achive
      * @param int $levelNumber

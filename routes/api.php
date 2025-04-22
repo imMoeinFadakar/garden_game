@@ -20,33 +20,32 @@ use App\Http\Controllers\V1\Admin\AdminController;
 
 
             Route::middleware(["auth:sanctum",CheckAdmin::class])->group(function(){
-                // Route::post("deposit_check",[App\Http\Controllers\V1\Admin\CryptoCurrencyController::class,"transactionRequest"]);
-                // Route::apiResource('/admin', AdminController::class)
-                // ->middleware(CheckAdminManager::class); // Example route
-                // route::apiResource("avatar",App\Http\Controllers\V1\Admin\AvatarController::class);
-                // Route::apiResource("badge",App\Http\Controllers\V1\Admin\BadgeController::class);
-                // Route::apiResource("badge-farm",App\Http\Controllers\V1\Admin\BadgeFarmsController::class);
-                // Route::apiResource("farm",App\Http\Controllers\V1\Admin\FarmController::class);
-                // Route::apiResource("mailbox",App\Http\Controllers\V1\Admin\MailboxController::class);
-                // // Route::apiResource("product",App\Http\Controllers\V1\Admin\ProductController::class);
-                // Route::apiResource("task",App\Http\Controllers\V1\Admin\TasksController::class);
-                // Route::apiResource("transaction",App\Http\Controllers\V1\Admin\TransactionController::class);
-                // Route::apiResource("transfer",App\Http\Controllers\V1\Admin\TransferController::class);
-                // Route::apiResource("user-avatar",App\Http\Controllers\V1\Admin\UserAvatarController::class);
-                // Route::apiResource("user",App\Http\Controllers\V1\Admin\UserController::class);
-                // Route::apiResource("user-farm",App\Http\Controllers\V1\Admin\UserFarmsController::class);
-                // Route::apiResource("user-referral",App\Http\Controllers\V1\Admin\UserReferralController::class);
-                // Route::apiResource("user-referral-management",App\Http\Controllers\V1\Admin\UserReferralManagementController::class);
-                // Route::apiResource("user-referral-reward",App\Http\Controllers\V1\Admin\UserReferralRewardController::class);
-                // Route::apiResource("user-task",App\Http\Controllers\V1\Admin\UserTaskController::class);
-                // Route::apiResource("wallet",App\Http\Controllers\V1\Admin\WalletController::class);
-                // Route::apiResource("warehouse-product",App\Http\Controllers\V1\Admin\WarehouseProductController::class);
-                // Route::apiResource("warehouse-level",App\Http\Controllers\V1\Admin\WarehouseLevelController::class);
-                // Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
-                // Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
-                // Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
-                // Route::post("token_expire",[App\Http\Controllers\V1\Admin\AuthController::class,"isTokenValied"]);
-                // Route::apiResource("policy_and_rule",App\Http\Controllers\V1\Admin\PolicyAndRuleController::class);
+                Route::post("deposit_check",[App\Http\Controllers\V1\Admin\CryptoCurrencyController::class,"transactionRequest"]);
+                Route::apiResource('/admin', AdminController::class)
+                ->middleware(CheckAdminManager::class); // Example route
+                route::apiResource("avatar",App\Http\Controllers\V1\Admin\AvatarController::class);
+                Route::apiResource("badge",App\Http\Controllers\V1\Admin\BadgeController::class);
+                Route::apiResource("badge-farm",App\Http\Controllers\V1\Admin\BadgeFarmsController::class);
+                Route::apiResource("farm",App\Http\Controllers\V1\Admin\FarmController::class);
+                Route::apiResource("mailbox",App\Http\Controllers\V1\Admin\MailboxController::class);
+                Route::apiResource("task",App\Http\Controllers\V1\Admin\TasksController::class);
+                Route::apiResource("transaction",App\Http\Controllers\V1\Admin\TransactionController::class);
+                Route::apiResource("transfer",App\Http\Controllers\V1\Admin\TransferController::class);
+                Route::apiResource("user-avatar",App\Http\Controllers\V1\Admin\UserAvatarController::class);
+                Route::apiResource("user",App\Http\Controllers\V1\Admin\UserController::class);
+                Route::apiResource("user-farm",App\Http\Controllers\V1\Admin\UserFarmsController::class);
+                Route::apiResource("user-referral",App\Http\Controllers\V1\Admin\UserReferralController::class);
+                Route::apiResource("user-referral-management",App\Http\Controllers\V1\Admin\UserReferralManagementController::class);
+                Route::apiResource("user-referral-reward",App\Http\Controllers\V1\Admin\UserReferralRewardController::class);
+                Route::apiResource("user-task",App\Http\Controllers\V1\Admin\UserTaskController::class);
+                Route::apiResource("wallet",App\Http\Controllers\V1\Admin\WalletController::class);
+                Route::apiResource("warehouse-product",App\Http\Controllers\V1\Admin\WarehouseProductController::class);
+                Route::apiResource("warehouse-level",App\Http\Controllers\V1\Admin\WarehouseLevelController::class);
+                Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
+                Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
+                Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
+                Route::post("token_expire",[App\Http\Controllers\V1\Admin\AuthController::class,"isTokenValied"]);
+                Route::apiResource("policy_and_rule",App\Http\Controllers\V1\Admin\PolicyAndRuleController::class);
 
 
 

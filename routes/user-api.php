@@ -20,7 +20,7 @@ Route::prefix("user")->group(function() {
         Route::get("badge", [App\Http\Controllers\V1\User\UserBadgeController::class, "index"]); // user badge
         Route::get("farm",[App\Http\Controllers\V1\User\FarmController::class,"index"]); // all farms
         Route::get("user_farm",[App\Http\Controllers\V1\User\UserFarmController::class,"index"]); // user farms have
-        Route::get("user",[App\Http\Controllers\V1\User\UserController::class,"index"]);
+        Route::get("user",[App\Http\Controllers\V1\User\UserController::class,"index"]); // get self user
         Route::post("user_task", [App\Http\Controllers\V1\User\UserTasksController::class, "store"]);
         Route::post("buy_farm",[App\Http\Controllers\V1\User\BuyFarmController::class,"store"]);
         Route::post("new_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"create"]);
@@ -32,13 +32,18 @@ Route::prefix("user")->group(function() {
         Route::post("use_giftcart",[App\Http\Controllers\V1\User\GiftCartController::class,"useGiftCart"]);
         Route::post("active_warehouse",[App\Http\Controllers\V1\User\UserStatusController::class,"activeWarehouse"]);
         Route::post("active_market",[App\Http\Controllers\V1\User\UserStatusController::class,"activeMarket"]);
+        Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
+       
+       
+        // test
+
+        Route::get("first_generation",[App\Http\Controllers\V1\User\UserReferralController::class,"firstGenerationReffral"]);
 
     });
  
   
 
 
-    Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
     // Route::get("get_gen_one_reffral",[App\Http\Controllers\V1\User\UserReferralController::class,"index"]);
     // Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"index"]);
    
@@ -47,7 +52,7 @@ Route::prefix("user")->group(function() {
 
     // Route::post("update_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
     // Route::post("transfer",[App\Http\Controllers\V1\User\TransferController::class,"store"]);
-    // Route::post("new_product",[App\Http\Controllers\V1\User\WarehouseProductController::class,"store"]);
+    // Route::post("new_product",[App\Http\Controllers\V1\User\WarehouseProductController::class,"store"]); // save new product
 
  
 
