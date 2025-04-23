@@ -22,6 +22,10 @@ class Farms extends Model
         "flage_image_url",
         "description",
         "power",
+        "background_light_color",
+        "background_bold_color",
+        "header_light_color",
+        "header_bold_color"
         
     ];
 

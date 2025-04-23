@@ -8,7 +8,7 @@ class temporaryReward extends Model
 {
     protected $fillable = [
         "user_id",
-        "product_id",
+        "farm_id",
         "amount",
         "ex_time"
     ];

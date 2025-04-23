@@ -23,6 +23,11 @@ return new class extends Migration
             $table->string("prodcut_image_url");
             $table->string("flage_image_url");
             $table->string("description");
+            $table->string("farm_color");
+            $table->string("background_light_color");
+            $table->string("background_bold_color");
+            $table->string("header_light_color");
+            $table->string("header_bold_color");
             $table->unsignedBigInteger("power");
             $table->unsignedBigInteger("farm_reward");
             $table->timestamps();

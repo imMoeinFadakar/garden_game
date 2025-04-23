@@ -41,8 +41,11 @@ class StoreFarmRequest extends FormRequest
             
             "min_token_value" => "required|integer|min:1",
             "max_token_value" => "required|integer|gt:min_token_value",
-            "prodcut_image_url" => ["required","image",File::types(["jpg","png","jpeg","svg"])->min(1)->max(1024) ]
-
+            "prodcut_image_url" => ["required","image",File::types(["jpg","png","jpeg","svg"])->min(1)->max(1024) ],
+            "header_bold_color" =>["required"],
+            "header_light_color" => ["required"],
+            "background_bold_color" => ["required"],
+            "background_light_color" => ["required"]
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
