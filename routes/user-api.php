@@ -37,6 +37,7 @@ Route::prefix("user")->group(function() {
         Route::post('pay_reward',[App\Http\Controllers\V1\User\PayRequestControler::class,"newPayingRequest"]);
         Route::get("get_user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"index"]);
         Route::post("sell_product",[App\Http\Controllers\V1\User\MarketController::class,"sellProduct"]);
+        Route::get("sell_product_history",[App\Http\Controllers\V1\User\MarketController::class,"userMarketHistory"]);
 
     });
  

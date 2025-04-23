@@ -15,7 +15,7 @@ class MarketHistory extends Model
     ];
 
     public function addNewMarketHistory( $request){
-    return $this->create( $request->validated());
+    return $this->create( $request);
     }
 
 }

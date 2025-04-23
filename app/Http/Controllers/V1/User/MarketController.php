@@ -16,40 +16,41 @@ class MarketController extends BaseUserController
 {
 
 
-    public function userMarketHistory()
+    public function userMarketHistory(Request $request)
     {
        $marketHistory  = MarketHistory::query()
        ->where('user_id',auth()->id())
-       ->get();
+       ->get(['product_amount','token_amount']);
 
         return $this->api(MarketResource::collection($marketHistory),__METHOD__);
 
     }
 
 
-
+    
     public function sellProduct(MarketRequest $request,MarketHistory $marketHistory)
     {
         $validatedRequest = $request->validated();
-        $user = User::find(auth()->id());
+        $user = auth()->user();
         $farm = $this->findFarm($validatedRequest["farm_id"]);
-
+        
         if($user->market_status === "inactive")
-            return $this->api(null,__METHOD__,'you have to active your market');
-
-        $findwarehouse = $this->findUserWarehouse(auth()->id(),$validatedRequest["farm_id"]);
-        if(! $findwarehouse)
-            return $this->api(null,__METHOD__,'you dont have this warehouse yet');
+        return $this->api(null,__METHOD__,'you have to active your market');
+    
+    $findwarehouse = $this->findUserWarehouse(auth()->id(),$validatedRequest["farm_id"]);
+    if(! $findwarehouse)
+    return $this->api(null,__METHOD__,'you dont have this warehouse yet');
 
 
 
         $userProduct = $this->findUserProduct($validatedRequest["farm_id"],$findwarehouse->id);
         $hasUserEnoughProduct = $this->hasUserEnoghProduct($userProduct->amount,$validatedRequest["amount"]);
         if(! $hasUserEnoughProduct)
-            return $this->api(null.__METHOD__,'you dont have enough product');
+        return $this->api(null,__METHOD__,'you dont have enough product');
 
 
-        $this->minusUserProduct($userProduct->amount,$validatedRequest['amount']);
+
+        $this->minusUserProduct($userProduct,$validatedRequest['amount']);
 
         $newUserBenefit = $this->getUserBenefit($farm->max_token_value,$validatedRequest["amount"]);
       
@@ -65,19 +66,13 @@ class MarketController extends BaseUserController
 
           $marketHistory =   $marketHistory->addNewMarketHistory($newRequest);
 
-
             return $this->api(new MarketResource($marketHistory->toArray()),__METHOD__);
 
         }
         
-      
-  
 
 
-
-
-
-        // $hasEnoughProduct = $this->hasUserenoughProduct();
+        return $this->api(null,__METHOD__,'operation failed');
 
 
     }
@@ -88,11 +83,10 @@ class MarketController extends BaseUserController
     }
 
 
-    public function minusUserProduct($userWarehouse,$productAmount)
+    public function minusUserProduct($userProduct,$productAmount)
     {
-        
-        $userWarehouse->amount -= $productAmount;
-        $userWarehouse->save();
+        $userProduct->amount -= $productAmount;
+        $userProduct->save();
         return;
     }
 
