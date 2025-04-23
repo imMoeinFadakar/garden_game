@@ -39,7 +39,8 @@ class PayRequestControler extends Controller
             return $this->api(null,__METHOD__,'operation failed,there is  no suitble reward referal for this farm ');
 
         $paymentFarmStatus = $this->userFarmRewardStatusPaying($userFarm);
-
+        if(! $paymentFarmStatus)
+            return $this->api(null,__METHOD__,'reward status operation failed');
 
         $genOne = $this->findParentReferral(auth()->id());
         if($genOne){
