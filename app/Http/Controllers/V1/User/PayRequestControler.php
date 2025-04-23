@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\User;
 
 use App\Http\Resources\V1\User\payRewardResource;
+use App\Models\Farms;
 use App\Models\temporaryReward;
 use App\Models\User;
 use App\Models\UserFarms;
@@ -19,9 +20,10 @@ class PayRequestControler extends Controller
     public function newPayingRequest(PayRewardRequest $request) 
     {
         $user = User::find(auth()->id());
+      
         if($user->warehouse_status === "inactive")
             return $this->api(null,__METHOD__,'you have to active your Warehouse');
-
+      
 
         $validated = $request->validated();
 
@@ -110,7 +112,8 @@ class PayRequestControler extends Controller
 
 
     public function userFarmRewardStatusPaying($userFarm)
-    {
+    {   
+
         $userFarm->reward = "paied";
         return $userFarm->save();
     }
@@ -163,13 +166,13 @@ class PayRequestControler extends Controller
     }
 
 
-    public function hasUserFarm(int $farmId): bool
+    public function hasUserFarm(int $farmId): UserFarms|null
     {
         return UserFarms::query()
         ->where('user_id',auth()->id())
         ->where('farm_id',$farmId)
         ->where('reward','not_paied')
-        ->exists();
+        ->first();
     }
 
 

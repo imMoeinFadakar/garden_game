@@ -25,7 +25,7 @@ class UpdateFarmRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|unique:farms,name",
+            "name" => "required|string|unique:farms,name,".$this->farm->id,
             "require_token" => ["required","integer"],
             "require_gem" => ["required","integer"],
             "require_referral" => ["required","integer"],
