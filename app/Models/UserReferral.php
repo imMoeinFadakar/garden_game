@@ -10,7 +10,8 @@ class UserReferral extends Model
 
     protected  $fillable = [
         "invading_user",
-        "invented_user"
+        "invented_user",
+        'gender'
     ];
     /**
      * Get the reffred that owns the UserReffral

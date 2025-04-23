@@ -58,18 +58,17 @@ class BuyFarmController extends BaseUserController
     $newUserToken = $this->minuseUserResource($user->token_amount,$farm->require_token);
     $newUserGem = $this->minuseUserResource($user->gem_amount,$farm->require_gem);
     
-    // add new resource amount in user wallet
+    // add new resource amount in user 
     $this->insertNewUservalues($newUserGem,$newUserToken);
-    
- 
-
-
 
     $userFarmRequest = $request->validated();
     $userFarmRequest["user_id"] = auth()->id();
     $userFarmRequest["farm_power"] = $farm->power  ;
     $userFarm = $userFarms->addNewUserFarms($userFarmRequest);
     
+
+        
+
 
         return $this->api(new BuyFarmResource($userFarm->toArray()),__METHOD__);
     }

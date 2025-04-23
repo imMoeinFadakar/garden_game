@@ -6,6 +6,7 @@ use App\Models\Farms;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\UserFarms;
+use App\Models\WarehouseProducts;
 use App\Models\Wherehouse;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -23,14 +24,14 @@ class WarehouseController extends BaseUserController
   
 
 
-    public function create(createwarehouseRequest $request)
+    public function create(createwarehouseRequest $request,WarehouseProducts $warehouseProducts)
     {
         $user = User::find(auth()->id());
         if($user->warehouse_status === "inactive")
             return $this->api(null,__METHOD__,'you have to active your Warehouse');
 
 
-        $farmIsValied = $this->isFamValied($request->farm_id);    
+        $farmIsValied = $this->isFarmValied($request->farm_id);    
 
         if(! $farmIsValied)
             return $this->api(null,__METHOD__,'farm is not found');
@@ -50,7 +51,7 @@ class WarehouseController extends BaseUserController
 
         $warehouseLevel = $this->WarehouseLevel($request->farm_id);
         if(! $warehouseLevel)
-            return $this->api(null,__METHOD__,'operation failed , call support');
+            return $this->api(null,__METHOD__,'operation failed , call support for warehouse level');
 
 
 
@@ -61,11 +62,23 @@ class WarehouseController extends BaseUserController
                 "warehouse_level_id" => $warehouseLevel->id
             ];
            $warehouse =   Wherehouse::query()->create($newWarehouse);
+
+            $warehouseProduct = [
+                "warehouse_id" => $warehouse->id,
+                "farm_id" =>$farmIsValied->id,
+                "amount" => $farmIsValied->farm_reward
+            ];
+
+
+            $warehouseProducts->addNewWarehouseProduct($warehouseProduct);
+
+
+
             return $this->api(new warehouseResource($warehouse->toArray()),__METHOD__);
             
     }
 
-    public function isFamValied($farmId)
+    public function isFarmValied($farmId)
     {
         return   Farms::find($farmId) ?: null;
     

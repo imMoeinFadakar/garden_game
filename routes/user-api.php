@@ -13,6 +13,7 @@ Route::prefix("user")->group(function() {
 
     Route::middleware(['auth:sanctum','auth'])->group(function(){
 
+        Route::post("new_referral",[App\Http\Controllers\V1\User\UserController::class,"newReferral"]);
         Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findingUser"]);
         Route::post("register",[App\Http\Controllers\V1\User\RegistrationController::class,"register"]);
         Route::get("tasks", [App\Http\Controllers\V1\User\TasksController::class, "index"]); // all tasks
@@ -34,10 +35,10 @@ Route::prefix("user")->group(function() {
         Route::post("active_market",[App\Http\Controllers\V1\User\UserStatusController::class,"activeMarket"]);
         Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
        
-       
-        // test
+        //pay reward
+        Route::post('pay_reward',[App\Http\Controllers\V1\User\PayRequestControler::class,"newPayingRequest"]);
+        Route::get("get_user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"index"]);
 
-        // Route::get("first_generation",[App\Http\Controllers\V1\User\UserReferralController::class,"firstGenerationReffral"]);
 
     });
  

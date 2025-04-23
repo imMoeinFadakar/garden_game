@@ -16,41 +16,38 @@ class UserAvatarController extends Controller
      */
     public function index()
     {
-        //
+        $userAvatar = UserAvatar::query()
+        ->where("user_id",auth()->id())
+        ->with(["avatar:id,image_url"])
+        ->first();
+
+        return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreUserAvatarRequest $request,UserAvatar $userAvatar)
-    {
+    {   
+        $avatarExists = $this->isUseravatarExists($request->validated());
+        if($avatarExists)
+            return $this->api(null,__METHOD__,'you selected your avatar before');
+
+
         $validatedRequest = $request->validated();
         $validatedRequest["user_id"] = auth()->id();
         $userAvatar = $userAvatar->addNewUserAvatar($validatedRequest);
         return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function isUseravatarExists(array $validatedRequest): bool
     {
-        //
+        return UserAvatar::query()
+        ->where("user_id",$validatedRequest["user_id"])
+        ->where("user_id",auth()->id())
+        ->exists();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

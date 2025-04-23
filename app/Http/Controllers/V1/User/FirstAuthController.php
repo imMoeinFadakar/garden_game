@@ -40,10 +40,6 @@ class FirstAuthController extends BaseUserController
         
     }
 
- 
-   
-
-
     public function loginUser($user)
     {
         Auth::login($user);

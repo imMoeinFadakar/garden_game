@@ -13,6 +13,8 @@ use App\Http\Controllers\V1\Admin\AdminController;
 
         Route::prefix("Admin")->group(function () {
 
+
+
             Route::prefix("auth")->controller(App\Http\Controllers\V1\Admin\AuthController::class)->group(function(){
                 Route::post("login","login");
                 Route::post("logout","logout")->middleware(["auth:sanctum"]);
@@ -45,6 +47,8 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
                 Route::post("token_expire",[App\Http\Controllers\V1\Admin\AuthController::class,"isTokenValied"]);
                 Route::apiResource("policy_and_rule",App\Http\Controllers\V1\Admin\PolicyAndRuleController::class);
+                Route::apiResource("market_history",App\Http\Controllers\V1\Admin\MarketHistoryController::class);
+                
             });
 
         });

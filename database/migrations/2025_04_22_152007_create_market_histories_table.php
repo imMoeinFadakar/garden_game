@@ -11,20 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_farms', function (Blueprint $table) {
+        Schema::create('market_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')
+            $table->foreignId("user_id")
             ->constrained("users")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
-
-            $table->unsignedBigInteger("farm_power");
-            $table->enum("reward",["paied",'not_paied'])->default('not_paied');
-
-            $table->foreignId('farm_id')
-            ->constrained("farms")
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+            $table->unsignedBigInteger("product_amount");
+            $table->unsignedBigInteger("token_amount");
             $table->timestamps();
         });
     }
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_farms');
+        Schema::dropIfExists('market_histories');
     }
 };

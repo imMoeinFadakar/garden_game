@@ -12,10 +12,6 @@ class Giftcart extends Model
         "code"
     ];
 
-   
-
- 
-
     public function addNewGiftcart( $request,$GiftcartNumber){
        
         $codes=[];

@@ -25,10 +25,6 @@ class Farms extends Model
         
     ];
 
-  
-
-  
-
 
     public function addNewFarm($request)
     {

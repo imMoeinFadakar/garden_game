@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string("flage_image_url");
             $table->string("description");
             $table->unsignedBigInteger("power");
+            $table->unsignedBigInteger("farm_reward");
             $table->timestamps();
         });
     }

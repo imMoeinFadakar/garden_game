@@ -16,7 +16,8 @@ class CryptoCurrencyController extends BaseUserController
      */
     public function index(Request $request)
     {
-       $cryptocurrency = cryptocurrency::where("user_id",1) // add auth::id() later
+       $cryptocurrency = cryptocurrency::query()
+         ->where("user_id",auth()->id()) // add auth::id() later
          ->orderBy("id")
          ->get();
 

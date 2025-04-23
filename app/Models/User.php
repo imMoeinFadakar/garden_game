@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Str;
 
 class User extends Authenticatable
 {
@@ -80,6 +81,8 @@ class User extends Authenticatable
         if($user){
             return $user;
         }else{
+            $reffralCode = Str::uuid();
+            $request["referral_code"] = $reffralCode;
             $newUser = $this->query()->create($request);
 
             return $newUser;
@@ -99,7 +102,7 @@ class User extends Authenticatable
 
     public static function insertNewUserValue($gem,$token)
     {
-        $user = self::find(1);
+        $user = self::find(auth()->id());
        return  $user->update(["token_amount" => $token,"gem_amount" => $gem]);
     }
 
