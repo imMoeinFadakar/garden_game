@@ -14,7 +14,8 @@ use App\Http\Controllers\Controller;
 class UserController extends BaseUserController
 {
     /**
-     * Display a listing of the resource.
+     * get user
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -24,7 +25,11 @@ class UserController extends BaseUserController
         
     }
 
-    
+    /**
+     * find the auth user
+     * @param \App\Http\Requests\V1\User\UserRequest $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function findingUser(UserRequest $request)
     {
         $findUser = User::query()
@@ -38,7 +43,11 @@ class UserController extends BaseUserController
         return $this->api(new UserResource($findUser->toArray()),__METHOD__);
 
     }
-
+    /**
+     * new referal / post
+     * @param \App\Http\Requests\V1\User\newReffralRequest $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function newReferral(newReffralRequest $request)
     {
         $invatingUser = $this->findUserByReferralCode($request->referral_code);

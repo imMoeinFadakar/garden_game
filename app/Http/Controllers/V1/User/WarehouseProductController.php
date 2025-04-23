@@ -14,7 +14,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class WarehouseProductController extends BaseUserController
-{
+{   
+    /**
+     * get list of user products
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function index()
     {   
 

@@ -16,7 +16,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\PayRewardRequest;
 
 class PayRequestControler extends Controller
-{
+{   
+   
     public function newPayingRequest(PayRewardRequest $request) 
     {
         $user = User::find(auth()->id());

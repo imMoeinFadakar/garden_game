@@ -8,9 +8,9 @@ class Transfer extends Model
 {
     //
     protected $fillable = [
-        "gem_amount",
-        "from_wallet",
-        "to_wallet"
+        "token_amount",
+        "from_user",
+        "to_user"
     ];
     /**
      * Get the user that owns the Transfer

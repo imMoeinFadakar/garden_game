@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
 class UserAvatarController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * return user avatar and its image
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -25,7 +26,10 @@ class UserAvatarController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  get user avatar
+     * @param \App\Http\Requests\V1\User\UserAvatar\StoreUserAvatarRequest $request
+     * @param \App\Models\UserAvatar $userAvatar
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(StoreUserAvatarRequest $request,UserAvatar $userAvatar)
     {   

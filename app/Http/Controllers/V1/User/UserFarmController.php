@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
 class UserFarmController extends BaseUserController
 {
     /**
-     * Display a listing of the resource.
+     * get user farm
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {

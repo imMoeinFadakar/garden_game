@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("gem_amount");
+            $table->unsignedBigInteger("token_amount");
 
             $table->foreignId('from_user')
             ->constrained("users")

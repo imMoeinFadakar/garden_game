@@ -29,7 +29,10 @@ class BuyFarmController extends BaseUserController
   
  
     /**
-     * Store a newly created resource in storage.
+     * buy new farm by user
+     * @param \App\Http\Requests\V1\User\BuyFarm\BuyfarmRequest $request
+     * @param \App\Models\UserFarms $userFarms
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(BuyfarmRequest $request,UserFarms $userFarms)
     {

@@ -17,6 +17,9 @@ class RegistrationController extends BaseUserController
         return $this->api(new UserRegistrationResource($user->toArray()),__METHOD__);
     }
 
+
+
+    // add username gender
     public function register(RegistrationRequest $request,User $user)
     {
 

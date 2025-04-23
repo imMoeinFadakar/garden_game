@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 class TasksController extends BaseUserController
 {
     /**
-     * Display a listing of the resource.
+     * get all tasks
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {

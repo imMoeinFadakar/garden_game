@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 class UserTasksController extends BaseUserController
 {
     /**
-     * Display a listing of the resource.
+     * get task that user had done before
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -32,7 +33,10 @@ class UserTasksController extends BaseUserController
 
 
     /**
-     * Store a newly created resource in storage.
+     * add new user task
+     * @param \App\Http\Requests\V1\User\UserTask\UserTaskRequest $request
+     * @param \App\Models\UserTask $userTask
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(UserTaskRequest $request, UserTask $userTask)
     {   

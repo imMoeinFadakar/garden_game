@@ -15,7 +15,11 @@ use App\Http\Requests\V1\User\MarketRequest;
 class MarketController extends BaseUserController
 {
 
-
+    /**
+     * get user market history
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function userMarketHistory(Request $request)
     {
        $marketHistory  = MarketHistory::query()
@@ -27,7 +31,12 @@ class MarketController extends BaseUserController
     }
 
 
-    
+    /**
+     * sell user product
+     * @param \App\Http\Requests\V1\User\MarketRequest $request
+     * @param \App\Models\MarketHistory $marketHistory
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function sellProduct(MarketRequest $request,MarketHistory $marketHistory)
     {
         $validatedRequest = $request->validated();
@@ -76,13 +85,24 @@ class MarketController extends BaseUserController
 
 
     }
+
+    /**
+     * new user 
+     * @param mixed $user
+     * @param mixed $newBenefit
+     */
     public function addNewTokenAmount($user,$newBenefit)
     {
         $user->token_amount += $newBenefit;
         return $user->save();
     }
 
-
+    /**
+     * minus User
+     * @param mixed $userProduct
+     * @param mixed $productAmount
+     * @return void
+     */
     public function minusUserProduct($userProduct,$productAmount)
     {
         $userProduct->amount -= $productAmount;
@@ -90,18 +110,34 @@ class MarketController extends BaseUserController
         return;
     }
 
+    /**
+     * Summary of getUserBenefit
+     * @param int $productValue
+     * @param int $productAmount
+     * @return int
+     */
     public function getUserBenefit(int $productValue,int $productAmount)
     {
         return $productAmount * $productValue;
     }
 
 
-
+    /**
+     * Summary of findFarm
+     * @param int $farmId
+     * @return \Illuminate\Database\Eloquent\Builder<Farms>
+     */
     public function findFarm(int $farmId)
     {
         return   Farms::find($farmId);
     }
 
+    /**
+     * Summary of hasUserEnoghProduct
+     * @param int $userProductAmount
+     * @param int $requestAmount
+     * @return bool
+     */
     public function hasUserEnoghProduct(int $userProductAmount,int $requestAmount): bool
     {
         if($userProductAmount < $requestAmount){
@@ -114,7 +150,12 @@ class MarketController extends BaseUserController
     }
 
 
-
+    /**
+     * Summary of findUserWarehouse
+     * @param int $userId
+     * @param int $farmId
+     * @return Wherehouse|null
+     */
     public function findUserWarehouse(int $userId,int $farmId)
     {
        return   Wherehouse::query()
@@ -124,7 +165,12 @@ class MarketController extends BaseUserController
     }
 
 
-
+    /**
+     * Summary of findUserProduct
+     * @param int $farmId
+     * @param int $warehouseId
+     * @return WarehouseProducts|null
+     */
     public function findUserProduct(int $farmId,int $warehouseId)
     {
         return WarehouseProducts::query()

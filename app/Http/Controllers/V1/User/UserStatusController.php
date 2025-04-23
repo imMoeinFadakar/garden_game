@@ -9,7 +9,13 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 class UserStatusController extends BaseUserController
-{
+{   
+    /**
+     * activate user warehouse
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User $user
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function activeWarehouse(Request $request,User $user)
     {
         $this->hasUserEnoughGem(5); // ensure that user have enough gem
@@ -23,6 +29,13 @@ class UserStatusController extends BaseUserController
        return $this->errorResponse("operation failed");
     }
 
+
+
+    /**
+     * active selected option for user (warehouse , market)
+     * @param mixed $option
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
     public function activeUserOptions($option)
     {
         $user = auth()->user();
@@ -33,6 +46,13 @@ class UserStatusController extends BaseUserController
         return $user;
     }
 
+
+
+    /**
+     * active market
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function activeMarket()
     {
         $this->hasUserEnoughGem(20); // ensure user have enough gem

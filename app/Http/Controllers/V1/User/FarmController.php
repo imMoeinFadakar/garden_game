@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 class FarmController extends BaseUserController
 {
     /**
-     * Display a listing of the resource.
+     * get all farms
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -21,35 +22,11 @@ class FarmController extends BaseUserController
         return $this->api(FarmResource::collection($farms),__METHOD__);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function show(Farms $farms,$id)
     {
-        //
+        return $this->api(new FarmResource($farms->find($id)),__METHOD__);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

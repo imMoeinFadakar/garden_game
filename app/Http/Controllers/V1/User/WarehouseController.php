@@ -23,7 +23,12 @@ class WarehouseController extends BaseUserController
 {
   
 
-
+    /**
+     * create new warehouse
+     * @param \App\Http\Requests\V1\User\createwarehouseRequest $request
+     * @param \App\Models\WarehouseProducts $warehouseProducts
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function create(createwarehouseRequest $request,WarehouseProducts $warehouseProducts)
     {
         $user = User::find(auth()->id());
@@ -111,7 +116,9 @@ class WarehouseController extends BaseUserController
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  update usee warehouse 
+     * @param \App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest $request
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(UpdatewarehouseRequest $request)
     {
@@ -142,6 +149,8 @@ class WarehouseController extends BaseUserController
 
             return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
         }
+
+        return $this->api(null,__METHOD__,'operation failed');
 
     }
 

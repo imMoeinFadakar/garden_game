@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class AvatarController extends BaseUserController
 {
     /**
-     * Display a listing of the resource.
+     * get all avatar from db
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {

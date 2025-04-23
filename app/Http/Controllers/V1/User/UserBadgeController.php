@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class UserBadgeController extends BaseUserController
 {
-
+    /**
+     * get all user badge
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $userBadge = BadgeUser::query()

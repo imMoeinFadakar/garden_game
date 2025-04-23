@@ -11,7 +11,14 @@ use App\Models\Wallet;
 use Illuminate\Http\Request;
 
 class GiftCartController extends BaseUserController
-{
+{   
+
+    /**
+     *  user gift cart by user
+     * @param \App\Http\Requests\V1\User\Giftcart\UseGiftCartRequest $request
+     * @param \App\Models\Giftcart $giftcart
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function useGiftCart(UseGiftCartRequest $request,Giftcart $giftcart)
     {
         $giftcart = $this->findGiftcart($request->code);

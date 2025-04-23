@@ -11,7 +11,10 @@ use App\Http\Requests\V1\User\Withdrawal\WithdrawalRequest;
 
 class WithdrawalControler extends BaseUserController
 {   
-
+    /**
+     * get all users transaction
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $transaction = Transaction::query()
@@ -21,7 +24,12 @@ class WithdrawalControler extends BaseUserController
         return $this->api(WithdrawalResource::collection($transaction),__METHOD__);
     }
 
-
+    /**
+     * new withdraw request by user
+     * @param \App\Http\Requests\V1\User\Withdrawal\WithdrawalRequest $request
+     * @param \App\Models\Transaction $transaction
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function withdrawal(WithdrawalRequest $request,Transaction $transaction)
     {
         // has user enough token
