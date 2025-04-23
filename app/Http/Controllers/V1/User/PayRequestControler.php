@@ -40,7 +40,7 @@ class PayRequestControler extends Controller
 
         $paymentFarmStatus = $this->userFarmRewardStatusPaying($userFarm);
         if(! $paymentFarmStatus)
-            return $this->api(null,__METHOD__,'reward status operation failed');
+            return $this->api(null,__METHOD__,'reward status change operation failed');
 
         $genOne = $this->findParentReferral(auth()->id());
         if($genOne){
@@ -91,7 +91,7 @@ class PayRequestControler extends Controller
 
                 }else{
 
-                    return $this->api(null,__METHOD__,'gen one added ');
+                    return $this->api(null,__METHOD__,'gen 1 added ');
 
 
                 }
@@ -104,18 +104,6 @@ class PayRequestControler extends Controller
             
         }
         
-
-
- 
-
-        /**
-         * 0=>1
-         * 1=>2
-         * 2=>3
-         * 3=>4
-         */
-
-
 
     }
 

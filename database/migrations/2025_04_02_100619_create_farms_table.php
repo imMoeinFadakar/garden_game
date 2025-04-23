@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string("header_light_color");
             $table->string("header_bold_color");
             $table->unsignedBigInteger("power");
-            $table->unsignedBigInteger("farm_reward");
+            $table->unsignedBigInteger("farm_reward")->nullable();
             $table->timestamps();
         });
     }

@@ -35,6 +35,8 @@ class UserAvatarController extends Controller
 
 
         $validatedRequest = $request->validated();
+
+       
         $validatedRequest["user_id"] = auth()->id();
         $userAvatar = $userAvatar->addNewUserAvatar($validatedRequest);
         return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
@@ -44,7 +46,6 @@ class UserAvatarController extends Controller
     public function isUseravatarExists(array $validatedRequest): bool
     {
         return UserAvatar::query()
-        ->where("user_id",$validatedRequest["user_id"])
         ->where("user_id",auth()->id())
         ->exists();
     }

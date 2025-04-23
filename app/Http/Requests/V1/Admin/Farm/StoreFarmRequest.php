@@ -45,7 +45,8 @@ class StoreFarmRequest extends FormRequest
             "header_bold_color" =>["required"],
             "header_light_color" => ["required"],
             "background_bold_color" => ["required"],
-            "background_light_color" => ["required"]
+            "background_light_color" => ["required"],
+            'farm_reward' => ['required','integer']
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
