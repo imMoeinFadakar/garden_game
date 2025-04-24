@@ -41,7 +41,7 @@ Route::prefix("user")->group(function() {
         Route::post("new_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"create"]);
         Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseProductController::class,"index"]);
         Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
-        // Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseProductController::class,"newProduct"]);
+        Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseProductController::class,"store"]);
 
 
 

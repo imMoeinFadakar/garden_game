@@ -74,12 +74,12 @@ class WarehouseProductController extends BaseUserController
         if($insertNewValue){
 
             $Warehouse = $this->findWarehouse($UserFarm->farm_id,$userWarehouse->id);
-            if(! $Warehouse){
+            // if(! $Warehouse){
 
-                $Warehouse =  $this->makeNewWarehouse($userWarehouse->id,$UserFarm->farm_id,intval($request->amount));
-            }
+            //     $Warehouse =  $this->makeNewWarehouse($userWarehouse->id,$UserFarm->farm_id,intval($request->amount));
+            // }
            
-            $Warehouse->amount -= $request->amount;
+            $Warehouse->amount += $request->amount;
             $Warehouse->save();
 
             return $this->api(new WarehouseProductResource($Warehouse->toArray()),__METHOD__);
