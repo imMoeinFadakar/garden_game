@@ -36,7 +36,9 @@ class WarehouseLevelController extends BaseAdminController
      */
     public function store(StorewherehouselevelRequest $request, WarehouseLevel $warehouseLevel)
     {
+        // dd($request->all());
         $warehouseLevel= $warehouseLevel->addNewWarehouseLevel($request);
+
         $warehouseLevel->load(["farm:id,name"]);
         return $this->api(new WhereHosueLevelResource($warehouseLevel->toArray()),__METHOD__);
     }

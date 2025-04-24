@@ -10,10 +10,7 @@ class Wherehouse extends Model
     protected $fillable = [
         "user_id",
         "warehouse_level_id",
-        "warehouse_cap_left",
         "farm_id",
-        'overcapacity',
-        'max_cap_left'
     ];
 
 

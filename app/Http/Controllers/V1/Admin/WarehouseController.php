@@ -35,9 +35,10 @@ class WarehouseController extends BaseAdminController
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(StorewherehouseRequest $request,Wherehouse $warehouse)
-    {
+    {   
+        // dd($request->all());
         $warehouse =  $warehouse->addnewWherehouse($request);
-        $warehouse->load(['user:id,name','warehouse_level:id,level_number','farm:id,name']);
+        $warehouse->load(['user:id,username','warehouse_level:id,level_number','farm:id,name']);
         return $this->api(new WhereHouseResource($warehouse->toArray()),__METHOD__);
     }
 

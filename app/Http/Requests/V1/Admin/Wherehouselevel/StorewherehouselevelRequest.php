@@ -24,7 +24,7 @@ class StorewherehouselevelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "level_number" => "required|integer|unique:warehouse_levels,id",
+            "level_number" => "required|integer",
             "overcapacity" => "required|integer",
             "cost_for_buy" => "required|integer",
             "farm_id" => ["required","integer","exists:farms,id"],
