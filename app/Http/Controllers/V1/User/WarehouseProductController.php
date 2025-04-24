@@ -30,7 +30,7 @@ class WarehouseProductController extends BaseUserController
 
         $warehouse = WarehouseProducts::query()
         ->whereIn("warehouse_id",$warehouse)
-        ->with(["warehouse:id,farm_id","farm:id,name,prodcut_image_url"])
+        ->with(["warehouse:id,farm_id","farm:id,name,prodcut_image_url",'warehouse.warehouse_level:id,overcapacity'])
         ->get();
 
         return $this->api(WarehouseProductResource::collection($warehouse),__METHOD__);
@@ -106,7 +106,7 @@ class WarehouseProductController extends BaseUserController
             $Warehouse->amount += $reward->amount;
             $Warehouse->save();
 
-            $deleteTemprarayReward = $this->deleteTempraryReward($reward);
+            $this->deleteTempraryReward($reward);
 
 
             return $this->api(new WarehouseProductResource($Warehouse->toArray()),__METHOD__);
