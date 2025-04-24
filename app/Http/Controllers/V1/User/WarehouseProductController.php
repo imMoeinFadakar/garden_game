@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserFarms;
 use App\Models\WarehouseLevel;
 use App\Models\Wherehouse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\WarehouseProducts;
 use App\Http\Controllers\Controller;
@@ -26,12 +27,9 @@ class WarehouseProductController extends BaseUserController
 
         $warehouse = Wherehouse::query()
         ->where("user_id",auth()->id())
-        ->get('id')->toArray();
-
-        $warehouse = WarehouseProducts::query()
-        ->whereIn("warehouse_id",$warehouse)
-        ->with(["warehouse:id,farm_id","farm:id,name,prodcut_image_url",'warehouse.warehouse_level:id,overcapacity'])
+        ->with(['wherehouse_product','warehouse_level:id,level_number,farm_id,overcapacity'])
         ->get();
+
 
         return $this->api(WarehouseProductResource::collection($warehouse),__METHOD__);
 
@@ -45,8 +43,17 @@ class WarehouseProductController extends BaseUserController
 
 
         $validated = $request->validated();
+        
+
+
 
         $reward = temporaryReward::find($validated['reward_id']);
+
+        if(Carbon::now()->greaterThan($reward->ex_time))
+            return $this->api(null,__METHOD__,'reward has been expired');
+
+
+
         if( $reward->user_id != auth()->id())
             return $this->api(null,__METHOD__,'this reward isnt yours');
 

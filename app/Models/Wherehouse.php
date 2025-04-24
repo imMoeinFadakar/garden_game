@@ -36,7 +36,7 @@ class Wherehouse extends Model
      */
     public function wherehouse_product()
     {
-        return $this->hasMany(WarehouseProducts::class);
+        return $this->hasMany(WarehouseProducts::class,'warehouse_id','id');
     }
 
 
