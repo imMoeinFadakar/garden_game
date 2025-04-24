@@ -27,7 +27,7 @@ class WarehouseProductController extends BaseUserController
 
         $warehouse = Wherehouse::query()
         ->where("user_id",auth()->id())
-        ->with(['wherehouse_product.farm:id,name,prodcut_image_url,header_light_color','warehouse_level:id,level_number,farm_id,overcapacity'])
+        ->with(['wherehouse_product','warehouse_level:id,level_number,farm_id,overcapacity','farm:id,name,prodcut_image_url,header_light_color'])
         ->get();
 
 
