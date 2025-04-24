@@ -9,7 +9,7 @@ class WarehouseLevel extends Model
     //
     protected $fillable = [
         "level_number",
-        "Overcapacity",
+        "overcapacity",
         "cost_for_buy",
         "farm_id",
     ];

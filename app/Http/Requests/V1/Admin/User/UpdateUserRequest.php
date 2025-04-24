@@ -27,9 +27,9 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|string|max:100',
             'username' => 'required|string|max:50|unique:users,username', // Assuming a `users` table
             'telegram_id' => 'required|string|regex:/^[0-9]+$/',
-            'market_status' => 'required|string|in:active,deactive',
-            'warehouse_status' => 'required|string|in:available,deactive',
-            'user_status' => 'required|string|in:active,deactive',
+            'market_status' => 'required|string|in:active,inactive',
+            'warehouse_status' => 'required|string|in:available,inactive',
+            'user_status' => 'required|string|in:active,inactive',
             'remember_token' => 'nullable|string|max:200',
         ];
     }
