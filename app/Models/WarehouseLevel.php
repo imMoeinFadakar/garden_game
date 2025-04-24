@@ -12,7 +12,6 @@ class WarehouseLevel extends Model
         "Overcapacity",
         "cost_for_buy",
         "farm_id",
-        'max_cap_left'
     ];
 
     public function farm()

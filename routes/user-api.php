@@ -41,6 +41,9 @@ Route::prefix("user")->group(function() {
         Route::post("new_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"create"]);
         Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseProductController::class,"index"]);
         Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
+        // Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseProductController::class,"newProduct"]);
+
+
 
         // avatar 
         Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"store"]);
@@ -58,7 +61,7 @@ Route::prefix("user")->group(function() {
         Route::post("active_warehouse",[App\Http\Controllers\V1\User\UserStatusController::class,"activeWarehouse"]);
         Route::post("active_market",[App\Http\Controllers\V1\User\UserStatusController::class,"activeMarket"]);
       
-        //product
+        // market
         Route::post("sell_product",[App\Http\Controllers\V1\User\MarketController::class,"sellProduct"]);
         Route::get("sell_product_history",[App\Http\Controllers\V1\User\MarketController::class,"userMarketHistory"]);
 

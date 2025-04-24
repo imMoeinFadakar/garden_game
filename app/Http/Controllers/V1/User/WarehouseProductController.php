@@ -45,7 +45,7 @@ class WarehouseProductController extends BaseUserController
         if(! $userWarehouseStatus)
             return $this->api(null,
                 __METHOD__,
-                "your warehouse is still deactivate",
+                "your warehouse is still inactive",
                 false ,
                 422);
 
@@ -53,17 +53,13 @@ class WarehouseProductController extends BaseUserController
         # check user has warehouse for this farm
         $userWarehouse = $this->getUserWarehouse($request->farm_id);
         if(! $userWarehouse)
-        return $this->errorResponse("you dont have the warehouse, buy it first",422);
+        return $this->errorResponse("you dont have the warehouse, make it first o call support",422);
 
         # check user has this farm
         $UserFarm = $this->HasUserFarm($request->farm_id);
         if(! $UserFarm)
             return $this->errorResponse("you dont have this farm",422);
 
-        // $userPower = $this->hasUserEnoughPower($request->amount,$UserFarm);
-        // if(! $userPower)
-        //     return $this->errorResponse("you dont have enough space to store this product, repair your farm",422);
-     
         $newPowerAmount = $this->minusUserFarmPower(intval($request->amount),$UserFarm->farm_power);
         
         if($newPowerAmount < 0){
