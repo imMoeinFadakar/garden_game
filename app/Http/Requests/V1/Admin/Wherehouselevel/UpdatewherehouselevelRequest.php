@@ -25,9 +25,9 @@ class UpdatewherehouselevelRequest extends FormRequest
     {
         return [
             "level_number" => "required|integer|unique:warehouse_levels,id",
-            "Overcapacity" => "required|integer",
+            "overcapacity" => "required|integer",
             "cost_for_buy" => "required|integer",
-            "farm_id" => ["required","integer","exists:farms,id"],
+       
 
         ];
     }

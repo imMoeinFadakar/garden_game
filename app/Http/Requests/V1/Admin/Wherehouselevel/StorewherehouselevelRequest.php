@@ -25,10 +25,10 @@ class StorewherehouselevelRequest extends FormRequest
     {
         return [
             "level_number" => "required|integer|unique:warehouse_levels,id",
-            "Overcapacity" => "required|integer",
+            "overcapacity" => "required|integer",
             "cost_for_buy" => "required|integer",
             "farm_id" => ["required","integer","exists:farms,id"],
-            "max_cap_left" => "required|integer"
+         
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
