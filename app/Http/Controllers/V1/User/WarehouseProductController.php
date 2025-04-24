@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\User;
 
 use App\Http\Requests\V1\User\AddProduct\AddProdcutRequest;
 use App\Http\Resources\V1\User\WarehouseProductResource;
+use App\Models\temporaryReward;
 use App\Models\User;
 use App\Models\UserFarms;
 use App\Models\WarehouseLevel;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\WarehouseProducts;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use SebastianBergmann\Type\TrueType;
 
 class WarehouseProductController extends BaseUserController
 {   
@@ -41,6 +43,15 @@ class WarehouseProductController extends BaseUserController
 
         $userWarehouseStatus = $this->GetUserWarehouseStatus(); // get warehouse_status user
 
+
+        $validated = $request->validated();
+
+        $reward = temporaryReward::find($validated['reward_id']);
+        if( $reward->user_id != auth()->id())
+            return $this->api(null,__METHOD__,'this reward isnt yours');
+
+     
+
         // check its must be active
         if(! $userWarehouseStatus)
             return $this->api(null,
@@ -60,7 +71,7 @@ class WarehouseProductController extends BaseUserController
         if(! $UserFarm)
             return $this->errorResponse("you dont have this farm",422);
 
-        $newPowerAmount = $this->minusUserFarmPower(intval($request->amount),$UserFarm->farm_power);
+        $newPowerAmount = $this->minusUserFarmPower(intval($reward->amount),$UserFarm->farm_power);
         
         if($newPowerAmount < 0){
             
@@ -73,14 +84,30 @@ class WarehouseProductController extends BaseUserController
 
         if($insertNewValue){
 
-            $Warehouse = $this->findWarehouse($UserFarm->farm_id,$userWarehouse->id);
-            // if(! $Warehouse){
+            $Warehouse = $this->findWarehouseProduct($UserFarm->farm_id,$userWarehouse->id);
+            if(! $Warehouse)
+                return $this->api(null,__METHOD__,'you dont active your warehouse yet');
 
-            //     $Warehouse =  $this->makeNewWarehouse($userWarehouse->id,$UserFarm->farm_id,intval($request->amount));
-            // }
-           
-            $Warehouse->amount += $request->amount;
+
+
+            $warehouseLevel = $this->userWarehouseLevel($userWarehouse->warehouse_level_id);
+            if(! $warehouseLevel)
+                return $this->api(null,__METHOD__,'where house level not exists');
+
+
+
+
+            $newAmount = $Warehouse->amount + $reward->amount;
+           $userOvercapacity =  $this->hasUserEnoughWarehouseCap($newAmount,$warehouseLevel->overcapacity);
+            if(! $userOvercapacity)
+                return $this->api(null,__METHOD__,'your ware house is full');
+
+
+            $Warehouse->amount += $reward->amount;
             $Warehouse->save();
+
+            $deleteTemprarayReward = $this->deleteTempraryReward($reward);
+
 
             return $this->api(new WarehouseProductResource($Warehouse->toArray()),__METHOD__);
 
@@ -88,6 +115,27 @@ class WarehouseProductController extends BaseUserController
             
         return $this->errorResponse("operation failed,call support",422);
  
+    }
+
+    public function deleteTempraryReward($reward)
+    {
+        return $reward->delete();
+    }
+
+
+    public function hasUserEnoughWarehouseCap(int $newProductAmount,int $warehouseMaxCap): bool
+    {
+        if($newProductAmount > $warehouseMaxCap)
+            return true;
+
+         return false;   
+    }
+
+    public function userWarehouseLevel(int $userWarehouseLvlId)
+    {
+        return WarehouseLevel::query()
+        ->where("id",$userWarehouseLvlId)
+        ->first();
     }
 
 
@@ -105,7 +153,7 @@ class WarehouseProductController extends BaseUserController
     }
 
 
-    public function findWarehouse(int $farmId,int $warehouseId)
+    public function findWarehouseProduct(int $farmId,int $warehouseId)
     {
         return  WarehouseProducts::query()
         ->where("farm_id",$farmId)
