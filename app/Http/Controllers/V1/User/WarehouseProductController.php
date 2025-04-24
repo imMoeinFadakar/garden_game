@@ -27,7 +27,7 @@ class WarehouseProductController extends BaseUserController
 
         $warehouse = Wherehouse::query()
         ->where("user_id",auth()->id())
-        ->with(['wherehouse_product','warehouse_level:id,level_number,farm_id,overcapacity'])
+        ->with(['wherehouse_product.farm:id,name,prodcut_image_url,header_light_color','warehouse_level:id,level_number,farm_id,overcapacity'])
         ->get();
 
 
@@ -41,11 +41,7 @@ class WarehouseProductController extends BaseUserController
 
         $userWarehouseStatus = $this->GetUserWarehouseStatus(); // get warehouse_status user
 
-
         $validated = $request->validated();
-        
-
-
 
         $reward = temporaryReward::find($validated['reward_id']);
 
