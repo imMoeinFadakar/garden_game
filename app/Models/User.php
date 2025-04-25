@@ -58,6 +58,7 @@ class User extends Authenticatable
         ];
     }
 
+
     public function addNewUser( $request){
         return $this->query()->create( $request->validated());
     }

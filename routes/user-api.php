@@ -14,7 +14,6 @@ Route::prefix("user")->group(function() {
 
     Route::middleware(['auth:sanctum','auth'])->group(function(){
 
-    
         // auth 
         Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findingUser"]); // find user by TL id
         Route::get("user",[App\Http\Controllers\V1\User\UserController::class,"index"]); // get self user
@@ -36,19 +35,15 @@ Route::prefix("user")->group(function() {
         Route::post("buy_farm",[App\Http\Controllers\V1\User\BuyFarmController::class,"store"]);
         Route::get('show_farm/{id}', [FarmController::class, 'show']);
 
-
         // warehouse 
         Route::post("new_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"create"]);
         Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"index"]);
         Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
         Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseController::class,"storeProduct"]);
 
-
-
         // avatar 
         Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"store"]);
         Route::get("avatar", [App\Http\Controllers\V1\User\AvatarController::class, "index"]);
-
 
         // transaction
         Route::post("withdrawal",[App\Http\Controllers\V1\User\WithdrawalControler::class,"withdrawal"]);
@@ -65,8 +60,6 @@ Route::prefix("user")->group(function() {
         // market
         Route::post("sell_product",[App\Http\Controllers\V1\User\MarketController::class,"sellProduct"]);
         Route::get("sell_product_history",[App\Http\Controllers\V1\User\MarketController::class,"userMarketHistory"]);
-
-
 
     });
  

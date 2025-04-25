@@ -23,7 +23,10 @@ class MarketController extends BaseUserController
     {
        $marketHistory  = MarketHistory::query()
        ->where('user_id',auth()->id())
-       ->get(['product_amount','token_amount','created_at']);
+       ->with(['farm:id,name,prodcut_image_url'])
+       ->get(['product_amount','token_amount','created_at','farm_id']);
+
+
 
         return $this->api(MarketResource::collection($marketHistory),__METHOD__);
 
@@ -70,7 +73,8 @@ class MarketController extends BaseUserController
             [
                 "user_id" => auth()->id(), // user id
                 "product_amount" => $validatedRequest["amount"], // new amount
-                'token_amount' => $newUserBenefit
+                'token_amount' => $newUserBenefit,
+                "farm_id" => $farm->id
             ];
 
           $marketHistory =   $marketHistory->addNewMarketHistory($newRequest); // add to market history

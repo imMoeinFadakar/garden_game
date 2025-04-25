@@ -10,7 +10,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'first login/post'
       description: ''
       authenticated: false
       custom: []
@@ -62,7 +62,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'all policy'
       description: ''
       authenticated: false
       custom: []
@@ -101,7 +101,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'find the auth user'
       description: ''
       authenticated: false
       custom: []
@@ -142,7 +142,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'get user'
       description: ''
       authenticated: false
       custom: []
@@ -181,7 +181,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'return user avatar and its image'
       description: ''
       authenticated: false
       custom: []
@@ -220,7 +220,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'new referal / post'
       description: ''
       authenticated: false
       custom: []
@@ -261,7 +261,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'add user name and gender to user table'
       description: ''
       authenticated: false
       custom: []
@@ -315,7 +315,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'get all tasks'
       description: ''
       authenticated: false
       custom: []
@@ -354,7 +354,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'get task that user had done before'
       description: ''
       authenticated: false
       custom: []
@@ -393,7 +393,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Store a newly created resource in storage.'
+      title: 'add new user task'
       description: ''
       authenticated: false
       custom: []
@@ -434,7 +434,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'get user badge'
       description: ''
       authenticated: false
       custom: []
@@ -473,7 +473,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: farm/index
       description: ''
       authenticated: false
       custom: []
@@ -512,7 +512,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'get user farm'
       description: ''
       authenticated: false
       custom: []
@@ -551,7 +551,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Store a newly created resource in storage.'
+      title: 'buy new farm by user'
       description: ''
       authenticated: false
       custom: []
@@ -585,6 +585,56 @@ endpoints:
     custom: []
   -
     httpMethods:
+      - GET
+    uri: 'api/v1/user/show_farm/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the show farm.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
       - POST
     uri: api/v1/user/new_warehouse
     metadata:
@@ -592,7 +642,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'create new warehouse'
       description: ''
       authenticated: false
       custom: []
@@ -633,7 +683,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'get list of user products'
       description: ''
       authenticated: false
       custom: []
@@ -672,7 +722,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Store a newly created resource in storage.'
+      title: 'update usee warehouse'
       description: ''
       authenticated: false
       custom: []
@@ -707,13 +757,65 @@ endpoints:
   -
     httpMethods:
       - POST
+    uri: api/v1/user/add_prodcut
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      farm_id:
+        name: farm_id
+        description: 'The <code>id</code> of an existing record in the farms table.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      reward_id:
+        name: reward_id
+        description: 'The <code>id</code> of an existing record in the temporary_rewards table.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      farm_id: 17
+      reward_id: 17
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
     uri: api/v1/user/user_avatar
     metadata:
       groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Store a newly created resource in storage.'
+      title: 'get user avatar'
       description: ''
       authenticated: false
       custom: []
@@ -754,7 +856,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'all avatar/index'
       description: ''
       authenticated: false
       custom: []
@@ -793,7 +895,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'new withdraw request'
       description: ''
       authenticated: false
       custom: []
@@ -834,7 +936,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'get all users transaction'
       description: ''
       authenticated: false
       custom: []
@@ -873,7 +975,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'use gitftcart/post'
       description: ''
       authenticated: false
       custom: []
@@ -948,6 +1050,45 @@ endpoints:
     custom: []
   -
     httpMethods:
+      - GET
+    uri: api/v1/user/user_referral_reward
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
       - POST
     uri: api/v1/user/transfer
     metadata:
@@ -955,7 +1096,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'transfer from user to another user'
       description: ''
       authenticated: false
       custom: []
@@ -1007,7 +1148,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'activate user warehouse'
       description: ''
       authenticated: false
       custom: []
@@ -1037,7 +1178,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'active market'
       description: ''
       authenticated: false
       custom: []
@@ -1067,7 +1208,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'sell user product'
       description: ''
       authenticated: false
       custom: []
@@ -1119,7 +1260,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'get user history'
       description: ''
       authenticated: false
       custom: []

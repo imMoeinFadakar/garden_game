@@ -44,7 +44,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("warehouse-level",App\Http\Controllers\V1\Admin\WarehouseLevelController::class);
                 Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
                 Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
-                // Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
+                Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
                 Route::apiResource("policy_and_rule",App\Http\Controllers\V1\Admin\PolicyAndRuleController::class);
                 Route::apiResource("market_history",App\Http\Controllers\V1\Admin\MarketHistoryController::class);
                 

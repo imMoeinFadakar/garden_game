@@ -72,88 +72,97 @@
                 </li>
                                     <ul id="tocify-subheader-endpoints" class="tocify-subheader">
                                                     <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-auth_user">
-                                <a href="#endpoints-POSTapi-v1-user-auth_user">POST api/v1/user/auth_user</a>
+                                <a href="#endpoints-POSTapi-v1-user-auth_user">first login/post</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-policy">
-                                <a href="#endpoints-GETapi-v1-user-policy">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-policy">all policy</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-find_user">
-                                <a href="#endpoints-POSTapi-v1-user-find_user">POST api/v1/user/find_user</a>
+                                <a href="#endpoints-POSTapi-v1-user-find_user">find the auth user</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-user">
-                                <a href="#endpoints-GETapi-v1-user-user">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-user">get user</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-get_user_avatar">
-                                <a href="#endpoints-GETapi-v1-user-get_user_avatar">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-get_user_avatar">return user avatar and its image</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-new_referral">
-                                <a href="#endpoints-POSTapi-v1-user-new_referral">POST api/v1/user/new_referral</a>
+                                <a href="#endpoints-POSTapi-v1-user-new_referral">new referal / post</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-register">
-                                <a href="#endpoints-POSTapi-v1-user-register">POST api/v1/user/register</a>
+                                <a href="#endpoints-POSTapi-v1-user-register">add user name and gender to user table</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-tasks">
-                                <a href="#endpoints-GETapi-v1-user-tasks">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-tasks">get all tasks</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-user_task">
-                                <a href="#endpoints-GETapi-v1-user-user_task">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-user_task">get task that user had done before</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-user_task">
-                                <a href="#endpoints-POSTapi-v1-user-user_task">Store a newly created resource in storage.</a>
+                                <a href="#endpoints-POSTapi-v1-user-user_task">add new user task</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-badge">
-                                <a href="#endpoints-GETapi-v1-user-badge">GET api/v1/user/badge</a>
+                                <a href="#endpoints-GETapi-v1-user-badge">get user badge</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-farm">
-                                <a href="#endpoints-GETapi-v1-user-farm">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-farm">farm/index</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-user_farm">
-                                <a href="#endpoints-GETapi-v1-user-user_farm">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-user_farm">get user farm</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-buy_farm">
-                                <a href="#endpoints-POSTapi-v1-user-buy_farm">Store a newly created resource in storage.</a>
+                                <a href="#endpoints-POSTapi-v1-user-buy_farm">buy new farm by user</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-show_farm--id-">
+                                <a href="#endpoints-GETapi-v1-user-show_farm--id-">GET api/v1/user/show_farm/{id}</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-new_warehouse">
-                                <a href="#endpoints-POSTapi-v1-user-new_warehouse">POST api/v1/user/new_warehouse</a>
+                                <a href="#endpoints-POSTapi-v1-user-new_warehouse">create new warehouse</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-warehouse">
-                                <a href="#endpoints-GETapi-v1-user-warehouse">GET api/v1/user/warehouse</a>
+                                <a href="#endpoints-GETapi-v1-user-warehouse">get list of user products</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-user_warehouse">
-                                <a href="#endpoints-POSTapi-v1-user-user_warehouse">Store a newly created resource in storage.</a>
+                                <a href="#endpoints-POSTapi-v1-user-user_warehouse">update usee warehouse</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-add_prodcut">
+                                <a href="#endpoints-POSTapi-v1-user-add_prodcut">POST api/v1/user/add_prodcut</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-user_avatar">
-                                <a href="#endpoints-POSTapi-v1-user-user_avatar">Store a newly created resource in storage.</a>
+                                <a href="#endpoints-POSTapi-v1-user-user_avatar">get user avatar</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-avatar">
-                                <a href="#endpoints-GETapi-v1-user-avatar">Display a listing of the resource.</a>
+                                <a href="#endpoints-GETapi-v1-user-avatar">all avatar/index</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-withdrawal">
-                                <a href="#endpoints-POSTapi-v1-user-withdrawal">POST api/v1/user/withdrawal</a>
+                                <a href="#endpoints-POSTapi-v1-user-withdrawal">new withdraw request</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-transaction">
-                                <a href="#endpoints-GETapi-v1-user-transaction">GET api/v1/user/transaction</a>
+                                <a href="#endpoints-GETapi-v1-user-transaction">get all users transaction</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-use_giftcart">
-                                <a href="#endpoints-POSTapi-v1-user-use_giftcart">POST api/v1/user/use_giftcart</a>
+                                <a href="#endpoints-POSTapi-v1-user-use_giftcart">use gitftcart/post</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-pay_reward">
                                 <a href="#endpoints-POSTapi-v1-user-pay_reward">POST api/v1/user/pay_reward</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-user_referral_reward">
+                                <a href="#endpoints-GETapi-v1-user-user_referral_reward">GET api/v1/user/user_referral_reward</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-transfer">
-                                <a href="#endpoints-POSTapi-v1-user-transfer">POST api/v1/user/transfer</a>
+                                <a href="#endpoints-POSTapi-v1-user-transfer">transfer from user to another user</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-active_warehouse">
-                                <a href="#endpoints-POSTapi-v1-user-active_warehouse">POST api/v1/user/active_warehouse</a>
+                                <a href="#endpoints-POSTapi-v1-user-active_warehouse">activate user warehouse</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-active_market">
-                                <a href="#endpoints-POSTapi-v1-user-active_market">POST api/v1/user/active_market</a>
+                                <a href="#endpoints-POSTapi-v1-user-active_market">active market</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-user-sell_product">
-                                <a href="#endpoints-POSTapi-v1-user-sell_product">POST api/v1/user/sell_product</a>
+                                <a href="#endpoints-POSTapi-v1-user-sell_product">sell user product</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-user-sell_product_history">
-                                <a href="#endpoints-GETapi-v1-user-sell_product_history">GET api/v1/user/sell_product_history</a>
+                                <a href="#endpoints-GETapi-v1-user-sell_product_history">get user history</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -166,7 +175,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: April 23, 2025</li>
+        <li>Last updated: April 25, 2025</li>
     </ul>
 </div>
 
@@ -189,7 +198,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
     
 
-                                <h2 id="endpoints-POSTapi-v1-user-auth_user">POST api/v1/user/auth_user</h2>
+                                <h2 id="endpoints-POSTapi-v1-user-auth_user">first login/post</h2>
 
 <p>
 </p>
@@ -331,7 +340,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-policy">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-policy">all policy</h2>
 
 <p>
 </p>
@@ -458,7 +467,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-find_user">POST api/v1/user/find_user</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-find_user">find the auth user</h2>
 
 <p>
 </p>
@@ -587,7 +596,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-user">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-user">get user</h2>
 
 <p>
 </p>
@@ -711,7 +720,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-get_user_avatar">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-get_user_avatar">return user avatar and its image</h2>
 
 <p>
 </p>
@@ -835,7 +844,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-new_referral">POST api/v1/user/new_referral</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-new_referral">new referal / post</h2>
 
 <p>
 </p>
@@ -964,7 +973,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-register">POST api/v1/user/register</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-register">add user name and gender to user table</h2>
 
 <p>
 </p>
@@ -1108,7 +1117,7 @@ Must be one of:
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-tasks">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-tasks">get all tasks</h2>
 
 <p>
 </p>
@@ -1232,7 +1241,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-user_task">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-user_task">get task that user had done before</h2>
 
 <p>
 </p>
@@ -1356,7 +1365,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-user_task">Store a newly created resource in storage.</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-user_task">add new user task</h2>
 
 <p>
 </p>
@@ -1485,7 +1494,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-badge">GET api/v1/user/badge</h2>
+                    <h2 id="endpoints-GETapi-v1-user-badge">get user badge</h2>
 
 <p>
 </p>
@@ -1609,7 +1618,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-farm">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-farm">farm/index</h2>
 
 <p>
 </p>
@@ -1733,7 +1742,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-user_farm">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-user_farm">get user farm</h2>
 
 <p>
 </p>
@@ -1857,7 +1866,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-buy_farm">Store a newly created resource in storage.</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-buy_farm">buy new farm by user</h2>
 
 <p>
 </p>
@@ -1986,7 +1995,143 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-new_warehouse">POST api/v1/user/new_warehouse</h2>
+                    <h2 id="endpoints-GETapi-v1-user-show_farm--id-">GET api/v1/user/show_farm/{id}</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v1-user-show_farm--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/v1/user/show_farm/1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/user/show_farm/1"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-user-show_farm--id-">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-user-show_farm--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-user-show_farm--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-user-show_farm--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-user-show_farm--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-user-show_farm--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-user-show_farm--id-" data-method="GET"
+      data-path="api/v1/user/show_farm/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-user-show_farm--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-user-show_farm--id-"
+                    onclick="tryItOut('GETapi-v1-user-show_farm--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-user-show_farm--id-"
+                    onclick="cancelTryOut('GETapi-v1-user-show_farm--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-user-show_farm--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/user/show_farm/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-user-show_farm--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-user-show_farm--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="GETapi-v1-user-show_farm--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the show farm. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="endpoints-POSTapi-v1-user-new_warehouse">create new warehouse</h2>
 
 <p>
 </p>
@@ -2115,7 +2260,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-warehouse">GET api/v1/user/warehouse</h2>
+                    <h2 id="endpoints-GETapi-v1-user-warehouse">get list of user products</h2>
 
 <p>
 </p>
@@ -2239,7 +2384,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-user_warehouse">Store a newly created resource in storage.</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-user_warehouse">update usee warehouse</h2>
 
 <p>
 </p>
@@ -2368,7 +2513,149 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-user_avatar">Store a newly created resource in storage.</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-add_prodcut">POST api/v1/user/add_prodcut</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-v1-user-add_prodcut">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://127.0.0.1:8000/api/v1/user/add_prodcut" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"farm_id\": 17,
+    \"reward_id\": 17
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/user/add_prodcut"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "farm_id": 17,
+    "reward_id": 17
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-user-add_prodcut">
+</span>
+<span id="execution-results-POSTapi-v1-user-add_prodcut" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-user-add_prodcut"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-user-add_prodcut"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-user-add_prodcut" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-user-add_prodcut">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-user-add_prodcut" data-method="POST"
+      data-path="api/v1/user/add_prodcut"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-user-add_prodcut', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-user-add_prodcut"
+                    onclick="tryItOut('POSTapi-v1-user-add_prodcut');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-user-add_prodcut"
+                    onclick="cancelTryOut('POSTapi-v1-user-add_prodcut');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-user-add_prodcut"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/user/add_prodcut</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-user-add_prodcut"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-user-add_prodcut"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>farm_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="farm_id"                data-endpoint="POSTapi-v1-user-add_prodcut"
+               value="17"
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the farms table. Example: <code>17</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>reward_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="reward_id"                data-endpoint="POSTapi-v1-user-add_prodcut"
+               value="17"
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the temporary_rewards table. Example: <code>17</code></p>
+        </div>
+        </form>
+
+                    <h2 id="endpoints-POSTapi-v1-user-user_avatar">get user avatar</h2>
 
 <p>
 </p>
@@ -2497,7 +2784,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-avatar">Display a listing of the resource.</h2>
+                    <h2 id="endpoints-GETapi-v1-user-avatar">all avatar/index</h2>
 
 <p>
 </p>
@@ -2621,7 +2908,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-withdrawal">POST api/v1/user/withdrawal</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-withdrawal">new withdraw request</h2>
 
 <p>
 </p>
@@ -2750,7 +3037,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-transaction">GET api/v1/user/transaction</h2>
+                    <h2 id="endpoints-GETapi-v1-user-transaction">get all users transaction</h2>
 
 <p>
 </p>
@@ -2874,7 +3161,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-use_giftcart">POST api/v1/user/use_giftcart</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-use_giftcart">use gitftcart/post</h2>
 
 <p>
 </p>
@@ -3132,7 +3419,131 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-transfer">POST api/v1/user/transfer</h2>
+                    <h2 id="endpoints-GETapi-v1-user-user_referral_reward">GET api/v1/user/user_referral_reward</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v1-user-user_referral_reward">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/v1/user/user_referral_reward" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/user/user_referral_reward"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-user-user_referral_reward">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-user-user_referral_reward" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-user-user_referral_reward"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-user-user_referral_reward"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-user-user_referral_reward" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-user-user_referral_reward">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-user-user_referral_reward" data-method="GET"
+      data-path="api/v1/user/user_referral_reward"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-user-user_referral_reward', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-user-user_referral_reward"
+                    onclick="tryItOut('GETapi-v1-user-user_referral_reward');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-user-user_referral_reward"
+                    onclick="cancelTryOut('GETapi-v1-user-user_referral_reward');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-user-user_referral_reward"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/user/user_referral_reward</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-user-user_referral_reward"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-user-user_referral_reward"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="endpoints-POSTapi-v1-user-transfer">transfer from user to another user</h2>
 
 <p>
 </p>
@@ -3274,7 +3685,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-active_warehouse">POST api/v1/user/active_warehouse</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-active_warehouse">activate user warehouse</h2>
 
 <p>
 </p>
@@ -3382,7 +3793,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-active_market">POST api/v1/user/active_market</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-active_market">active market</h2>
 
 <p>
 </p>
@@ -3490,7 +3901,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-v1-user-sell_product">POST api/v1/user/sell_product</h2>
+                    <h2 id="endpoints-POSTapi-v1-user-sell_product">sell user product</h2>
 
 <p>
 </p>
@@ -3632,7 +4043,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-v1-user-sell_product_history">GET api/v1/user/sell_product_history</h2>
+                    <h2 id="endpoints-GETapi-v1-user-sell_product_history">get user history</h2>
 
 <p>
 </p>

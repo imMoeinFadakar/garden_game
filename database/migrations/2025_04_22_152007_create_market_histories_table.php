@@ -17,6 +17,12 @@ return new class extends Migration
             ->constrained("users")
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
+
+            $table->foreignId("farm_id")
+            ->constrained("farms")
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
+
             $table->unsignedBigInteger("product_amount");
             $table->unsignedBigInteger("token_amount");
             $table->timestamps();
