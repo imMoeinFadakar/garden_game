@@ -65,11 +65,11 @@ class GiftCartController extends BaseUserController
 
     /**
      * add new amount to user wallet
-     * @param \Illuminate\Auth\Authenticatable $user
+     * @param  $user
      * @param int $amount
      * @return bool
      */
-    public function addNewAmount(Authenticatable $user,int $amount): bool
+    public function addNewAmount( $user,int $amount): bool
     {
         $user->token_amount += $amount;
       return   $user->save();
