@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class PoliciesController extends BaseUserController
 {
     /**
-     * Display a listing of the resource.
+     * all policy
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {

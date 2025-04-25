@@ -70,6 +70,12 @@ class UserController extends BaseUserController
         return $this->api(null,__METHOD__,'referral already exists');
 
     }
+    /**
+     * check referral exists before
+     * @param int $invatingUserId
+     * @param int $invantedUserId
+     * @return bool
+     */
     public function isReferralExists(int $invatingUserId,int $invantedUserId): bool
     {
         return UserReferral::query()
@@ -77,7 +83,11 @@ class UserController extends BaseUserController
         ->where('invading_user',$invatingUserId)
         ->exists();
     }
-
+    /**
+     * fidn user by Referral code
+     * @param mixed $referrallCode
+     * @return User|null
+     */
     public function findUserByReferralCode($referrallCode)
     {
         return User::query()

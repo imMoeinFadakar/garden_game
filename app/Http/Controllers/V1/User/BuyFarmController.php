@@ -40,7 +40,7 @@ class BuyFarmController extends BaseUserController
         $user = $this->findUser(auth()->id()); // find or 
         $farm = $this->getFarm($request->farm_id);
         
-        $userFarm = $this->userFarmeExists($farm->id,$user->id);
+        $userFarm = $this->userFarmExists($farm->id,$user->id);
         if($userFarm)
             return $this->api(null,__METHOD__,"you already have this farm ");
     
@@ -76,17 +76,15 @@ class BuyFarmController extends BaseUserController
         return $this->api(new BuyFarmResource($userFarm->toArray()),__METHOD__);
     }
 
+ 
 
-    public function userWarehouse(int $farmId,int $userId): bool
-    {
-        return Wherehouse::query()
-        ->where("user_id",$userId)
-        ->where("farm_id",$farmId)
-        ->exists();
-    }
-
-
-    public function userFarmeExists(int $farmId,int $userId): bool
+    /**
+     * looking for farms that user own
+     * @param int $farmId
+     * @param int $userId
+     * @return bool
+     */
+    public function userFarmExists(int $farmId,int $userId): bool
     {
         return UserFarms::query()
         ->where("user_id",$userId)
@@ -94,55 +92,21 @@ class BuyFarmController extends BaseUserController
         ->exists();
     }
 
- 
-
-
-
-    public function findUserWarehouse($userId,$productId)
-    {  
-        $userWarehouse = Wherehouse::findUserWarehouse($userId,$productId);
-
-        if($userWarehouse)
-            return $userWarehouse->id;
-
-        return null;
-    }
-
-    public function createNewWarehouse($farmId,$firstLevel)
-    {
-        $credential = [
-             "user_id" => auth()->id(),
-             "farm_id" => $farmId,
-             "warehouse_level_id" => $firstLevel->id,
-             "warehouse_cap_left" => $firstLevel->max_cap_left,
-             "overcapacity" => $firstLevel->overcapacity
-        ];
-
-
-        return Wherehouse::query()->create($credential);
-
-
-    }
-
-
-    public function firstWarehouseLevel(int $farmId)
-    {
-        return WarehouseLevel::query()
-            ->where("farm_id",$farmId)
-            ->where("level_number",1)
-            ->first();
-    }
-
-    public function findProduct($farmId)
-    {
-        return Farms::find($farmId);
-    }
-
-    public function insertNewUservalues($gem,$token)
+    /**
+     * @param int $gem
+     * @param int $token
+     * @return int
+     */
+    public function insertNewUservalues(int $gem,int $token): int
     {
        return User::insertNewUserValue($gem,$token);
     }
 
+    /**
+     * @param int $userResource
+     * @param int $farmResource
+     * @return int
+     */
     public function minuseUserResource(int $userResource,int $farmResource): int
     {
        return $userResource - $farmResource;
@@ -156,8 +120,12 @@ class BuyFarmController extends BaseUserController
     {
         return UserReferral::userReferralNum(); 
     }
-
-    public function userHaveEnoughResource(int $UserResource, $farmRequireResource): bool
+    /**
+     * @param int $UserResource
+     * @param int $farmRequireResource
+     * @return bool
+     */
+    public function userHaveEnoughResource(int $UserResource,int $farmRequireResource): bool
     {       
 
         if($UserResource < $farmRequireResource)
@@ -167,7 +135,11 @@ class BuyFarmController extends BaseUserController
         return true;
     }
 
-
+    /**
+     * Summary of getFarm
+     * @param mixed $farmId
+     * @return Collection<int, Farms>|mixed|\Illuminate\Http\JsonResponse
+     */
     public function getFarm($farmId)
     {
         $farm = Farms::findFarm($farmId);
@@ -177,7 +149,11 @@ class BuyFarmController extends BaseUserController
         return $farm;
     }
 
-
+    /**
+     * find user
+     * @param mixed $userId
+     * @return Collection<int, User>
+     */
     public function findUser($userId)
     {
         return  User::find($userId);

@@ -39,8 +39,6 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("user-referral-management",App\Http\Controllers\V1\Admin\UserReferralManagementController::class);
                 Route::apiResource("user-referral-reward",App\Http\Controllers\V1\Admin\UserReferralRewardController::class);
                 Route::apiResource("user-task",App\Http\Controllers\V1\Admin\UserTaskController::class);
-                Route::apiResource("wallet",App\Http\Controllers\V1\Admin\WalletController::class);
-                Route::apiResource("warehouse-product",App\Http\Controllers\V1\Admin\WarehouseProductController::class);
                 Route::apiResource("warehouse-level",App\Http\Controllers\V1\Admin\WarehouseLevelController::class);
                 Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
                 Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);

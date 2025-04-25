@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UserAvatar;
 use App\Models\Wallet;
 use Carbon\Carbon;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 
 class FirstAuthController extends BaseUserController
@@ -23,36 +24,55 @@ class FirstAuthController extends BaseUserController
         $this->userModel = new  User();
     }
 
-
+    /**
+     * first login/post 
+     * @param \App\Http\Requests\V1\User\Auth\FirstAuthRequest $request
+     * @param \App\Models\User $user
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function userLogin(FirstAuthRequest $request,User $user)
     {   
 
-        $findOrNewUser =  $user->findOrNewUser($request->validated());
+        $findOrNewUser =  $user->findOrNewUser($request->validated()); // find or create user
 
+        $this->loginUser($findOrNewUser); // login user
         
-        Auth::login($findOrNewUser);
-
-
-        $token = $findOrNewUser->createToken("USER TOKEN",[null],Carbon::now()->addHours(6))->plainTextToken;
+      
+        $token = $this->createUserToken($findOrNewUser); // user token 
           
         return $this->api(new AuthResource(['user'=>$findOrNewUser,"token"=>$token]),__METHOD__);
 
         
     }
-
-    public function loginUser($user)
+    /**
+     * Summary of createUserToken
+     * @param \Illuminate\Auth\Authenticatable $user
+     * @return string (Token)
+     */
+    public function createUserToken(Authenticatable $user): string
     {
-        Auth::login($user);
+        return $user->createToken("USER TOKEN",[null],Carbon::now()->addHours(6))->plainTextToken;
     }
 
+    /**
+     * login user
+     * @param mixed $user
+     * @return void
+     */
+    public function loginUser($user): void
+    {
+       return  Auth::login($user);
+    }
+
+    /**
+     * Find user or make new one 
+     * @param mixed $request
+     * @return User
+     */
     public function findOrNewUser($request)
     {
         return User::query()
             ->firstOrCreate(["name"=>$request->name,"telegram_id"=>$request->telegram_id]);
     }
-
-
-
-
 
 }

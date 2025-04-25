@@ -18,8 +18,12 @@ class RegistrationController extends BaseUserController
     }
 
 
-
-    // add username gender
+    /**
+     * add user name and gender to user table
+     * @param \App\Http\Requests\V1\User\RegistrationRequest $request
+     * @param \App\Models\User $user
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function register(RegistrationRequest $request,User $user)
     {
 

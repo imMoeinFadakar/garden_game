@@ -29,29 +29,36 @@ class TransferController extends BaseUserController
         if(! $hasUsereniughToken)
             return $this->api(null,__METHOD__,'you dont have enough token');
         
-        $reciverUser = $this->reciverWallet($validatedRequest['user_address']);
+        $reciverUser = $this->reciverWallet($validatedRequest['user_address']); // find reciver User
         
-        $minusToken = $this->minusUserGem($validatedRequest["token_amount"],$user);
+        $minusToken = $this->minusUserToken($validatedRequest["token_amount"],$user); // minuse user token
 
     
         if(! $minusToken)
             return $this->errorResponse("Receiver user not found!");
 
-        $addGemToWallet = $this->plusUserReceiverGem($reciverUser,$validatedRequest["token_amount"]);
+        // add new amount to user reciver
+        $addTokenToWallet = $this->AddUserReceiverToken($reciverUser,$validatedRequest["token_amount"]);
 
-        if(! $addGemToWallet){
-            $this->plusUserReceiverGem($user,$validatedRequest["token_amount"]);
-            return $this->errorResponse("operation failed! gem has been returned to your wallet");
+        if(! $addTokenToWallet){ // if add wasn`t successful :
+            // return tokens to user wallet
+            $this->AddUserReceiverToken($user,$validatedRequest["token_amount"]);
+            return $this->errorResponse("operation failed! gem has been returned to your wallet"); // error response
         }
 
-        $validatedRequest["from_user"] = auth()->id(); //auth::id()
-        $validatedRequest["to_user"] = $reciverUser->id;
-        $transfer = $transfer->addNewTransfer($validatedRequest);
+        $validatedRequest["from_user"] = auth()->id(); // Sender user = auth->user
+        $validatedRequest["to_user"] = $reciverUser->id; // Reciver user
+        $transfer = $transfer->addNewTransfer($validatedRequest); 
 
         return $this->api(new TransferResource($transfer->toArray()),__METHOD__);
 
     }
 
+    /**
+     * find reciver user
+     * @param mixed $referalCode
+     * @return User|null
+     */
     public function reciverWallet($referalCode)
     {
         return User::query()
@@ -61,24 +68,43 @@ class TransferController extends BaseUserController
 
 
 
-
-    public function plusUserReceiverGem($receiverWallet,int $amount)
+    /**
+     * add token to reciver wallet
+     * @param mixed $receiverWallet
+     * @param int $amount
+     */
+    public function AddUserReceiverToken($receiverWallet,int $amount)
     {
         $receiverWallet->token_amount += $amount;
         return $receiverWallet->save();
     }
-    public function minusUserGem($amount,$user)
+    /**
+     * minus user token
+     * @param mixed $amount
+     * @param mixed $user
+     */
+    public function minusUserToken($amount,$user)
     {   
        
         $user->token_amount -= $amount;
         return $user->save();
     }
 
+    /**
+     * Summary of findUserWallet
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
     public function findUserWallet()
     {
         return auth()->user();
     }
 
+    /**
+     * check user is enough token
+     * @param int $userGem
+     * @param int $amount
+     * @return bool
+     */
     public function hasUserEnoughToken(int $userGem,int $amount)
     {
         if($userGem < $amount)

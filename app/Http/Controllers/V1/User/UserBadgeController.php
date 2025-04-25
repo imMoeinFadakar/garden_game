@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class UserBadgeController extends BaseUserController
 {
     /**
-     * get all user badge
+     * get user badge 
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
@@ -27,7 +27,10 @@ class UserBadgeController extends BaseUserController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * add new user badge
+     * @param \App\Http\Requests\V1\Admin\UserBadge\StoreUserBadgeRequest $request
+     * @param \App\Models\BadgeUser $badgeUser
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(StoreUserBadgeRequest $request, BadgeUser $badgeUser)
     {
@@ -37,27 +40,5 @@ class UserBadgeController extends BaseUserController
         return $this->api(new UserBadgeResource($badgeUser->toArray()),__METHOD__);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

@@ -2,96 +2,112 @@
 
 namespace App\Http\Controllers\V1\User;
 
-use App\Models\Farms;
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Farms;
 use App\Models\Wallet;
 use App\Models\UserFarms;
-use App\Models\WarehouseProducts;
 use App\Models\Wherehouse;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use App\Models\WarehouseLevel;
+use App\Models\temporaryReward;
+use App\Models\WarehouseProducts;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Validated;
 use App\Http\Resources\V1\User\WalletResource;
 use App\Http\Resources\V1\User\warehouseResource;
 use App\Http\Requests\V1\User\createwarehouseRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\V1\User\AddProduct\AddProdcutRequest;
 use App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest;
 use App\Http\Requests\V1\User\Warehouse\WarehouseUPdateRequest;
 
 class WarehouseController extends BaseUserController
 {
   
+      /**
+     * get list of user products
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {   
+
+        $warehouse = Wherehouse::query()
+        ->where("user_id",auth()->id())
+        ->with(['warehouse_level:id,level_number,farm_id,overcapacity','farm:id,name,prodcut_image_url,header_light_color'])
+        ->get();
+
+
+        return $this->api(warehouseResource::collection($warehouse),__METHOD__);
+
+    }
 
     /**
      * create new warehouse
      * @param \App\Http\Requests\V1\User\createwarehouseRequest $request
-     * @param \App\Models\WarehouseProducts $warehouseProducts
+     * @param \App\Models\Wherehouse $warehouseProducts
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function create(createwarehouseRequest $request,WarehouseProducts $warehouseProducts)
+    public function create(createwarehouseRequest $request,Wherehouse $Wherehouse)
     {
-        $user = User::find(auth()->id());
-        if($user->warehouse_status === "inactive")
+        $user = auth()->user(); // find  user`
+        if($user->warehouse_status === "inactive") // is user warehouse active?
             return $this->api(null,__METHOD__,'you have to active your Warehouse');
 
 
-        $farmIsValied = $this->isFarmValied($request->farm_id);    
+        $findFarm = $this->isFarmValied($request->farm_id);  // find farm  
 
-        if(! $farmIsValied)
+        if(! $findFarm) // if farm dosent exists
             return $this->api(null,__METHOD__,'farm is not found');
  
 
-
-
-        $warehouseExists = $this->isWarehouseExists($request->farm_id);
+        $warehouseExists = $this->isWarehouseExists($request->farm_id); // is warehouse exists
         if($warehouseExists)
             return $this->api(null,__METHOD__,'you already have this warehouse');
 
-        $haveUserFarm = $this->hasUserFarm($request->farm_id);
+        $haveUserFarm = $this->hasUserFarm($request->farm_id); // has user this farm
 
-        if(! $haveUserFarm)
+        if(! $haveUserFarm) // if user hasnt farm
             return $this->api(null,__METHOD__,'you have to buy farm first');
 
 
-        $warehouseLevel = $this->WarehouseLevel($request->farm_id);
+        $warehouseLevel = $this->WarehouseLevel($request->farm_id); // find warehouse
         if(! $warehouseLevel)
             return $this->api(null,__METHOD__,'operation failed , call support for warehouse level');
 
-
-
-
+            //craete new warhouse
             $newWarehouse = [
                 "user_id" => auth()->id(),
                 "farm_id" => $request->farm_id,
-                "warehouse_level_id" => $warehouseLevel->id
+                "warehouse_level_id" => $warehouseLevel->id,
+                "amount" => $findFarm->farm_reward
             ];
            $warehouse =   Wherehouse::query()->create($newWarehouse);
 
-            $warehouseProduct = [
-                "warehouse_id" => $warehouse->id,
-                "farm_id" =>$farmIsValied->id,
-                "amount" => $farmIsValied->farm_reward
-            ];
-
-
-            $warehouseProducts->addNewWarehouseProduct($warehouseProduct);
-
-
+    
 
             return $this->api(new warehouseResource($warehouse->toArray()),__METHOD__);
             
     }
 
-    public function isFarmValied($farmId)
+    /**
+     * check farm exists
+     * @param int $farmId
+     * @return \Illuminate\Database\Eloquent\Collection<int, Farms>|null
+     */
+    public function isFarmValied(int $farmId)
     {
         return   Farms::find($farmId) ?: null;
     
     }
 
 
-
-    public function hasUserFarm($farmId): bool
+    /**
+     * is user farm owner
+     * @param int  $farmId
+     * @return bool
+     */
+    public function hasUserFarm(int $farmId): bool
     {
         return UserFarms::query()
         ->where("farm_id",$farmId)
@@ -99,7 +115,12 @@ class WarehouseController extends BaseUserController
         ->exists();
         
     }
-    public function WarehouseLevel($farmId)
+    /**
+     * find first warehouse level
+     * @param int $farmId
+     * @return WarehouseLevel|null
+     */
+    public function WarehouseLevel(int $farmId)
     {
         return  WarehouseLevel::query()
         ->where("farm_id",$farmId)
@@ -107,6 +128,12 @@ class WarehouseController extends BaseUserController
         ->first();
     }
 
+
+    /**
+     * is warehouse exists before
+     * @param mixed $farmId
+     * @return bool
+     */
     public function isWarehouseExists($farmId): bool
     {
         return Wherehouse::query()
@@ -133,20 +160,24 @@ class WarehouseController extends BaseUserController
         if(! $wrehouseLevel)
             return $this->errorResponse("you wrehouseLevel level is not found,call support");
 
+        // find warehouse next level
         $newLevel = $this->findNextLevel($wrehouseLevel,$validared["farm_id"]); // new level warehouse
         if(! $newLevel)
             return $this->api(null,__METHOD__,'you reached to max level in this farm');
 
+        // check user have enough token
         $hasUserenoughToken = $this->hasUserToken($newLevel->cost_for_buy); // check  user have enough token
         if(! $hasUserenoughToken)
             return $this->api(null,__METHOD__,'you dont have enough token');
 
+            // minus user token
         $minusUserToken = $this->minusUserToken($newLevel->cost_for_buy);
         if($minusUserToken){
 
             $userWarehouse->warehouse_level_id = $newLevel->id;
             $userWarehouse->save();
 
+            $userWarehouse->load(['warehouse_level']);
             return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
         }
 
@@ -154,6 +185,11 @@ class WarehouseController extends BaseUserController
 
     }
 
+    /**
+     * has user enough token
+     * @param int $price
+     * @return bool
+     */
     public function hasUserToken(int $price): bool
     {
         $user = auth()->user();
@@ -163,7 +199,11 @@ class WarehouseController extends BaseUserController
         return true;    
     }
 
-
+    /**
+     * Summary of minusUserToken
+     * @param int $price
+     * @return bool
+     */
     public function minusUserToken(int $price): bool
     {
         $user = auth()->user();
@@ -171,8 +211,6 @@ class WarehouseController extends BaseUserController
         return $user->save();
 
     }
-
-
 
 
       /**
@@ -194,8 +232,13 @@ class WarehouseController extends BaseUserController
         return $level;
     }
   
-
-    public function currentWarehouseLevel($warehouse,$farmId)
+    /**
+     * Summary of currentWarehouseLevel
+     * @param \App\Models\Wherehouse $warehouse
+     * @param int $farmId
+     * @return bool|WarehouseLevel
+     */
+    public function currentWarehouseLevel(Wherehouse $warehouse,int $farmId)
     {   
     
       $warehouseLevel =   WarehouseLevel::query()
@@ -209,8 +252,12 @@ class WarehouseController extends BaseUserController
         return $warehouseLevel;
     }
 
-
-    public function findUserWarehouse($farmId)
+    /**
+     * Summary of findUserWarehouse
+     * @param int  $farmId
+     * @return bool|Wherehouse
+     */
+    public function findUserWarehouse(int $farmId)
     {
         
        $userWarehouse =  Wherehouse::query()
@@ -226,141 +273,198 @@ class WarehouseController extends BaseUserController
     }
 
 
-
-
-
-
-
-
-
-/////////////////////////
-
-    
-
-
-
-    public function findCurrentLevel($userWarehouse,$request)
+    public function storeProduct(AddProdcutRequest $request)
     {
-        $userwarehouselevel = WarehouseLevel::query()
-        ->where("id",$userWarehouse->warehouse_level_id)
-        ->where("product_id",$request->product_id)
-        ->first();
 
-        // dd($userwarehouselevel);
-        if(! $userwarehouselevel)
-            throw new HttpResponseException(response()->json([
-                "succes" => false,
-                "message" => "you dont have a warehouse level yet, call support"
-            ]));
 
-        return $userwarehouselevel;
+        $userWarehouseStatus = $this->GetUserWarehouseStatus(); // get warehouse_status user
 
-    }
+        $validated = $request->validated();
 
-    public function findNewLevel(int $currentLevelNumber)
-    {   
+        $reward = temporaryReward::find($validated['reward_id']);
+
+        if(Carbon::now()->greaterThan($reward->ex_time))
+            return $this->api(null,__METHOD__,'reward has been expired');
+
+
+
+        if( $reward->user_id != auth()->id())
+            return $this->api(null,__METHOD__,'this reward isnt yours');
+
+     
+
+        // check its must be active
+        if(! $userWarehouseStatus)
+            return $this->api(null,
+                __METHOD__,
+                "your warehouse is still inactive",
+                false ,
+                422);
+
+
+        # check user has warehouse for this farm
+        $userWarehouse = $this->getUserWarehouse($request->farm_id);
+        if(! $userWarehouse)
+        return $this->errorResponse("you dont have the warehouse, make it first o call support",422);
+
+        # check user has this farm
+        $UserFarm = $this->UserFarm($request->farm_id);
+        if(! $UserFarm)
+            return $this->errorResponse("you dont have this farm",422);
+
+        $newPowerAmount = $this->minusUserFarmPower(intval($reward->amount),$UserFarm->farm_power);
         
-        $newLevel = WarehouseLevel::query()
-        ->where("level_number" , $currentLevelNumber+1)
-        ->first();
-
-        if(! $newLevel)
-            throw new HttpResponseException(response()->json([
-                "succes" => false,
-                "message" => "you reached to max level"
-            ]));
-      
+        if($newPowerAmount < 0){
             
-        return $newLevel;    
+            return $this->errorResponse("you dont have enough space to store this product, repair your farm",422);
+            
+        }   
+
+
+        $insertNewValue = $this->insertNewAmount($UserFarm,$newPowerAmount);
+
+        if($insertNewValue){
+
+            $Warehouse = $this->findUserWarehouse($UserFarm->farm_id);
+            if(! $Warehouse)
+                return $this->api(null,__METHOD__,'you dont active your warehouse yet');
+
+
+
+            $warehouseLevel = $this->userWarehouseLevel($userWarehouse->warehouse_level_id);
+            if(! $warehouseLevel)
+                return $this->api(null,__METHOD__,'where house level not exists');
+
+
+
+
+            $newAmount = $Warehouse->amount + $reward->amount;
+           $userOvercapacity =  $this->hasUserEnoughWarehouseCap($newAmount,$warehouseLevel->overcapacity);
+     
+          
+     
+           if(! $userOvercapacity)
+                return $this->api(null,__METHOD__,'your warehouse is full');
+
+
+            $Warehouse->amount += $reward->amount;
+            $Warehouse->save();
+
+            $this->deleteTempraryReward($reward);
+
+
+            return $this->api(new warehouseResource($Warehouse->toArray()),__METHOD__);
+
+        }
+            
+        return $this->errorResponse("operation failed,call support",422);
+ 
     }
+    /**
+     * Summary of deleteTempraryReward
+     * @param  $reward
+     * @return bool|null
+     */
+    public function deleteTempraryReward($reward)
+    {
+        return $reward->delete();
+    }
+
+    /**
+     * chak user cap 
+     * @param int $newProductAmount
+     * @param int $warehouseMaxCap
+     * @return bool
+     */
+    public function hasUserEnoughWarehouseCap(int $newProductAmount,int $warehouseMaxCap): bool
+    {
+        if($newProductAmount > $warehouseMaxCap)
+            return false;
+
+         return true;   
+    }
+
+    /**
+     * find warehouse level
+     * @param int $userWarehouseLvlId
+     * @return WarehouseLevel|null
+     */
+    public function userWarehouseLevel(int $userWarehouseLvlId)
+    {
+        return WarehouseLevel::query()
+        ->where("id",$userWarehouseLvlId)
+        ->first();
+    }
+
+    /**
+     * insert new user to database
+     * @param mixed $userFarm
+     * @param mixed $newAmount
+     */
+    public function insertNewAmount($userFarm,$newAmount)
+    {
+        $userFarm->farm_power = $newAmount;
+        return $userFarm->save();
+    }
+
+
 
 
     /**
-     * check that user have enough token to buy new level
-     * @param int $userToken
-     * @param int $newLevelCost
+     * find user farm
+     * @param mixed $farmId
+     * @return UserFarms|null
+     */
+    public function UserFarm($farmId)
+    {
+        return UserFarms::query()
+        ->where("user_id",1)
+        ->where("farm_id",$farmId)
+        ->first() ?:null;
+    }
+
+
+
+
+    /**
+     * minus the wallet max_cap_left field
+     * @param int $requestAmount
      * @return bool
      */
-    public function hasUserEnoughToken(int $userToken,int $newLevelCost): bool
+    public function minusUserFarmPower(int $requestAmount,int $userFarmPower)
     {
+        return  $userFarmPower - $requestAmount; 
 
-        if($userToken < $newLevelCost)
+    }
+
+    /**
+     * check user warehouse status is active or inactive
+     * @return bool
+     */
+    public function GetUserWarehouseStatus()
+    {
+        $user = User::query()->find(1); // add Auth::id() later
+        if($user->warehouse_status === "inactive")
             return false;
-
 
         return true;
     }
 
-    /**
-     *  update user`s warehouse level
-     * @param mixed $userWarehouse
-     * @param mixed $newLevelId
-     */
-    public function newUserWarehouseLevel($userWarehouse,$newLevel)
-    {   
-        // dd($newLevel->overcapacity);
-        $userWarehouse->warehouse_level_id = $newLevel->id;
-        $userWarehouse->warehouse_cap_left = $newLevel->max_cap_left;
-        $userWarehouse->overcapacity = $newLevel->overcapacity;
-        return $userWarehouse->save();
-    }
-
-    /**
-     * add new balance to user wallet
-     * @param mixed $userWallet
-     * @param mixed $newBalance
-     */
-    public function newUserBalanceToken($userWallet,$newBalance)
-    {
-        $userWallet->token_amount = $newBalance;
-        return $userWallet->save();
-    }
-
-    /**
-     * minuse token amount form cost of new level
-     * @param mixed $balance
-     * @param mixed $price
-     * @return float|int
-     */
-    public function warehouseCost($balance,$price)
-    {
-        return  $balance - $price;
-    }
 
   
 
-    public function findWarehouseLevel(int $wareHouseLevelId)
+    /**
+     *  find user warehouse
+     * @return Wherehouse|null
+     */
+    public function getUserWarehouse($farmId)
     {
-        return WarehouseLevel::query()->find($wareHouseLevelId);
+        return Wherehouse::query()
+            ->where("user_id",1) // add Auth::id() later
+            ->where("farm_id",$farmId)
+            ->first()?:null;
+
     }
-
-
-
 
   
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

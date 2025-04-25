@@ -23,7 +23,6 @@ class AddProdcutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "amount" => "required|integer|min:1",
             "farm_id" => "required|integer|exists:farms,id",
             "reward_id" =>"required|integer|exists:temporary_rewards,id",
         ];

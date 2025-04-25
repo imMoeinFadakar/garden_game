@@ -18,7 +18,10 @@ class UserStatusController extends BaseUserController
      */
     public function activeWarehouse(Request $request,User $user)
     {
-        $this->hasUserEnoughGem(5); // ensure that user have enough gem
+        $userAmount = $this->hasUserEnoughGem(5); // ensure user have enough gem
+        if(! $userAmount)
+            return $this->api(null,__METHOD__,'dont have enough gem');
+
         $minusUserGem = $this->minusUserGem(5); // minus user gem
         if($minusUserGem){
 
@@ -26,7 +29,7 @@ class UserStatusController extends BaseUserController
             return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
         }
 
-       return $this->errorResponse("operation failed");
+       return $this->errorResponse("operation failed"); 
     }
 
 
@@ -55,7 +58,11 @@ class UserStatusController extends BaseUserController
      */
     public function activeMarket()
     {
-        $this->hasUserEnoughGem(20); // ensure user have enough gem
+        $userAmount = $this->hasUserEnoughGem(20); // ensure user have enough gem
+        if(! $userAmount)
+            return $this->api(null,__METHOD__,'dont have enough gem');
+
+
         $minusUserGem = $this->minusUserGem(20); // minus user gem
         if($minusUserGem){
 
@@ -63,19 +70,15 @@ class UserStatusController extends BaseUserController
             return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
         }
 
-        throw new HttpResponseException(response()->json([
-            "success" => false,
-            "code" => 422,
-            "message" => "operation failed",
-        ]));
+        return $this->errorResponse("operation failed"); // error
+
     }
-
-
-
-    ///////////
   
-
-    public function minusUserGem($gemPrice)
+    /**
+     * @param int $gemPrice
+     * @return bool
+     */
+    public function minusUserGem(int $gemPrice): bool
     {
         $user = auth()->user();
         $user->gem_amount -= $gemPrice;
@@ -83,16 +86,17 @@ class UserStatusController extends BaseUserController
 
     }
 
-
-    public function hasUserEnoughGem($gemPrice)
+    /**
+     * Summary of hasUserEnoughGem
+     * @param mixed $gemPrice
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     * @return bool
+     */
+    public function hasUserEnoughGem(int $gemPrice)
     {
         $user = auth()->user();
         if($user->gem_amount < $gemPrice)
-            throw new HttpResponseException(response()->json([
-                "success" => false,
-                "code" => 422,
-                "message" => "dont have enough gem",
-            ]));
+           return false;
 
     return true;
     }

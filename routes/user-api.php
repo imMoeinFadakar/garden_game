@@ -9,17 +9,17 @@ Route::prefix("user")->group(function() {
 
 
 
-    Route::post("auth_user",[App\Http\Controllers\V1\User\FirstAuthController::class,"userLogin"]);
+    Route::post("auth_user",[App\Http\Controllers\V1\User\FirstAuthController::class,"userLogin"]); // first login
     Route::get("policy",[App\Http\Controllers\V1\User\PoliciesController::class,"index"]); // all policy
 
     Route::middleware(['auth:sanctum','auth'])->group(function(){
 
     
         // auth 
-        Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findingUser"]);
+        Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findingUser"]); // find user by TL id
         Route::get("user",[App\Http\Controllers\V1\User\UserController::class,"index"]); // get self user
-        Route::get("get_user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"index"]);
-        Route::post("new_referral",[App\Http\Controllers\V1\User\UserController::class,"newReferral"]);
+        Route::get("get_user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"index"]); // find user avatar
+        Route::post("new_referral",[App\Http\Controllers\V1\User\UserController::class,"newReferral"]); // add new referral 
         Route::post("register",[App\Http\Controllers\V1\User\RegistrationController::class,"register"]);
 
         // task 
@@ -39,9 +39,9 @@ Route::prefix("user")->group(function() {
 
         // warehouse 
         Route::post("new_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"create"]);
-        Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseProductController::class,"index"]);
+        Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"index"]);
         Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
-        Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseProductController::class,"store"]);
+        Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseController::class,"storeProduct"]);
 
 
 

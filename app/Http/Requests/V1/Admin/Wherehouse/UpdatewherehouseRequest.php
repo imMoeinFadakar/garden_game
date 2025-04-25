@@ -28,9 +28,8 @@ class UpdatewherehouseRequest extends FormRequest
             "warehouse_level_id"=> "required|integer|exists:warehouse_levels,id",
             "warehouse_cap_left" => "required|integer",
             "farm_id" => ["required","integer","exists:farms,id"],
+            "amount" => ["required","inetegr"],
             "overcapacity" => "required|integer"
-
-
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

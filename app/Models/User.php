@@ -100,7 +100,7 @@ class User extends Authenticatable
         return self::query()->find(Auth::id());
     }
 
-    public static function insertNewUserValue($gem,$token)
+    public static function insertNewUserValue(int $gem,int $token): int
     {
         $user = self::find(auth()->id());
        return  $user->update(["token_amount" => $token,"gem_amount" => $gem]);

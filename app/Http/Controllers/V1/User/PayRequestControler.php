@@ -20,52 +20,52 @@ class PayRequestControler extends Controller
    
     public function newPayingRequest(PayRewardRequest $request) 
     {
-        $user = User::find(auth()->id());
+        $user = auth()->user(); // user
       
-        if($user->warehouse_status === "inactive")
+        if($user->warehouse_status === "inactive") // is warehouse active?
             return $this->api(null,__METHOD__,'you have to active your Warehouse');
       
 
-        $validated = $request->validated();
+        $validated = $request->validated(); 
 
-        $userWarehouse = $this->isWarehouseExists($validated["farm_id"]);
+        $userWarehouse = $this->isWarehouseExists($validated["farm_id"]); // is warehouse exists
         if(! $userWarehouse)
             return $this->api(null,__METHOD__,'you dont have warehouse yet');
 
 
-        $userFarm = $this->hasUserFarm($validated["farm_id"]);
+        $userFarm = $this->hasUserFarm($validated["farm_id"]); 
         if(! $userFarm)
             return $this->api(null,__METHOD__,'you have done this before for this farm or dont have this farm yet');
 
-        $userReferralReward = $this->getUserReferralReward($validated["farm_id"]);
+        $userReferralReward = $this->getUserReferralReward($validated["farm_id"]); // find refferal reward 
         if(! $userReferralReward)
             return $this->api(null,__METHOD__,'operation failed,there is  no suitble reward referal for this farm ');
 
-        $paymentFarmStatus = $this->userFarmRewardStatusPaying($userFarm);
+        $paymentFarmStatus = $this->userFarmRewardStatusPaying($userFarm); // is user payed before
         if(! $paymentFarmStatus)
             return $this->api(null,__METHOD__,'reward status change operation failed');
 
-        $genOne = $this->findParentReferral(auth()->id());
+        $genOne = $this->findParentReferral(auth()->id()); // find user parent
         if($genOne){
             // gen one 
             $addUserReward = $this->addNewReward($userReferralReward->reward_for_generation_one,$genOne,$validated["farm_id"]);
           
             if($addUserReward){
 
-                $genTwo = $this->findParentReferral($genOne->invading_user);
+                $genTwo = $this->findParentReferral($genOne->invading_user); // find gen two
                 if($genTwo){
                     // gen two 
                     $addGenTwoReward = $this->addNewReward($userReferralReward->reward_for_generation_two,$genTwo,$validated["farm_id"]);
                    if($addGenTwoReward){
 
-                    $genThree = $this->findParentReferral($genTwo->invading_user);
+                    $genThree = $this->findParentReferral($genTwo->invading_user); //find gen three
                     if($genThree){
                         // gen three 
                         $addGenThreeReward = $this->addNewReward($userReferralReward->reward_for_generation_three,$genThree,$validated["farm_id"]);
                        
                         if($addGenThreeReward){
 
-                            $genfour = $this->findParentReferral($genThree->invading_user);
+                            $genfour = $this->findParentReferral($genThree->invading_user); // find gen four
                             if($genfour){
                                 // gen four 
                                 $addGenfourReward = $this->addNewReward($userReferralReward->reward_for_generation_four,$genfour,$validated["farm_id"]);
@@ -111,14 +111,22 @@ class PayRequestControler extends Controller
     }
 
 
-
-    public function userFarmRewardStatusPaying($userFarm)
-    {   
-
+    /**
+     * Summary of userFarmRewardStatusPaying
+     * @param mixed $userFarm
+     */
+    public function userFarmRewardStatusPaying($userFarm){
         $userFarm->reward = "paied";
         return $userFarm->save();
     }
 
+    /**
+     * Summary of addNewReward
+     * @param int $amount
+     * @param mixed $invetedUser
+     * @param mixed $farmId
+     * @return bool|temporaryReward
+     */
     public function addNewReward(int $amount,$invetedUser,$farmId)
     {
      
@@ -144,8 +152,12 @@ class PayRequestControler extends Controller
 
 
 
-
-    public function isGenerationExists($model)
+    /**
+     * check that is parent exists in referrals 
+     * @param mixed $model
+     * @return bool
+     */
+    public function isGenerationExists($model): bool
     {
         if($model)
             return true;
@@ -153,20 +165,34 @@ class PayRequestControler extends Controller
         return false;    
     }
 
-    public function getUserReferralReward($farmId)
+    /**
+     * find reward for referral s in this farm
+     * @param mixed $farmId
+     * @return UserReferralReward|null
+     */
+    public function getUserReferralReward($farmId): UserReferralReward|null
     {
         return UserReferralReward::query()
         ->where("farm_id",$farmId)
         ->first();
     }
-    public function findParentReferral(int $inventedId)
+    /**
+     * find parent referral 
+     * @param int $inventedId
+     * @return UserReferral|null
+     */
+    public function findParentReferral(int $inventedId): UserReferral|null
     {
          return   UserReferral::query()
          ->where('invented_user',$inventedId)
          ->first()?:null;
     }
 
-
+    /**
+     * find user farm 
+     * @param int $farmId
+     * @return UserFarms|null
+     */
     public function hasUserFarm(int $farmId): UserFarms|null
     {
         return UserFarms::query()
@@ -176,8 +202,11 @@ class PayRequestControler extends Controller
         ->first();
     }
 
-
-    public function isWarehouseExists($farmId): bool
+    /**
+     * @param int  $farmId
+     * @return bool
+     */
+    public function isWarehouseExists(int $farmId): bool
     {
         return Wherehouse::query()
         ->where("farm_id",$farmId)

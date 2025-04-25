@@ -11,6 +11,7 @@ class Wherehouse extends Model
         "user_id",
         "warehouse_level_id",
         "farm_id",
+        'amount'
     ];
 
 
@@ -29,15 +30,6 @@ class Wherehouse extends Model
         return $this->belongsTo(Farms::class,"farm_id",'id');
     }
 
-    /**
-     * Get all of the wherehouse_product for the Wherehouse
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function wherehouse_product()
-    {
-        return $this->hasMany(WarehouseProducts::class,'warehouse_id','id');
-    }
 
 
     /**

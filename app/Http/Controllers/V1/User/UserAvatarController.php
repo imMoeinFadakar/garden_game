@@ -21,8 +21,12 @@ class UserAvatarController extends Controller
         ->where("user_id",auth()->id())
         ->with(["avatar:id,image_url"])
         ->first();
+        if($userAvatar){
 
-        return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
+            return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
+        }else{
+            return $this->api(null,__METHOD__,'dont have avatar');
+        }
     }
 
     /**
@@ -46,7 +50,11 @@ class UserAvatarController extends Controller
         return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
     }
 
-
+    /**
+     * is user select avatar before 
+     * @param array $validatedRequest
+     * @return bool
+     */
     public function isUseravatarExists(array $validatedRequest): bool
     {
         return UserAvatar::query()

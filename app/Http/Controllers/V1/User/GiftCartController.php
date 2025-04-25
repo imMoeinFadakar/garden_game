@@ -8,34 +8,32 @@ use App\Http\Resources\V1\User\GiftcartResource;
 use App\Models\Giftcart;
 use App\Models\User;
 use App\Models\Wallet;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
 
 class GiftCartController extends BaseUserController
 {   
 
     /**
-     *  user gift cart by user
+     *  use gitftcart/post
      * @param \App\Http\Requests\V1\User\Giftcart\UseGiftCartRequest $request
      * @param \App\Models\Giftcart $giftcart
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function useGiftCart(UseGiftCartRequest $request,Giftcart $giftcart)
     {
-        $giftcart = $this->findGiftcart($request->code);
+        $giftcart = $this->findGiftcart($request->code); // find gift cart
 
-        if(! $giftcart)
-            return $this->errorResponse("gift cart not find",401);
-
-        $user = auth()->user();
+        $user = auth()->user(); // auth user
         if($user){
 
            
-            $deletedGiftcart = $this->deleteGiftcart($request->code);
+            $deletedGiftcart = $this->deleteGiftcart($request->code); // Delete giftcart
+
             if($deletedGiftcart){
 
-                $user->token_amount += $giftcart->value;
-                $user->save();
-                
+               
+                $this->addNewAmount($user,$giftcart->value); // add new amount to user wallet
 
                 return $this->api(new GiftcartResource($user->toArray()),__METHOD__);
 
@@ -46,7 +44,7 @@ class GiftCartController extends BaseUserController
 
         }else{
 
-            return $this->errorResponse("wallet is not found!",400);
+            return $this->errorResponse("login first",400);
 
 
         }
@@ -55,14 +53,35 @@ class GiftCartController extends BaseUserController
 
     }
 
-
-    public function deleteGiftcart($code)
+    /**
+     * Delete used giftcart
+     * @param mixed $code
+     * @return bool|null
+     */
+    public function deleteGiftcart($code): ?bool
     {
         return Giftcart::where("code",$code)->delete();
     }
 
- 
+    /**
+     * add new amount to user wallet
+     * @param \Illuminate\Auth\Authenticatable $user
+     * @param int $amount
+     * @return bool
+     */
+    public function addNewAmount(Authenticatable $user,int $amount): bool
+    {
+        $user->token_amount += $amount;
+      return   $user->save();
+    }
 
+
+
+    /**
+     * find giftcart
+     * @param mixed $code
+     * @return Giftcart|null
+     */
     public function findGiftcart($code)
     {
         return Giftcart::query()

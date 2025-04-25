@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class FarmController extends BaseUserController
 {
     /**
-     * get all farms
+     * farm/index
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()

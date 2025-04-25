@@ -25,7 +25,7 @@ class WithdrawalControler extends BaseUserController
     }
 
     /**
-     * new withdraw request by user
+     * new withdraw request
      * @param \App\Http\Requests\V1\User\Withdrawal\WithdrawalRequest $request
      * @param \App\Models\Transaction $transaction
      * @return mixed|\Illuminate\Http\JsonResponse
@@ -33,14 +33,15 @@ class WithdrawalControler extends BaseUserController
     public function withdrawal(WithdrawalRequest $request,Transaction $transaction)
     {
         // has user enough token
-        $userToken = $this->hasUserToken($request->amount);
+        $userToken = $this->hasUserToken($request->amount); 
         if(! $userToken)
             return $this->errorResponse('dont have enough token');
 
 
-        $minusToken = $this->minusUserToken($request->amount);
+        $minusToken = $this->minusUserToken($request->amount); 
         if($minusToken){
 
+            // withdraw request
             $newWithdrawalRequest = 
             [
                 "user_id" => auth()->id(),
@@ -49,8 +50,8 @@ class WithdrawalControler extends BaseUserController
                 "amount" => $request->amount
             ];
     
-    
-            $transaction = $transaction->addNewTransaction($newWithdrawalRequest);   
+            
+            $transaction = $transaction->addNewTransaction($newWithdrawalRequest); // new tarnaction 
             return $this->api(new WithdrawalResource($transaction->toArray()));
     
         }
@@ -58,7 +59,11 @@ class WithdrawalControler extends BaseUserController
         return $this->errorResponse("operation failed"); 
     }
  
-
+    /**
+     * minus user gem
+     * @param int $amount
+     * @return bool
+     */
     public function minusUserToken(int $amount): bool
     {
         $user = auth()->user();
@@ -66,6 +71,11 @@ class WithdrawalControler extends BaseUserController
         return $user->save();
     }
 
+    /**
+     * has user enough token
+     * @param int $amount
+     * @return bool
+     */
     public function hasUserToken(int $amount): bool
     {
         $user = auth()->user();
