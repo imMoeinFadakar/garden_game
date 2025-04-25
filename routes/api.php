@@ -11,7 +11,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
 
     Route::prefix("v1")->group(function () {
 
-        Route::prefix("Admin")->group(function () {
+        Route::prefix("Admin")->group(function () { // admin apis
 
 
 
@@ -24,6 +24,8 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::post("deposit_check",[App\Http\Controllers\V1\Admin\CryptoCurrencyController::class,"transactionRequest"]);
                 Route::apiResource('/admin', AdminController::class)
                 ->middleware(CheckAdminManager::class); // Example route
+
+                Route::post("token_expire",[App\Http\Controllers\V1\Admin\AuthController::class,"isTokenValied"]);
                 route::apiResource("avatar",App\Http\Controllers\V1\Admin\AvatarController::class);
                 Route::apiResource("badge",App\Http\Controllers\V1\Admin\BadgeController::class);
                 Route::apiResource("badge-farm",App\Http\Controllers\V1\Admin\BadgeFarmsController::class);
@@ -42,8 +44,7 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("warehouse-level",App\Http\Controllers\V1\Admin\WarehouseLevelController::class);
                 Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
                 Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
-                Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
-                Route::post("token_expire",[App\Http\Controllers\V1\Admin\AuthController::class,"isTokenValied"]);
+                // Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
                 Route::apiResource("policy_and_rule",App\Http\Controllers\V1\Admin\PolicyAndRuleController::class);
                 Route::apiResource("market_history",App\Http\Controllers\V1\Admin\MarketHistoryController::class);
                 

@@ -55,6 +55,7 @@ Route::prefix("user")->group(function() {
         Route::get("transaction",[App\Http\Controllers\V1\User\WithdrawalControler::class,"index"]);
         Route::post("use_giftcart",[App\Http\Controllers\V1\User\GiftCartController::class,"useGiftCart"]);
         Route::post('pay_reward',[App\Http\Controllers\V1\User\PayRequestControler::class,"newPayingRequest"]);
+        Route::get("user_referral_reward",[App\Http\Controllers\V1\User\PayRequestControler::class,'index']);
         Route::post("transfer",[App\Http\Controllers\V1\User\TransferController::class,"store"]);
       
         // activate

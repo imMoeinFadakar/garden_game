@@ -17,7 +17,16 @@ use App\Http\Requests\V1\User\PayRewardRequest;
 
 class PayRequestControler extends Controller
 {   
-   
+    public function index(temporaryReward $temporaryReward)
+    {
+        $temporaryReward = $temporaryReward
+        ->where('user_id',auth()->id())
+        ->get(['farm_id','amount','ex_time','created_at']);
+
+
+        return $this->api(payRewardResource::collection($temporaryReward),__METHOD__);
+
+    }
     public function newPayingRequest(PayRewardRequest $request) 
     {
         $user = auth()->user(); // user
