@@ -57,9 +57,8 @@ class FirstAuthController extends BaseUserController
     /**
      * login user
      * @param mixed $user
-     * @return void
      */
-    public function loginUser($user): void
+    public function loginUser($user)
     {
        return  Auth::login($user);
     }
