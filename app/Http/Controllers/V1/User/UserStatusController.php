@@ -17,7 +17,12 @@ class UserStatusController extends BaseUserController
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function activeWarehouse(Request $request,User $user)
-    {
+    {   
+        $user = auth()->user();
+        if($user->warehouse_status === 'active')
+            return $this->api(null,__METHOD__,'Your warehouse is already active');
+
+
         $userAmount = $this->hasUserEnoughGem(5); // ensure user have enough gem
         if(! $userAmount)
             return $this->api(null,__METHOD__,'dont have enough gem');
@@ -57,7 +62,12 @@ class UserStatusController extends BaseUserController
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function activeMarket()
-    {
+    {   
+        $user = auth()->user();
+        if($user->market_status === 'active')
+            return $this->api(null,__METHOD__,'Your market is already active');
+
+
         $userAmount = $this->hasUserEnoughGem(20); // ensure user have enough gem
         if(! $userAmount)
             return $this->api(null,__METHOD__,'dont have enough gem');

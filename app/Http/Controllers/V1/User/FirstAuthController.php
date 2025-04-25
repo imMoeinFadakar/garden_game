@@ -46,10 +46,10 @@ class FirstAuthController extends BaseUserController
     }
     /**
      * Summary of createUserToken
-     * @param \Illuminate\Auth\Authenticatable $user
+     * @param  $user
      * @return string (Token)
      */
-    public function createUserToken(Authenticatable $user): string
+    public function createUserToken( $user): string
     {
         return $user->createToken("USER TOKEN",[null],Carbon::now()->addHours(6))->plainTextToken;
     }
