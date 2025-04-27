@@ -40,7 +40,23 @@ class FirstAuthController extends BaseUserController
       
         $token = $this->createUserToken($findOrNewUser); // user token 
           
-        return $this->api(new AuthResource(['user'=>$findOrNewUser,"token"=>$token]),__METHOD__);
+     
+
+        $user = User::find(auth()->id())->first([
+       
+            'telegram_id',
+            "name",
+            "username",
+            "gender",
+            "market_status",
+            "warehouse_status",
+            "user_status",
+            "token_amount",
+            "gem_amount",
+            "referral_code"]);
+
+
+        return $this->api(new AuthResource(['user'=>$user,"token"=>$token]),__METHOD__);
 
         
     }

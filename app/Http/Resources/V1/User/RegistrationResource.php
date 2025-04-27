@@ -14,6 +14,7 @@ class RegistrationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $request['user_id'] = null;
         return parent::toArray($request);
     }
 }

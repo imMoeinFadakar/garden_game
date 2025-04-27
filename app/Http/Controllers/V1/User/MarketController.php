@@ -78,7 +78,7 @@ class MarketController extends BaseUserController
             ];
 
           $marketHistory =   $marketHistory->addNewMarketHistory($newRequest); // add to market history
-
+            $marketHistory->user_id = null;
             return $this->api(new MarketResource($marketHistory->toArray()),__METHOD__);
 
         }

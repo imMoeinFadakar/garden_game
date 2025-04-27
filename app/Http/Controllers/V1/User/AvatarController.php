@@ -16,7 +16,7 @@ class AvatarController extends BaseUserController
     {
         $Avatar = Avatar::query()
         ->orderBy("id")
-        ->get();
+        ->get(['gender','image_url']);
 
         return $this->api(AvatarResource::collection($Avatar),__METHOD__);
     }

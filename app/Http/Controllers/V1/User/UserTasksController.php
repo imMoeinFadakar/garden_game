@@ -22,7 +22,7 @@ class UserTasksController extends BaseUserController
             ->orderBy("id")
             ->where("user_id", auth()->id())
             ->with(["task:id,title,gem_reward,token_reward"])
-            ->get();
+            ->get(['id','task_id','created_at']);
 
         return $this->api(UserTaskResource::collection($userTask),__METHOD__);
 

@@ -38,6 +38,10 @@ class UserFarms extends Model
         return $this->query()->create($request);
     }
 
+    
+
+
+
     public function updateUserFarms($request)
     {
         $this->update($request->validated());

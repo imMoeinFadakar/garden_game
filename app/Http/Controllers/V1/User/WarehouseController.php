@@ -35,7 +35,7 @@ class WarehouseController extends BaseUserController
         $warehouse = Wherehouse::query()
         ->where("user_id",auth()->id())
         ->with(['warehouse_level:id,level_number,farm_id,overcapacity','farm:id,name,prodcut_image_url,header_light_color'])
-        ->get();
+        ->get(['id','farm_id','warehouse_level_id','amount']);
 
 
         return $this->api(warehouseResource::collection($warehouse),__METHOD__);
@@ -85,7 +85,7 @@ class WarehouseController extends BaseUserController
            $warehouse =   Wherehouse::query()->create($newWarehouse);
 
     
-
+            $warehouse->user_id = null;
             return $this->api(new warehouseResource($warehouse->toArray()),__METHOD__);
             
     }
@@ -178,6 +178,7 @@ class WarehouseController extends BaseUserController
             $userWarehouse->save();
 
             $userWarehouse->load(['warehouse_level']);
+            $userWarehouse->user_id = null;
             return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
         }
 

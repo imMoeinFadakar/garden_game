@@ -20,7 +20,7 @@ class UserController extends BaseUserController
     public function index()
     {
         $user = User::find(auth()->id());
-
+        $user->id = null;
         return $this->api(new UserResource($user->toArray()),__METHOD__);
         
     }
@@ -35,6 +35,8 @@ class UserController extends BaseUserController
         $findUser = User::query()
         ->where("telegram_id",$request->telegram_id)
         ->first();
+
+        $findUser->id = null;
 
         if(! $findUser)
             return $this->api(null,__METHOD__,"user is not exists");
@@ -53,6 +55,10 @@ class UserController extends BaseUserController
         $invatingUser = $this->findUserByReferralCode($request->referral_code);
         $invantedUser = auth()->user();
 
+        if($invantedUser->referral_code === $invatingUser->referral_code)
+            return $this->api(null,__METHOD__,'cant enter your referral code');
+
+
         $isReferralExists = $this->isReferralExists($invatingUser->id,$invantedUser->id);
         if(! $isReferralExists){
 
@@ -63,7 +69,7 @@ class UserController extends BaseUserController
                 'gender' => $invantedUser->gender === 'male'? 0 : 1 
             ]);
 
-            return $this->api(new UserResource($newRefferal->toArray()),__METHOD__);
+            return $this->api(null,__METHOD__,'referral was succesfull');
         }
 
 

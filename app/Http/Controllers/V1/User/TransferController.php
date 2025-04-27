@@ -11,7 +11,26 @@ use App\Models\Wallet;
 use Illuminate\Http\Request;
 
 class TransferController extends BaseUserController
-{   
+{      
+
+
+
+    /**
+     * get 
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        $transfer = Transfer::query()
+        ->where('from_user',auth()->id())
+        ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
+        ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
+        ->get(['id','token_amount','created_at']);
+
+        return $this->api(TransferResource::collection($transfer),__METHOD__);
+    }
+
     /**
      * transfer from user to another user
      * @param \App\Http\Requests\V1\User\Transfer\TransferRequest $request
@@ -31,6 +50,11 @@ class TransferController extends BaseUserController
         
         $reciverUser = $this->reciverWallet($validatedRequest['user_address']); // find reciver User
         
+        if($reciverUser->referral_code === $user->referral_code)
+            return $this->api(null,__METHOD__,'you cant transfer to your wallet');
+
+
+
         $minusToken = $this->minusUserToken($validatedRequest["token_amount"],$user); // minuse user token
 
     
@@ -50,6 +74,8 @@ class TransferController extends BaseUserController
         $validatedRequest["to_user"] = $reciverUser->id; // Reciver user
         $transfer = $transfer->addNewTransfer($validatedRequest); 
 
+
+       
         return $this->api(new TransferResource($transfer->toArray()),__METHOD__);
 
     }

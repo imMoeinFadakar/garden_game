@@ -35,6 +35,9 @@ class RegistrationController extends BaseUserController
         $user->username = $validated["username"];
         $user->save();
 
+
+        $user->id = null;
+
         return $this->api(new RegistrationResource($user),__METHOD__);
     }
 

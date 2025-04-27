@@ -45,6 +45,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
+
+
     /**
      * Get the attributes that should be cast.
      *
@@ -56,6 +59,45 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    
+
+    public function directInvites()  
+    {  
+        // Define the relationship to get UserReferral records where this user is the inviter  
+        return $this->hasMany(UserReferral::class, 'invading_user');   
+    }  
+
+    public function getInvitesWithIndirect()  
+    {  
+        // Fetch direct invites along with their indirect invites  
+        $directInvites = $this->directInvites()
+        ->with('reffred:id,name,username')
+        ->withCount('reffred')
+        ->orderBy("reffred_count",'desc')
+        ->limit(5)
+        ->get();  
+
+        // Map through each direct invite to get their indirect invites  
+        $invitationData = $directInvites->map(function ($invite) {  
+           
+            $indirectInvites = UserReferral::where('invading_user', $invite->invented_user)  
+                ->with('reffred:id,name,username')
+                ->limit(5) 
+                ->get(['id','gender']);  
+            $referralcount = $indirectInvites->count();
+
+            $invite['invented_user'] = null;
+            $invite['invading_user'] = null;
+            $invite["indirect_invites"] = $indirectInvites;
+            $invite["count"] = $referralcount;
+
+            return [  
+                $invite
+            ];  
+        });  
+
+        return $invitationData;  
     }
 
 

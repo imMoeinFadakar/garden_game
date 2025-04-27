@@ -52,7 +52,8 @@ Route::prefix("user")->group(function() {
         Route::post('pay_reward',[App\Http\Controllers\V1\User\PayRequestControler::class,"newPayingRequest"]);
         Route::get("user_referral_reward",[App\Http\Controllers\V1\User\PayRequestControler::class,'index']);
         Route::post("transfer",[App\Http\Controllers\V1\User\TransferController::class,"store"]);
-      
+        Route::get('all_transfer',[App\Http\Controllers\V1\User\TransferController::class,"index"]);
+
         // activate
         Route::post("active_warehouse",[App\Http\Controllers\V1\User\UserStatusController::class,"activeWarehouse"]);
         Route::post("active_market",[App\Http\Controllers\V1\User\UserStatusController::class,"activeMarket"]);
@@ -60,6 +61,10 @@ Route::prefix("user")->group(function() {
         // market
         Route::post("sell_product",[App\Http\Controllers\V1\User\MarketController::class,"sellProduct"]);
         Route::get("sell_product_history",[App\Http\Controllers\V1\User\MarketController::class,"userMarketHistory"]);
+
+        // team managment
+        Route::get('team',[App\Http\Controllers\V1\User\TeamManagmentController::class,"index"]);
+
 
     });
  

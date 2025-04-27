@@ -21,7 +21,7 @@ class UserBadgeController extends BaseUserController
             ->orderBy("created_at")
             ->where("user_id",1)
             ->with(["badge:id,image_url"])
-            ->get();
+            ->get(['id','badge_id']);
 
         return $this->api(UserBadgeResource::collection($userBadge),__METHOD__);
     }
@@ -36,7 +36,7 @@ class UserBadgeController extends BaseUserController
     {
         $newRequest = $request->merge(["user_id"=> Auth::id() ]);
         $badgeUser = $badgeUser->addNewBadgeUser($newRequest);
-
+        $badgeUser->user_id = null;
         return $this->api(new UserBadgeResource($badgeUser->toArray()),__METHOD__);
     }
 

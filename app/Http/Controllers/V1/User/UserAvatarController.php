@@ -22,7 +22,7 @@ class UserAvatarController extends Controller
         ->with(["avatar:id,image_url"])
         ->first();
         if($userAvatar){
-
+            $userAvatar->user_id = null;
             return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
         }else{
             return $this->api(null,__METHOD__,'dont have avatar');
@@ -47,6 +47,7 @@ class UserAvatarController extends Controller
        
         $validatedRequest["user_id"] = auth()->id();
         $userAvatar = $userAvatar->addNewUserAvatar($validatedRequest);
+        $userAvatar->user_id = null;
         return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
     }
 

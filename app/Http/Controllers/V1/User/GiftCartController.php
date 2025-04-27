@@ -34,8 +34,7 @@ class GiftCartController extends BaseUserController
 
                
                 $this->addNewAmount($user,$giftcart->value); // add new amount to user wallet
-
-                return $this->api(new GiftcartResource($user->toArray()),__METHOD__);
+                return $this->api(new GiftcartResource($user),__METHOD__);
 
             }
 

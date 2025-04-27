@@ -69,11 +69,18 @@ class BuyFarmController extends BaseUserController
     $userFarmRequest["farm_power"] = $farm->power  ;
     $userFarm = $userFarms->addNewUserFarms($userFarmRequest);
     
+       
 
-        
+
+        $newfarm  =[
+            "farm_power" => $userFarm->farm_power,
+            "reward" =>$userFarm->farm_power,
+            "farm_id" => $userFarm->farm_id,
+            'created_at' => $userFarm->created_at
+        ];
 
 
-        return $this->api(new BuyFarmResource($userFarm->toArray()),__METHOD__);
+        return $this->api(new BuyFarmResource($newfarm),__METHOD__);
     }
 
  

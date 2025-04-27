@@ -31,6 +31,7 @@ class UserStatusController extends BaseUserController
         if($minusUserGem){
 
             $user =  $this->activeUserOptions('warehouse_status'); // active user warehouse
+            $user->id = null;
             return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
         }
 
@@ -77,6 +78,7 @@ class UserStatusController extends BaseUserController
         if($minusUserGem){
 
             $user =  $this->activeUserOptions('market_status'); // active user market
+            $user->id = null;
             return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
         }
 
