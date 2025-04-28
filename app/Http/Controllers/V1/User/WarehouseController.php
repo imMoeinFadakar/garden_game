@@ -177,7 +177,7 @@ class WarehouseController extends BaseUserController
             $userWarehouse->warehouse_level_id = $newLevel->id;
             $userWarehouse->save();
 
-            $userWarehouse->load(['warehouse_level']);
+            $userWarehouse->load(['warehouse_level:id,level_number,overcapacity']); // get new level option
             $userWarehouse->user_id = null;
             return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
         }
@@ -419,7 +419,7 @@ class WarehouseController extends BaseUserController
     public function UserFarm($farmId)
     {
         return UserFarms::query()
-        ->where("user_id",1)
+        ->where("user_id",auth()->id())
         ->where("farm_id",$farmId)
         ->first() ?:null;
     }

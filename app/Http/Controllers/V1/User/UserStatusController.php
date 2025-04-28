@@ -32,7 +32,7 @@ class UserStatusController extends BaseUserController
 
             $user =  $this->activeUserOptions('warehouse_status'); // active user warehouse
             $user->id = null;
-            return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
+            return $this->api(['user warehouse status'=>$user->warehouse_status],__METHOD__);
         }
 
        return $this->errorResponse("operation failed"); 
@@ -78,8 +78,8 @@ class UserStatusController extends BaseUserController
         if($minusUserGem){
 
             $user =  $this->activeUserOptions('market_status'); // active user market
-            $user->id = null;
-            return $this->api(new UserStatusResource($user->toArray()),__METHOD__);
+           
+            return $this->api(['user market status'=>$user->market_status],__METHOD__);
         }
 
         return $this->errorResponse("operation failed"); // error

@@ -13,8 +13,6 @@ use Illuminate\Http\Request;
 class TransferController extends BaseUserController
 {      
 
-
-
     /**
      * get 
      * @param \Illuminate\Http\Request $request
@@ -76,7 +74,7 @@ class TransferController extends BaseUserController
 
 
        
-        return $this->api(new TransferResource($transfer->toArray()),__METHOD__);
+        return $this->api(["tranfer amount" => $transfer->token_amount],__METHOD__);
 
     }
 

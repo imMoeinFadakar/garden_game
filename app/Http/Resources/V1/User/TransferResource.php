@@ -14,9 +14,6 @@ class TransferResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            "amount" => $this->token_amount,
-            "created_at" => $this->created_at
-        ];
+        return parent::toArray($request);
     }
 }

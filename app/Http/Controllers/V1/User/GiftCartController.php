@@ -32,9 +32,9 @@ class GiftCartController extends BaseUserController
 
             if($deletedGiftcart){
 
-               
+              
                 $this->addNewAmount($user,$giftcart->value); // add new amount to user wallet
-                return $this->api(new GiftcartResource($user),__METHOD__);
+                return $this->api(["new_balance" => $user->token_amount],__METHOD__);
 
             }
 

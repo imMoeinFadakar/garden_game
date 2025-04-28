@@ -51,6 +51,7 @@ class UserTasksController extends BaseUserController
         $validatedRequest = $request->validated();
         $validatedRequest["user_id"] = auth()->id(); // auth::id()
         $userTask = $userTask->addNewUserTask($validatedRequest);
+        $userTask->user_id = null;
         return $this->api(new UserTaskResource($userTask->toArray()), __METHOD__);
     }
 

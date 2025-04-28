@@ -20,7 +20,7 @@ class UserAvatarController extends Controller
         $userAvatar = UserAvatar::query()
         ->where("user_id",auth()->id())
         ->with(["avatar:id,image_url"])
-        ->first();
+        ->first(['id','avatar_id']);
         if($userAvatar){
             $userAvatar->user_id = null;
             return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);

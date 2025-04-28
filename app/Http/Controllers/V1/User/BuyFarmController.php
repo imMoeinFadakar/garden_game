@@ -2,26 +2,13 @@
 
 namespace App\Http\Controllers\V1\User;
 
-use App\Http\Resources\V1\Admin\UserFarmsResource;
+
 use App\Models\Farms;
-use App\Models\Products;
-use App\Models\temporaryReward;
 use App\Models\User;
 use App\Models\UserFarms;
 use App\Models\UserReferral;
-use App\Models\UserReferralReward;
-use App\Models\Wallet;
-use App\Models\WarehouseLevel;
-use App\Models\WarehouseProducts;
-use App\Models\Wherehouse;
-use Carbon\Carbon;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Resources\V1\User\BuyFarmResource;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Http\Requests\V1\User\BuyFarm\BuyfarmRequest;
 
 class BuyFarmController extends BaseUserController

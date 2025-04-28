@@ -19,7 +19,7 @@ class WithdrawalControler extends BaseUserController
     {
         $transaction = Transaction::query()
         ->where("user_id",auth()->id())
-        ->get(['status','type','amount']);
+        ->get(['id','status','type','amount']);
 
         return $this->api(WithdrawalResource::collection($transaction),__METHOD__);
     }
