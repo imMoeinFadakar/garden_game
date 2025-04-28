@@ -27,7 +27,9 @@ class UpdateAvatarRequest extends FormRequest
     {
         return [
             "gender" => ["required","string",Rule::in(["male","female"])],
-            "image_url" => ["required","image",File::types(['jpg','png','svg'])->min(1)->max(2010)],
+            "image_url" => ["required","image",File::types(['jpg','png','svg'])
+            ->min(1)
+            ->max(2048)],
 
         ];
     }

@@ -29,7 +29,9 @@ class StoreBadgeRequest extends FormRequest
            
             "description" => "required|string",
             "reward" => "required|integer",
-            "image_url" => ["required","image",File::types(["jpeg","png","svg","jpg"])->min(1)->max(1024)],
+            "image_url" => ["required","image",File::types(["jpeg","png","svg","jpg"])
+            ->min(1)
+            ->max(2048)],
 
         ];
     }

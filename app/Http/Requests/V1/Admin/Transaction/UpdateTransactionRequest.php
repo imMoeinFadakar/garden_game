@@ -25,7 +25,7 @@ class UpdateTransactionRequest extends FormRequest
     {
         return [
             "status" => Rule::in(["pending","rejected","done"]),
-            // "user_id" => "required|integer|exists:users,id"
+          
         ];
     }
 }
