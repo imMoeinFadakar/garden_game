@@ -40,7 +40,7 @@ Route::prefix("user")->group(function() {
         Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"index"]);
         Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
         Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseController::class,"storeProduct"]);
-
+        //sdvdfvfddv
         // avatar 
         Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"store"]);
         Route::get("avatar", [App\Http\Controllers\V1\User\AvatarController::class, "index"]);
