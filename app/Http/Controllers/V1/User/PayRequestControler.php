@@ -54,6 +54,9 @@ class PayRequestControler extends Controller
         if(! $paymentFarmStatus)
             return $this->api(null,__METHOD__,'reward status change operation failed');
 
+        
+
+
         $genOne = $this->findParentReferral(auth()->id()); // find user parent
         if($genOne){
             // gen one 
