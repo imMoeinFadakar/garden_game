@@ -25,40 +25,26 @@ class FirstAuthController extends BaseUserController
     }
 
     /**
-     * first login/post 
+     * first login/post
      * @param \App\Http\Requests\V1\User\Auth\FirstAuthRequest $request
      * @param \App\Models\User $user
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function userLogin(FirstAuthRequest $request,User $user)
-    {   
+    {
 
         $findOrNewUser =  $user->findOrNewUser($request->validated()); // find or create user
 
         $this->loginUser($findOrNewUser); // login user
-        
-      
-        $token = $this->createUserToken($findOrNewUser); // user token 
-          
-     
-
-        $user = User::find(auth()->id())->first([
-       
-            'telegram_id',
-            "name",
-            "username",
-            "gender",
-            "market_status",
-            "warehouse_status",
-            "user_status",
-            "token_amount",
-            "gem_amount",
-            "referral_code"]);
 
 
-        return $this->api(new AuthResource(['user'=>$user,"token"=>$token]),__METHOD__);
+        $token = $this->createUserToken($findOrNewUser); // user token
 
-        
+        $findOrNewUser->id =null;
+
+        return $this->api(new AuthResource(['user'=>$findOrNewUser,"token"=>$token]),__METHOD__);
+
+
     }
     /**
      * Summary of createUserToken
@@ -80,7 +66,7 @@ class FirstAuthController extends BaseUserController
     }
 
     /**
-     * Find user or make new one 
+     * Find user or make new one
      * @param mixed $request
      * @return User
      */
