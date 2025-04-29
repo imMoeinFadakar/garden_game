@@ -32,7 +32,7 @@ class UserStatusController extends BaseUserController
 
             $user =  $this->activeUserOptions('warehouse_status'); // active user warehouse
             $user->id = null;
-            return $this->api(['user warehouse status'=>$user->warehouse_status],__METHOD__);
+            return $this->api(['user_warehouse_status'=>$user->warehouse_status],__METHOD__);
         }
 
        return $this->errorResponse("operation failed"); 
@@ -79,7 +79,7 @@ class UserStatusController extends BaseUserController
 
             $user =  $this->activeUserOptions('market_status'); // active user market
            
-            return $this->api(['user market status'=>$user->market_status],__METHOD__);
+            return $this->api(['user_market_status'=>$user->market_status],__METHOD__);
         }
 
         return $this->errorResponse("operation failed"); // error

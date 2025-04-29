@@ -28,10 +28,6 @@ class UserTasksController extends BaseUserController
 
     }
 
-
-
-
-
     /**
      * add new user task
      * @param \App\Http\Requests\V1\User\UserTask\UserTaskRequest $request
