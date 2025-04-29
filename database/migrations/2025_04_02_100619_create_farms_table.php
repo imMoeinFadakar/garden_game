@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger("require_gem");
             $table->unsignedBigInteger("require_referral");
             $table->string("prodcut_image_url");
-            $table->string("flage_image_url");
+            $table->string("flage_image_url")->nullable();
             $table->string("description");
             $table->string("background_light_color");
             $table->string("background_bold_color");
