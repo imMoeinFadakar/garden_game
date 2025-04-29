@@ -33,7 +33,7 @@ class UpdateFarmRequest extends FormRequest
                                                                         ->min(1)
                                                                         ->max(2048)       ],
             "description" => ["required","string"],
-            "flage_image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])
+            "flage_image_url" => ["nullable","image",File::types(["jpg","png","svg","jpeg"])
             ->min(1)
             ->max(2048)       ],
             "power" => ["required","integer"],
