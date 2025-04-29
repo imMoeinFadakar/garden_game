@@ -5,22 +5,14 @@ namespace App\Http\Controllers\V1\User;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Farms;
-use App\Models\Wallet;
 use App\Models\UserFarms;
 use App\Models\Wherehouse;
-use Illuminate\Http\Request;
 use App\Models\WarehouseLevel;
 use App\Models\temporaryReward;
-use App\Models\WarehouseProducts;
-use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Validated;
-use App\Http\Resources\V1\User\WalletResource;
 use App\Http\Resources\V1\User\warehouseResource;
 use App\Http\Requests\V1\User\createwarehouseRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Http\Requests\V1\User\AddProduct\AddProdcutRequest;
 use App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest;
-use App\Http\Requests\V1\User\Warehouse\WarehouseUPdateRequest;
 
 class WarehouseController extends BaseUserController
 {

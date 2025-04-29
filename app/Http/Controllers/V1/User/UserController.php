@@ -34,7 +34,7 @@ class UserController extends BaseUserController
     {
         $findUser = User::query()
         ->where("telegram_id",$request->telegram_id)
-        ->first(['telegram_id','name','username','gender','market_status','warehouse_status','user_status','token_amount','gem_amount']);
+        ->first(['telegram_id','name','username','gender','market_status','warehouse_status','user_status','token_amount','gem_amount','referral_code']);
 
        
         if(! $findUser)

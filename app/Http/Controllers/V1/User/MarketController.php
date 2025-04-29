@@ -24,7 +24,7 @@ class MarketController extends BaseUserController
        $marketHistory  = MarketHistory::query()
        ->where('user_id',auth()->id())
        ->with(['farm:id,name,prodcut_image_url'])
-       ->get(['product_amount','token_amount','created_at','farm_id']);
+       ->get(['id','product_amount','token_amount','created_at','farm_id']);
 
 
 
