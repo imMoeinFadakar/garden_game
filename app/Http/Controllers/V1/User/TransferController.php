@@ -65,7 +65,7 @@ class TransferController extends BaseUserController
         if(! $addTokenToWallet){ // if add wasn`t successful :
             // return tokens to user wallet
             $this->AddUserReceiverToken($user,$validatedRequest["token_amount"]);
-            return $this->errorResponse("operation failed! gem has been returned to your wallet"); // error response
+            return $this->errorResponse("operation failed! token has been returned to your wallet"); // error response
         }
 
         $validatedRequest["from_user"] = auth()->id(); // Sender user = auth->user
@@ -97,10 +97,10 @@ class TransferController extends BaseUserController
      * @param mixed $receiverWallet
      * @param int $amount
      */
-    public function AddUserReceiverToken($receiverWallet,int $amount)
+    public function AddUserReceiverToken($receiver,int $amount)
     {
-        $receiverWallet->token_amount += $amount;
-        return $receiverWallet->save();
+        $receiver->token_amount += $amount;
+        return $receiver->save();
     }
     /**
      * minus user token

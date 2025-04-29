@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\Giftcart\UseGiftCartRequest;
 use App\Http\Resources\V1\User\GiftcartResource;
 use App\Models\Giftcart;
+use App\Models\Transfer;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Auth\Authenticatable;
@@ -32,9 +33,14 @@ class GiftCartController extends BaseUserController
 
             if($deletedGiftcart){
 
-              
+                Transfer::create([
+                    "user_id" => auth()->id(),
+                    "status" => 'done',
+                    'type' => 'type',
+                    'amount' =>  $giftcart->value
+                ]);
                 $this->addNewAmount($user,$giftcart->value); // add new amount to user wallet
-                return $this->api(["new gem balance" => $user->gem_amount],__METHOD__);
+                return $this->api(["new_gem_balance" => $user->gem_amount],__METHOD__);
 
             }
 
