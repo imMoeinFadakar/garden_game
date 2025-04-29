@@ -21,7 +21,7 @@ class PayRequestControler extends Controller
     {
         $temporaryReward = $temporaryReward
         ->where('user_id',auth()->id())
-        ->get(['farm_id','amount','ex_time','created_at']);
+        ->get(['id','farm_id','amount','ex_time','created_at']);
 
 
         return $this->api(payRewardResource::collection($temporaryReward),__METHOD__);
