@@ -74,7 +74,7 @@ class TransferController extends BaseUserController
 
 
        
-        return $this->api(["tranfer amount" => $transfer->token_amount],__METHOD__);
+        return $this->api(["tranfer_amount" => $transfer->token_amount],__METHOD__);
 
     }
 
