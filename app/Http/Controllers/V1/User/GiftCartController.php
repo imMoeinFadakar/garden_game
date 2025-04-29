@@ -34,7 +34,7 @@ class GiftCartController extends BaseUserController
 
               
                 $this->addNewAmount($user,$giftcart->value); // add new amount to user wallet
-                return $this->api(["new_balance" => $user->token_amount],__METHOD__);
+                return $this->api(["new gem balance" => $user->gem_amount],__METHOD__);
 
             }
 
@@ -68,9 +68,9 @@ class GiftCartController extends BaseUserController
      * @param int $amount
      * @return bool
      */
-    public function addNewAmount( $user,int $amount): bool
+    public function addNewAmount($user,int $amount): bool
     {
-        $user->token_amount += $amount;
+        $user->gem_amount += $amount;
       return   $user->save();
     }
 

@@ -35,13 +35,18 @@ class Farms extends Model
     {
       
         $uploadImageFarm = $this->uploadMedia($request,"farm_image_url","farm_image_url");
-        $uploadFlageImage = $this->uploadMedia($request,"flage_image_url","flage_image_url");
         $uploadProduct = $this->uploadMedia($request,"prodcut_image_url","prodcut_image_url");
 
 
         $validtedRequest = $request->validated();
         $validtedRequest["farm_image_url"] = $uploadImageFarm;
-        $validtedRequest["flage_image_url"] = $uploadFlageImage;
+
+        if(isset($validtedRequest["flage_image_url"]) && $validtedRequest["flage_image_url"] != null){
+
+            $uploadFlageImage = $this->uploadMedia($request,"flage_image_url","flage_image_url");
+            $validtedRequest["flage_image_url"] = $uploadFlageImage;
+        }
+
         $validtedRequest["prodcut_image_url"] = $uploadProduct;
 
         return $this->query()->create($validtedRequest);
