@@ -436,7 +436,7 @@ class WarehouseController extends BaseUserController
      */
     public function GetUserWarehouseStatus()
     {
-        $user = User::query()->find(1); // add Auth::id() later
+        $user = auth()->user(); // add Auth::id() later
         if($user->warehouse_status === "inactive")
             return false;
 
