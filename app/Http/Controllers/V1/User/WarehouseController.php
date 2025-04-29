@@ -298,7 +298,7 @@ class WarehouseController extends BaseUserController
         # check user has warehouse for this farm
         $userWarehouse = $this->getUserWarehouse($request->farm_id);
         if(! $userWarehouse)
-        return $this->errorResponse("you dont have the warehouse, make it first o call support",422);
+        return $this->errorResponse("you dont have the warehouse, make it first or call support",422);
 
         # check user has this farm
         $UserFarm = $this->UserFarm($request->farm_id);
@@ -453,7 +453,7 @@ class WarehouseController extends BaseUserController
     public function getUserWarehouse($farmId)
     {
         return Wherehouse::query()
-            ->where("user_id",1) // add Auth::id() later
+            ->where("user_id",auth()->id()) // add Auth::id() later
             ->where("farm_id",$farmId)
             ->first()?:null;
 
