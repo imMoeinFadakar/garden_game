@@ -31,19 +31,22 @@ class StoreFarmRequest extends FormRequest
             "require_gem" => ["required","integer"],
             "require_referral" => ["required","integer"],
             "farm_image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])
-                                                                        ->min(1)
-                                                                        ->max(2048)       ],
-            "description" => ["required","string"],
-            "flage_image_url" => ["nullable","image",File::types(["jpg","png","svg","jpeg"])
             ->min(1)
-            ->max(2048)       ],
+            ->max(2048)],
+
+            "description" => ["required","string"],
+            "flage_image_url" => ["nullable","image",
+            File::types(["jpg","png","svg","jpeg"])
+            ->min(1)
+            ->max(2048)],
+
             "power" => ["required","integer"],
             
             "min_token_value" => "required|integer|min:1",
             "max_token_value" => "required|integer|gt:min_token_value",
             "prodcut_image_url" => ["required","image",File::types(["jpg","png","jpeg","svg"])
             ->min(1)
-            ->max(2048) ],
+            ->max(2048)],
 
             "header_bold_color" =>["required"],
             "header_light_color" => ["required"],
