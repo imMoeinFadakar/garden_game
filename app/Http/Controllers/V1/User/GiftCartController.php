@@ -34,12 +34,12 @@ class GiftCartController extends BaseUserController
 
             if($deletedGiftcart){
 
-                Transaction::create([
-                    "user_id" => auth()->id(),
-                    "status" => 'done',
-                    'type' => 'deposit',
-                    'amount' =>  $giftcart->value
-                ]);
+                // Transaction::create([
+                //     "user_id" => auth()->id(),
+                //     "status" => 'done',
+                //     'type' => 'deposit',
+                //     'amount' =>  $giftcart->value
+                // ]);
 
                
 
