@@ -14,18 +14,6 @@ class TransferController extends BaseUserController
 {      
 
 
-    public function transferedToMe(Request $request)
-    {
-        $transferedToMe = Transfer::query()
-        ->where('to_user',auth()->id())
-        ->get(['id','token_amount','created_at']);
-
-        return $this->api(new TransferResource($transferedToMe),__METHOD__);
-    }
-
-
-
-
     /**
      * get 
      * @param \Illuminate\Http\Request $request
@@ -35,11 +23,17 @@ class TransferController extends BaseUserController
     {
         $transfer = Transfer::query()
         ->where('from_user',auth()->id())
+        ->orWhere('to_user',auth()->id())
         ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
         ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
-        ->get(['id','token_amount','created_at']);
+        ->get(['id','token_amount','created_at'])
+        ->each(function($transfer){
 
-        return $this->api(TransferResource::collection($transfer),__METHOD__);
+            $transfer->setAttribute('type','transfer');
+
+        });
+         
+        return $this->api(TransferResource::collection($transfer->toArray()),__METHOD__);
     }
 
     /**
