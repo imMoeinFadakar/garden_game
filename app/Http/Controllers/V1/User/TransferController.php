@@ -13,6 +13,19 @@ use Illuminate\Http\Request;
 class TransferController extends BaseUserController
 {      
 
+
+    public function transferedToMe(Request $request)
+    {
+        $transferedToMe = Transfer::query()
+        ->where('to_user',auth()->id())
+        ->get(['id','token_amount','created_at']);
+
+        return $this->api(new TransferResource($transferedToMe),__METHOD__);
+    }
+
+
+
+
     /**
      * get 
      * @param \Illuminate\Http\Request $request
