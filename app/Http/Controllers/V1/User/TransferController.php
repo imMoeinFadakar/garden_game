@@ -14,22 +14,40 @@ class TransferController extends BaseUserController
 {      
 
 
-    /**
-     * get 
-     * @param \Illuminate\Http\Request $request
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function index(Request $request)
+    public function receiveTransfer(Request $request)
     {
         $transfer = Transfer::query()
-        ->where('from_user',auth()->id())
-        ->orWhere('to_user',auth()->id())
+        ->where('to_user',auth()->id())
         ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
         ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
         ->get(['id','token_amount','created_at'])
         ->each(function($transfer){
 
-            $transfer->setAttribute('type','transfer');
+            $transfer->setAttribute('type','receive');
+
+        });
+
+        return $this->api(TransferResource::collection($transfer->toArray()),__METHOD__);
+        
+    }
+
+
+
+    /**
+     * get 
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function sendTransfer(Request $request)
+    {
+        $transfer = Transfer::query()
+        ->where('from_user',auth()->id())
+        ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
+        ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
+        ->get(['id','token_amount','created_at'])
+        ->each(function($transfer){
+
+            $transfer->setAttribute('type','send');
 
         });
          
