@@ -28,8 +28,6 @@ class UpdatewherehouselevelRequest extends FormRequest
             "overcapacity" => "nullable|integer",
             "cost_for_buy" => "nullable|integer",
             "farm_id" => ["nullable","integer","exists:farms,id"],
-       
-
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
