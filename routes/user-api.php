@@ -47,13 +47,16 @@ Route::prefix("user")->group(function() {
 
         // transaction
         Route::post("withdrawal",[App\Http\Controllers\V1\User\WithdrawalControler::class,"withdrawal"]);
-        Route::get("transaction",[App\Http\Controllers\V1\User\WithdrawalControler::class,"index"]);
         Route::post("use_giftcart",[App\Http\Controllers\V1\User\GiftCartController::class,"useGiftCart"]);
         Route::post('pay_reward',[App\Http\Controllers\V1\User\PayRequestControler::class,"newPayingRequest"]);
-        Route::get("user_referral_reward",[App\Http\Controllers\V1\User\PayRequestControler::class,'index']);
         Route::post("transfer",[App\Http\Controllers\V1\User\TransferController::class,"store"]);
+        Route::post('new_exchange',[App\Http\Controllers\V1\User\ExchangeController::class,"newExchange"]);
+
+        Route::get("transaction",[App\Http\Controllers\V1\User\WithdrawalControler::class,"index"]);
+        Route::get("user_referral_reward",[App\Http\Controllers\V1\User\PayRequestControler::class,'index']);
         Route::get('all_transfer',[App\Http\Controllers\V1\User\TransferController::class,"sendTransfer"]);
         Route::get('my_transfer',[App\Http\Controllers\V1\User\TransferController::class,"receiveTransfer"]);
+        Route::get('my_exchange',[App\Http\Controllers\V1\User\ExchangeController::class,"UserExchange"]);
 
 
         // activate

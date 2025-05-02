@@ -18,7 +18,7 @@ return new class extends Migration
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
             $table->enum("status",["pending","rejected","done"])->default('pending');
-            $table->enum("type",["withdraw","deposit"]);
+            $table->enum("type",["withdraw","deposit","exchange"]);
             $table->unsignedBigInteger("amount");
             $table->timestamps();
         });
