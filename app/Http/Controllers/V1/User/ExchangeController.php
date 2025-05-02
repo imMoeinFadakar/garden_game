@@ -47,6 +47,16 @@ class ExchangeController extends BaseUserController
     
             $this->addNewGemAmout($user,$newGemAmount); // Update user gem amount
             
+             $transaction->addNewTransaction([
+                "user_id" => auth()->id(),
+                "status" => "done",
+                "type" => "exchange",
+                "amount" =>  $request->token_amount
+            ]);
+
+
+
+
             return  $this->api(["user_gem" => $user->gem_amount],__METHOD__,"Tokens successfully converted to gem");
             // success response
         }
