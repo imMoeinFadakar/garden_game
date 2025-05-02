@@ -24,11 +24,11 @@ class UpdateUserReffralRewardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "reward_for_generation_one" => "required|integer|min:1",
-            "reward_for_generation_two" => "required|integer|min:1",
-            "reward_for_generation_three" => "required|integer|min:1",
-            "reward_for_generation_four" => "required|integer|min:1",
-            "farm_id" => "required|integer|exists:farms,id",
+            "reward_for_generation_one" => "nullable|integer|min:1",
+            "reward_for_generation_two" => "nullable|integer|min:1",
+            "reward_for_generation_three" => "nullable|integer|min:1",
+            "reward_for_generation_four" => "nullable|integer|min:1",
+            "farm_id" => "nullable|integer|exists:farms,id",
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

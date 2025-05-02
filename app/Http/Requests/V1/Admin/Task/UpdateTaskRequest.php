@@ -24,8 +24,8 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => "required|string",
-            "attachment_url" => "required",
+            "title" => "nullable|string",
+            "attachment_url" => "nullable",
             "gem_reward" => "nullable|integer",
             "token_reward" => "nullable|integer",
         ];

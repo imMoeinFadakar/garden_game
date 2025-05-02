@@ -25,30 +25,30 @@ class UpdateFarmRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|unique:farms,name,".$this->farm->id,
-            "require_token" => ["required","integer"],
-            "require_gem" => ["required","integer"],
-            "require_referral" => ["required","integer"],
-            "farm_image_url" => ["required","image",File::types(["jpg","png","svg","jpeg"])
+            "name" => "nullable|string|unique:farms,name,".$this->farm->id,
+            "require_token" => ["nullable","integer"],
+            "require_gem" => ["nullable","integer"],
+            "require_referral" => ["nullable","integer"],
+            "farm_image_url" => ["nullable","image",File::types(["jpg","png","svg","jpeg"])
                                                                         ->min(1)
                                                                         ->max(2048)       ],
-            "description" => ["required","string"],
+            "description" => ["nullable","string"],
             "flage_image_url" => ["nullable","image",
             File::types(["jpg","png","svg","jpeg"])
             ->min(1)
             ->max(2048)],
-            "power" => ["required","integer"],
+            "power" => ["nullable","integer"],
            
-            "min_token_value" => "required|integer|min:1",
-            "max_token_value" => "required|integer|gt:min_token_value",
-            "prodcut_image_url" => ["required","image",File::types(["jpg","png","jpeg","svg"])
+            "min_token_value" => "nullable|integer|min:1",
+            "max_token_value" => "nullable|integer|gt:min_token_value",
+            "prodcut_image_url" => ["nullable","image",File::types(["jpg","png","jpeg","svg"])
             ->min(1)
             ->max(2048) ]
-            ,      "header_bold_color" =>["required"],
-            "header_light_color" => ["required"],
-            "background_bold_color" => ["required"],
-            "background_light_color" => ["required"],
-            'farm_reward' => ['required','integer']
+            ,      "header_bold_color" =>["nullable"],
+            "header_light_color" => ["nullable"],
+            "background_bold_color" => ["nullable"],
+            "background_light_color" => ["nullable"],
+            'farm_reward' => ['nullable','integer']
 
         ];
     }

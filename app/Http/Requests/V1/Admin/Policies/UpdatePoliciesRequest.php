@@ -24,7 +24,7 @@ class UpdatePoliciesRequest extends FormRequest
     public function rules(): array
     {
         return [
-           "text" => ["required","string"]
+           "text" => ["nullable","string"]
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

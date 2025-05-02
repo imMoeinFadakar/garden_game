@@ -24,8 +24,8 @@ class UpdateBadgeFarmsRequest extends FormRequest
     public function rules(): array
     {
         return [
-             "badge_id" => "required|integer|exists:badges,id",
-            "farm_id" => "required|integer|exists:farms,id"
+             "badge_id" => "nullable|integer|exists:badges,id",
+            "farm_id" => "nullable|integer|exists:farms,id"
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

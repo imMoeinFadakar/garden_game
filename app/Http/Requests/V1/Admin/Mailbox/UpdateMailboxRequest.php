@@ -24,8 +24,8 @@ class UpdateMailboxRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => "required|string",
-            "body" => "required",
+            "title" => "nullable|string",
+            "body" => "nullable",
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

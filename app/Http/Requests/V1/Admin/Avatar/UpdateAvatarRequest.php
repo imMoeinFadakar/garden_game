@@ -26,8 +26,8 @@ class UpdateAvatarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "gender" => ["required","string",Rule::in(["male","female"])],
-            "image_url" => ["required","image",File::types(['jpg','png','svg'])
+            "gender" => ["nullable","string",Rule::in(["male","female"])],
+            "image_url" => ["nullable","image",File::types(['jpg','png','svg'])
             ->min(1)
             ->max(2048)],
 

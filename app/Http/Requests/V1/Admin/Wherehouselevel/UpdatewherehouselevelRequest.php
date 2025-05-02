@@ -24,10 +24,10 @@ class UpdatewherehouselevelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "level_number" => "required|integer",
-            "overcapacity" => "required|integer",
-            "cost_for_buy" => "required|integer",
-            "farm_id" => ["required","integer","exists:farms,id"],
+            "level_number" => "nullable|integer",
+            "overcapacity" => "nullable|integer",
+            "cost_for_buy" => "nullable|integer",
+            "farm_id" => ["nullable","integer","exists:farms,id"],
        
 
         ];

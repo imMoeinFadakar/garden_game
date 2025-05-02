@@ -26,9 +26,9 @@ class UpdateBadgeRequest extends FormRequest
     {
         return [
           
-            "description" => "required|string",
-            "reward" => "required|integer",
-            "image_url" => ["required","image",File::types(["jpeg","png","svg","jpg"])
+            "description" => "nullable|string",
+            "reward" => "nullable|integer",
+            "image_url" => ["nullable","image",File::types(["jpeg","png","svg","jpg"])
             ->min(1)
             ->max(2048)],
 

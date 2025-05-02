@@ -23,9 +23,9 @@ class UpdateUserFarmRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => "required|integer|exists:users,id",
-            "farm_id"=> "required|integer|exists:farms,id",
-            "farm_power" => "required|integer"
+            "user_id" => "nullable|integer|exists:users,id",
+            "farm_id"=> "nullable|integer|exists:farms,id",
+            "farm_power" => "nullable|integer"
         ];
     }
     

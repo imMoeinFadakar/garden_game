@@ -24,12 +24,12 @@ class UpdatewherehouseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => "required|integer|exists:users,id",
-            "warehouse_level_id"=> "required|integer|exists:warehouse_levels,id",
-            "warehouse_cap_left" => "required|integer",
-            "farm_id" => ["required","integer","exists:farms,id"],
-            "amount" => ["required","integer"],
-            "overcapacity" => "required|integer"
+            "user_id" => "nullable|integer|exists:users,id",
+            "warehouse_level_id"=> "nullable|integer|exists:warehouse_levels,id",
+            "warehouse_cap_left" => "nullable|integer",
+            "farm_id" => ["nullable","integer","exists:farms,id"],
+            "amount" => ["nullable","integer"],
+            "overcapacity" => "nullable|integer"
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

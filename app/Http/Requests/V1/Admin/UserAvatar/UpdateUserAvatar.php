@@ -24,8 +24,8 @@ class UpdateUserAvatar extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => ["required","integer","exists:users,id"],
-            "avatar_id" =>["required","integer","exists:avatars,id"],
+            "user_id" => ["nullable","integer","exists:users,id"],
+            "avatar_id" =>["nullable","integer","exists:avatars,id"],
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

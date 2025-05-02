@@ -25,8 +25,8 @@ class UpdateAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "fullname" => "required|string",
-            "type" => ["required","string",Rule::in(["manager","admin"])],
+            "fullname" => "nullable|string",
+            "type" => ["nullable","string",Rule::in(["manager","admin"])],
         ];
     }
 
