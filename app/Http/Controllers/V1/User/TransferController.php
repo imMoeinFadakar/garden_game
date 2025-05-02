@@ -97,8 +97,6 @@ class TransferController extends BaseUserController
         $validatedRequest["to_user"] = $reciverUser->id; // Reciver user
         $transfer = $transfer->addNewTransfer($validatedRequest); 
 
-
-       
         return $this->api(["tranfer_amount" => $transfer->token_amount],__METHOD__);
 
     }
