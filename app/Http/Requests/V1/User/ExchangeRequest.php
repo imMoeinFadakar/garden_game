@@ -26,7 +26,7 @@ class ExchangeRequest extends FormRequest
             "token_amount" => [
                 "required",
                 "integer",
-                "min:5000"
+                "min:3000"
             ]
         ];
     }
