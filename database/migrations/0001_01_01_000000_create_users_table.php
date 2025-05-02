@@ -28,7 +28,7 @@ return new class extends Migration
             ->default("active");
 
             $table->unsignedBigInteger("token_amount")->default(1000);
-            $table->unsignedBigInteger("gem_amount")->default(0);
+            $table->unsignedBigInteger("gem_amount")->default(15);
             $table->uuid("referral_code")->unique();
 
             $table->rememberToken();
