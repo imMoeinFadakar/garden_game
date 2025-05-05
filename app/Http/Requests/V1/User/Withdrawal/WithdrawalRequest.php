@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\V1\User\Withdrawal;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class WithdrawalRequest extends FormRequest
 {
@@ -22,7 +24,18 @@ class WithdrawalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "amount" => "required|integer|min:5000"
+            "amount" => "required|integer|min:200000",
+            "wallet_id" => "required|integer|exists:wallets,id"
         ];
+    }
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+
+            "success" => false,
+            "code" => 400,
+            "message" => "validation error",
+            "detail" => $validator->errors()
+        ]));
     }
 }

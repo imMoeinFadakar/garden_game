@@ -69,12 +69,12 @@ class UserStatusController extends BaseUserController
             return $this->api(null,__METHOD__,'Your market is already active');
 
 
-        $userAmount = $this->hasUserEnoughGem(20); // ensure user have enough gem
+        $userAmount = $this->hasUserEnoughGem(5); // ensure user have enough gem
         if(! $userAmount)
             return $this->api(null,__METHOD__,'dont have enough gem');
 
 
-        $minusUserGem = $this->minusUserGem(20); // minus user gem
+        $minusUserGem = $this->minusUserGem(5); // minus user gem
         if($minusUserGem){
 
             $user =  $this->activeUserOptions('market_status'); // active user market

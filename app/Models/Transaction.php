@@ -13,6 +13,12 @@ class Transaction extends Model
         "amount"
     ];
 
+
+    
+
+
+
+
     /**
      * Get the user that owns the Transaction
      *

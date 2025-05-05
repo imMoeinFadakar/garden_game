@@ -45,6 +45,12 @@ Route::prefix("user")->group(function() {
         Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"store"]);
         Route::get("avatar", [App\Http\Controllers\V1\User\AvatarController::class, "index"]);
 
+        //wallet 
+        Route::get("get_user_wallet",[App\Http\Controllers\V1\User\WalletController::class,"getUserwallet"]);
+        Route::post("add_user_wallet",[App\Http\Controllers\V1\User\WalletController::class,"newUserwallet"]);
+        Route::post("delete_wallet",[App\Http\Controllers\V1\User\WalletController::class,"deleteUserWallet"]);
+
+
         // transaction
         Route::post("withdrawal",[App\Http\Controllers\V1\User\WithdrawalControler::class,"withdrawal"]);
         Route::post("use_giftcart",[App\Http\Controllers\V1\User\GiftCartController::class,"useGiftCart"]);
@@ -52,6 +58,7 @@ Route::prefix("user")->group(function() {
         Route::post("transfer",[App\Http\Controllers\V1\User\TransferController::class,"store"]);
         Route::post('new_exchange',[App\Http\Controllers\V1\User\ExchangeController::class,"newExchange"]);
 
+        Route::get("user_withdraw",[App\Http\Controllers\V1\User\WithdrawalControler::class,"userWithdraw"]);
         Route::get("transaction",[App\Http\Controllers\V1\User\WithdrawalControler::class,"index"]);
         Route::get("user_referral_reward",[App\Http\Controllers\V1\User\PayRequestControler::class,'index']);
         Route::get('all_transfer',[App\Http\Controllers\V1\User\TransferController::class,"sendTransfer"]);

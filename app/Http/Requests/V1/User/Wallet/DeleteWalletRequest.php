@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\V1\User;
+namespace App\Http\Requests\V1\User\Wallet;
 
-use App\Rules\V1\User\hasUserEnoughToken;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ExchangeRequest extends FormRequest
+class DeleteWalletRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +23,7 @@ class ExchangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "token_amount" => [
-                "required",
-                "integer",
-                "min:3000"
-            ]
+            "wallet_id" => ["required","integer","exists:wallets,id"]
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\V1\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class MarketRequest extends FormRequest
 {
@@ -25,5 +26,15 @@ class MarketRequest extends FormRequest
             "farm_id" => "required|integer|exists:farms,id",
             "amount" => "required|integer|min:1"
         ];
+    }
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+
+            "success" => false,
+            "code" => 400,
+            "message" => "validation error",
+            "detail" => $validator->errors()
+        ]));
     }
 }
