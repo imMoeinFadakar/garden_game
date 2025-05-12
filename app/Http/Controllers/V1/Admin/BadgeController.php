@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Admin\Badge\StoreBadgeRequest;
+use App\Http\Requests\V1\Admin\Badge\UpdateBadgeRequest;
 use App\Http\Resources\V1\Admin\BadgeResource;
 use App\Models\Badge;
 use Carbon\Carbon;
@@ -57,7 +58,7 @@ class BadgeController extends Controller
      * @param \App\Models\Badge $badge
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function update(StoreBadgeRequest $request , Badge $badge)
+    public function update(UpdateBadgeRequest $request , Badge $badge)
     {
         $badge->updateBadge($request);
         return $this->api(new BadgeResource($badge->toArray()),__METHOD__);

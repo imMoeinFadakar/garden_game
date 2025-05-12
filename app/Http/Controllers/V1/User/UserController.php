@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\User;
 
 
+use App\Http\Requests\V1\User\FindUserRequest;
 use App\Http\Requests\V1\User\newReffralRequest;
 use App\Http\Requests\V1\User\UserRequest;
 use App\Http\Resources\V1\User\UserResource;
@@ -99,5 +100,20 @@ class UserController extends BaseUserController
         ->where("referral_code",$referrallCode)
         ->first();
     }
+
+    public function findUserByReferral(FindUserRequest $request,User $user)
+    {        
+        $validated = $request->validated();
+
+        $user = $user->query()
+        ->where("referral_code",'=',$validated['referral_code'])
+        ->first(['name','username','status']);
+
+        return $this->api(new UserResource($user->toArray()),__METHOD__);
+
+    }
+
+
+
 
 }

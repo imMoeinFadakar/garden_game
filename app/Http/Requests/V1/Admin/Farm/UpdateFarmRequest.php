@@ -4,6 +4,7 @@ namespace App\Http\Requests\V1\Admin\Farm;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use function response;
 
@@ -23,9 +24,12 @@ class UpdateFarmRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
+    {   
+        
+
         return [
-            "name" => "nullable|string|unique:farms,name,".$this->farm->id,
+
+            'name' => ['required'],
             "require_token" => ["nullable","integer"],
             "require_gem" => ["nullable","integer"],
             "require_referral" => ["nullable","integer"],

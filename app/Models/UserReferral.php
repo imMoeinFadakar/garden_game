@@ -42,7 +42,7 @@ class UserReferral extends Model
 
     public static function userReferralNum()
     {
-        return self::query()->where("invading_user",1)->count();
+        return self::query()->where("invading_user",auth()->id())->count();
     }
     public static function findUserReferral($userId)
     {   

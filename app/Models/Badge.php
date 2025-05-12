@@ -31,7 +31,7 @@ class Badge extends Model
     {
         $uploadImage = $this->uploadMedia($request,"badge");
         $validtedRequest = $request->validated();
-        $validtedRequest["image_url"] = $uploadImage;
+        $validtedRequest["image_url"] = $uploadImage ?? $this->image_url ;
         
 
         $this->update($validtedRequest);

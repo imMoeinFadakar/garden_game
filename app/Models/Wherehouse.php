@@ -13,7 +13,7 @@ class Wherehouse extends Model
         "farm_id",
         'amount'
     ];
-
+    protected $appends = ['next_level'];
 
    /**
     * Get the warehouse_level that owns the Wherehouse
@@ -24,6 +24,18 @@ class Wherehouse extends Model
    {
        return $this->belongsTo(WarehouseLevel::class, 'warehouse_level_id', 'id');
    }
+
+
+   public function getNextLevelAttribute()
+   {
+       if (!$this->warehouse_level) return null;
+   
+       return WarehouseLevel::where('farm_id', $this->farm_id) // هم‌فارمی
+           ->where('level_number', '>', $this->warehouse_level->level_number)
+           ->orderBy('level_number')
+           ->first(['level_number','overcapacity','cost_for_buy','farm_id']);
+   }
+
 
     public function farm()
     {

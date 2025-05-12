@@ -39,6 +39,9 @@ class BuyFarmController extends BaseUserController
     $userGem = $this->userHaveEnoughResource($user->gem_amount,$farm->require_gem); // has user enough gem
      $userReffralAmount = $this->userHaveEnoughResource($userReferral,$farm->require_referral); // has user enough referral
      
+        
+
+
      if(! $userReffralAmount || ! $userGem || ! $userToken)
         return $this->api(null,__METHOD__,"you dont have enough resource to buy this farm");
 
@@ -122,7 +125,7 @@ class BuyFarmController extends BaseUserController
     public function userHaveEnoughResource(int $UserResource,int $farmRequireResource): bool
     {       
 
-        if($UserResource < $farmRequireResource)
+        if($UserResource <= $farmRequireResource)
             return false;
 
 

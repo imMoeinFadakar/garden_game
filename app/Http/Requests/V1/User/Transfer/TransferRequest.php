@@ -25,7 +25,7 @@ class TransferRequest extends FormRequest
     {
         return [
             "token_amount" => "required|integer|min:5000",
-            "user_address" => "required|exists:users,referral_code"
+            "user_address" => "required|exists:cart_users,cart_number"
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

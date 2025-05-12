@@ -76,6 +76,14 @@ Route::prefix("user")->group(function() {
 
         // team managment
         Route::get('team',[App\Http\Controllers\V1\User\TeamManagmentController::class,"index"]);
+  
+        //user 
+        Route::post('find_recipient',[App\Http\Controllers\V1\User\UserController::class,"findUserByReferral"]);
+        
+        //user transaction cart
+        Route::post('new_cart',[App\Http\Controllers\V1\User\CartUserController::class,'createNewCart']);
+        Route::get("user_cart",[App\Http\Controllers\V1\User\CartUserController::class,'getUserCart']);
+
 
 
     });

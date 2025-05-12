@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\V1\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\User\Giftcart\TransferRequest;
-use App\Http\Resources\V1\User\TransferResource;
-use App\Models\Transfer;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Models\CartUser;
+use App\Models\Transfer;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\User\TransferResource;
+use App\Http\Requests\V1\User\Giftcart\TransferRequest;
 
 class TransferController extends BaseUserController
 {      
@@ -70,7 +71,7 @@ class TransferController extends BaseUserController
         $hasUsereniughToken = $this->hasUserEnoughToken($user->token_amount,$validatedRequest["token_amount"]);
         if(! $hasUsereniughToken)
             return $this->api(null,__METHOD__,'you dont have enough token');
-        
+            
         $reciverUser = $this->reciverWallet($validatedRequest['user_address']); // find reciver User
         
         if($reciverUser->referral_code === $user->referral_code)
@@ -106,14 +107,21 @@ class TransferController extends BaseUserController
      * @param mixed $referalCode
      * @return User|null
      */
-    public function reciverWallet($referalCode)
+    public function reciverWallet($cartNumber)
     {
+         $cartUser = $this->findUserByCartUser($cartNumber);
+
         return User::query()
-        ->where('referral_code',$referalCode)
+        ->where("id",$cartUser->user_id)
         ->first();
     }
 
-
+    public function findUserByCartUser($cartNumber)
+    {
+        return  CartUser::query()
+        ->where('cart_number',$cartNumber)
+        ->first();
+    }
 
     /**
      * add token to reciver wallet

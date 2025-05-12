@@ -64,8 +64,8 @@ class Farms extends Model
             $validtedRequest["flage_image_url"] = $uploadFlageImage;
         }
 
-        $validtedRequest["farm_image_url"] = $uploadImageFarm;
-        $validtedRequest["prodcut_image_url"] = $uploadProduct;
+        $validtedRequest["farm_image_url"] = $uploadImageFarm ?? $this->farm_image_url;
+        $validtedRequest["prodcut_image_url"] = $uploadProduct ?? $this->prodcut_image_url;
         
 
 

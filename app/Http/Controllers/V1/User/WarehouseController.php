@@ -24,13 +24,24 @@ class WarehouseController extends BaseUserController
     public function index()
     {   
 
-        $warehouse = Wherehouse::query()
-        ->where("user_id",auth()->id())
-        ->with(['warehouse_level:id,level_number,farm_id,overcapacity','farm:id,name,prodcut_image_url,header_light_color'])
-        ->get(['id','farm_id','warehouse_level_id','amount']);
+        // $warehouse = Wherehouse::query()
+        // ->where("user_id",auth()->id())
+        // ->with(['warehouse_level:id,level_number,farm_id,overcapacity','farm:id,name,prodcut_image_url,header_light_color'])
+        // ->get(['id','farm_id','warehouse_level_id','amount']);
+        
+
+        $warehouses = Wherehouse::query()
+        ->where("user_id", auth()->id())
+        ->with([
+            'warehouse_level:id,level_number,farm_id,overcapacity',
+            'farm:id,name,prodcut_image_url,header_light_color',
+        ])
+        ->get(['id', 'farm_id', 'warehouse_level_id', 'amount']);
 
 
-        return $this->api(warehouseResource::collection($warehouse),__METHOD__);
+
+
+        return $this->api(warehouseResource::collection($warehouses),__METHOD__);
 
     }
 
@@ -276,9 +287,14 @@ class WarehouseController extends BaseUserController
 
         $reward = temporaryReward::find($validated['reward_id']);
 
-        if(Carbon::now()->greaterThan($reward->ex_time))
+        if(Carbon::now()->greaterThan($reward->ex_time)){
+
+
+            $reward->delete() ?? null;
+
             return $this->api(null,__METHOD__,'reward has been expired');
 
+        }
 
 
         if( $reward->user_id != auth()->id())
@@ -295,15 +311,24 @@ class WarehouseController extends BaseUserController
                 422);
 
 
+
+
         # check user has warehouse for this farm
         $userWarehouse = $this->getUserWarehouse($request->farm_id);
         if(! $userWarehouse)
         return $this->errorResponse("you dont have the warehouse, make it first or call support",422);
 
+
+
+
+
         # check user has this farm
         $UserFarm = $this->UserFarm($request->farm_id);
         if(! $UserFarm)
             return $this->errorResponse("you dont have this farm",422);
+
+
+
 
         $newPowerAmount = $this->minusUserFarmPower(intval($reward->amount),$UserFarm->farm_power);
         
@@ -316,7 +341,14 @@ class WarehouseController extends BaseUserController
 
         $insertNewValue = $this->insertNewAmount($UserFarm,$newPowerAmount);
 
+
+
+
         if($insertNewValue){
+
+
+         
+
 
             $Warehouse = $this->findUserWarehouse($UserFarm->farm_id);
             if(! $Warehouse)
@@ -334,7 +366,6 @@ class WarehouseController extends BaseUserController
             $newAmount = $Warehouse->amount + $reward->amount;
            $userOvercapacity =  $this->hasUserEnoughWarehouseCap($newAmount,$warehouseLevel->overcapacity);
      
-          
      
            if(! $userOvercapacity)
                 return $this->api(null,__METHOD__,'your warehouse is full');

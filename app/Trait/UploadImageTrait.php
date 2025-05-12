@@ -12,6 +12,11 @@ trait UploadImageTrait
 
     public function uploadMedia($request, $dirName, $index = 'image_url', $oldPath = null)
     {
+        if($request->hasFile($index) == null)
+        return null;
+
+
+
         $file = $request->file($index);
         $fileName = $this->generateFileName($file);
 
