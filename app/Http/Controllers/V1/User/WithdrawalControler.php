@@ -3,20 +3,17 @@
 namespace App\Http\Controllers\V1\User;
 
 use App\Http\Resources\V1\User\WithdrawalResource;
-use App\Models\AdderssUser;
 use App\Models\GamePrice;
-use App\Models\User;
 use App\Models\Transaction;
 use App\Models\Withdrawal;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\Withdrawal\WithdrawalRequest;
 
 class WithdrawalControler extends BaseUserController
 {   
 
-    public function userWithdraw()
+    public function getUserWithdrawHistory()
     {
+        
         $userWihdraw = Withdrawal::query()
         ->where("user_id",auth()->id())
         ->with(['wallet:id,address'])
@@ -33,11 +30,10 @@ class WithdrawalControler extends BaseUserController
      * get all users transaction
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getUserTransactionHistory()
     {
         $transaction = Transaction::query()
         ->where("user_id",auth()->id())
-        ->with([])
         ->get(['id','status','type','amount','created_at']);
 
         return $this->api(WithdrawalResource::collection($transaction),__METHOD__);
@@ -49,12 +45,12 @@ class WithdrawalControler extends BaseUserController
      * @param \App\Models\Transaction $transaction
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function withdrawal(WithdrawalRequest $request,Withdrawal $withdrawal)
+    public function addNewWithdrawalRequest(WithdrawalRequest $request,Withdrawal $withdrawal)
     {
         // has user enough token
         $userToken = $this->hasUserToken($request->amount); 
         if(! $userToken)
-            return $this->errorResponse('dont have enough token');
+            return $this->api(null,__METHOD__,'dont have enough token');
 
         $minusToken = $this->minusUserToken($request->amount); 
         if($minusToken){

@@ -12,7 +12,7 @@ class AvatarController extends BaseUserController
      * all avatar/index
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getAllAvatarInGame()
     {
         $Avatar = Avatar::query()
         ->orderBy("id")

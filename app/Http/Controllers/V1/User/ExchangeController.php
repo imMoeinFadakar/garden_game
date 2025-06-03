@@ -4,68 +4,92 @@ namespace App\Http\Controllers\V1\User;
 
 use App\Models\GamePrice;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Services\ExchangeService;
+use Exception;
 use App\Http\Requests\V1\User\ExchangeRequest;
 use App\Http\Resources\V1\Admin\TransactionResource;
 
 class ExchangeController extends BaseUserController
 {
+
+    protected ExchangeService $exchangeService;
+
+    public function __construct(ExchangeService $exchangeService)
+    {
+        $this->exchangeService = $exchangeService;
+    }
+
+
+
     /**
      * Display a listing of the resource.
      */
-    public function UserExchange(Request $request)
+    public function UserExchangeHistory()
     {
-        $allExchanges = Transaction::query()
-        ->where('user_id',auth()->id())
-        ->where("type",'exchange')
-        ->get(['status','type','amount','created_at']);
+        $user = auth()->user();
+        $cacheKey = "user_exchange_history" . $user->id;
+
+
+        $allExchanges = cache()->remember($cacheKey, 300, function () {
+        return Transaction::query()
+            ->where('user_id', auth()->id())
+            ->where("type", 'exchange')
+            ->get(['status', 'type', 'amount', 'created_at']);
+        });
 
         return $this->api(TransactionResource::collection($allExchanges),__METHOD__);
     }
 
+
+    public function getUserBalance()
+    {
+        $userId = auth()->id();
+        $cacheKey = 'user_balance_' . $userId;
+
+      
+        $balance = cache()->get($cacheKey);
+
+        if (!$balance) {
+         
+            $user = auth()->user();
+
+            $balance = [
+                'token_amount' => $user->token_amount,
+                'gem_amount' => $user->gem_amount,
+            ];
+
+            cache()->put($cacheKey, $balance, now()->addMinutes(5));
+        }
+
+        return $balance;
+    }
+
+
+
     /**
      * Store a newly created resource in storage.
      */
-    public function newExchange(ExchangeRequest $request,Transaction $transaction)
-    {
-        
+  public function exchangeTokenToGem(ExchangeRequest $request, Transaction $transaction)
+{
+    try {
         $user = auth()->user(); // Find user
 
-        $hasUserToken = $this->hasUserEnoughToken($user,$request); // Check user have enough token
+       
+        $updatedUser = $this->exchangeService->convert($user, $request->token_amount);
 
-        if(! $hasUserToken) // If user dosn`t have token
-            return $this->api(null,__METHOD__,'You dont have enough token');
+      
+        return $this->api([
+            'gem_amount' => $updatedUser->gem_amount,
+            'token_amount' => $updatedUser->token_amount
+        ], __METHOD__, 'Tokens successfully converted to gems.');
 
+    } catch (\InvalidArgumentException $e) {
+        return $this->api(null, __METHOD__, $e->getMessage(), 422);
 
-        $minusUserToken =  $this->minusUserToken($user,$request); // Minuse user token 
-        if($minusUserToken){
-
-            $gemValue  =$this->findGemPrice(); // Find gem price bas by token
-
-            $newGemAmount  = $this->findGemAmount($request,$gemValue); // Calcluate gems
-    
-            $this->addNewGemAmout($user,$newGemAmount); // Update user gem amount
-            
-             $transaction->addNewTransaction([
-                "user_id" => auth()->id(),
-                "status" => "done",
-                "type" => "exchange",
-                "amount" =>  $request->token_amount
-            ]);
-
-
-
-
-            return  $this->api(["user_gem" => $user->gem_amount],__METHOD__,"Tokens successfully converted to gem");
-            // success response
-        }
-
-
-        return $this->api(null,__METHOD__,'operation failed');
-            // failure response
-    
+    } catch (\Exception $e) {
+        return $this->api(null, __METHOD__, 'Unexpected error occurred. ' . $e->getMessage(), 500);
     }
+}
 
     /**
      * Token Amount devided By gem value
@@ -83,7 +107,7 @@ class ExchangeController extends BaseUserController
      * @param mixed $user
      * @param mixed $gem
      */
-    public function addNewGemAmout($user,$gem)
+    public function addNewGemAmount($user,$gem)
     {
         $user->gem_amount += floor($gem);
         return $user->save();
@@ -108,7 +132,7 @@ class ExchangeController extends BaseUserController
      * @param mixed $request
      * @return bool
      */
-    public function minusUserToken($user,$request): bool
+    public function deductUserTokenAmount($user,$request): bool
     {
         $user->token_amount -= $request->token_amount;
       return $user->save();
@@ -132,29 +156,4 @@ class ExchangeController extends BaseUserController
 
     }
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

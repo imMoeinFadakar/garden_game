@@ -24,7 +24,7 @@ class RegistrationController extends BaseUserController
      * @param \App\Models\User $user
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function register(RegistrationRequest $request,User $user)
+    public function addUsernameAndGender(RegistrationRequest $request,User $user)
     {
 
 

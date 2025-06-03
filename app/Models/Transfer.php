@@ -10,7 +10,8 @@ class Transfer extends Model
     protected $fillable = [
         "token_amount",
         "from_user",
-        "to_user"
+        "to_user",
+        "transaction_number"
     ];
     /**
      * Get the user that owns the Transfer

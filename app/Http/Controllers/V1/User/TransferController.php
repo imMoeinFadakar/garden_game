@@ -3,28 +3,37 @@
 namespace App\Http\Controllers\V1\User;
 
 use App\Models\User;
-use App\Models\Wallet;
 use App\Models\CartUser;
 use App\Models\Transfer;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Trait\RandomNumberTrait;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\V1\User\TransferResource;
-use App\Http\Requests\V1\User\Giftcart\TransferRequest;
+
 
 class TransferController extends BaseUserController
 {      
-
+    use RandomNumberTrait;
 
     public function receiveTransfer(Request $request)
     {
-        $transfer = Transfer::query()
-        ->where('to_user',auth()->id())
-        ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
-        ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
-        ->get(['id','token_amount','created_at'])
-        ->each(function($transfer){
 
-            $transfer->setAttribute('type','receive');
+        $cacheKey = "get_user_recived_token_" . auth()->id();
+
+        $transfer = Cache::remember($cacheKey , 300,function() use($request){
+
+            return Transfer::query()
+            ->where('to_user',auth()->id())
+            ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
+            ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
+            ->get(['id','token_amount','created_at'])
+            ->each(function($transfer){
+
+                $transfer->setAttribute('type','receive');
+
+            });
+            
 
         });
 
@@ -40,15 +49,20 @@ class TransferController extends BaseUserController
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function sendTransfer(Request $request)
-    {
-        $transfer = Transfer::query()
-        ->where('from_user',auth()->id())
-        ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
-        ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
-        ->get(['id','token_amount','created_at'])
-        ->each(function($transfer){
+    {   
+         $cacheKey = "get_user_recived_token_" . auth()->id();
 
-            $transfer->setAttribute('type','send');
+        $transfer = Cache::remember($cacheKey,300,function(){
+
+            return Transfer::query()
+            ->where('from_user',auth()->id())
+            ->get(['id','token_amount','created_at'])
+            ->each(function($transfer){
+
+                $transfer->setAttribute('type','send');
+
+            });
+
 
         });
          
@@ -61,45 +75,71 @@ class TransferController extends BaseUserController
      * @param \App\Models\Transfer $transfer
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function store(\App\Http\Requests\V1\User\Transfer\TransferRequest $request,Transfer $transfer)
+    public function transferTokenByUser(\App\Http\Requests\V1\User\Transfer\TransferRequest $request,Transfer $transfer)
     {
-        $validatedRequest = $request->validated();
-        $user = auth()->user();
-     
+  $validatedRequest = $request->validated();
+    $user = auth()->user();
 
-        // has user enough token
-        $hasUsereniughToken = $this->hasUserEnoughToken($user->token_amount,$validatedRequest["token_amount"]);
-        if(! $hasUsereniughToken)
-            return $this->api(null,__METHOD__,'you dont have enough token');
-            
-        $reciverUser = $this->reciverWallet($validatedRequest['user_address']); // find reciver User
-        
-        if($reciverUser->referral_code === $user->referral_code)
-            return $this->api(null,__METHOD__,'you cant transfer to your wallet');
+ 
+    if ($user->cart()->value('cvv') !== intval($request->cvv2)) {
+        return $this->api(null, __METHOD__, 'the cvv2 number is wrong!');
+    }
 
+   
+    $minToken = 1050;
+    $newAmount = $user->token_amount - $validatedRequest["token_amount"];
 
-
-        $minusToken = $this->minusUserToken($validatedRequest["token_amount"],$user); // minuse user token
+    if ($newAmount < $minToken) {
+        return $this->api(null,__METHOD__,'you cant transfer while your balance is under ' . $minToken);
+    }
 
     
-        if(! $minusToken)
-            return $this->errorResponse("Receiver user not found!");
+    if (!$this->hasUserEnoughToken($user->token_amount, $validatedRequest["token_amount"])) {
+        return $this->api(null, __METHOD__, 'you dont have enough token');
+    }
 
-        // add new amount to user reciver
-        $addTokenToWallet = $this->AddUserReceiverToken($reciverUser,$validatedRequest["token_amount"]);
+   
+    $receiverUser = $this->reciverWallet($validatedRequest['user_address']);
+    if (!$receiverUser) {
+        return $this->api(null,__METHOD__,'Receiver not found!');
+    }
 
-        if(! $addTokenToWallet){ // if add wasn`t successful :
-            // return tokens to user wallet
-            $this->AddUserReceiverToken($user,$validatedRequest["token_amount"]);
-            return $this->errorResponse("operation failed! token has been returned to your wallet"); // error response
+
+    if ($receiverUser->referral_code === $user->referral_code) {
+        return $this->api(null, __METHOD__, 'you cant transfer to your wallet');
+    }
+
+    try {
+        DB::beginTransaction();
+
+        
+        $minusToken = $this->minusUserToken($validatedRequest["token_amount"], $user);
+        if (!$minusToken) {
+            DB::rollBack();
+            return $this->api(null,__METHOD__,"Failed to deduct token from sender");
         }
 
-        $validatedRequest["from_user"] = auth()->id(); // Sender user = auth->user
-        $validatedRequest["to_user"] = $reciverUser->id; // Reciver user
-        $transfer = $transfer->addNewTransfer($validatedRequest); 
+       
+        $addToken = $this->AddUserReceiverToken($receiverUser, $validatedRequest["token_amount"]);
+        if (!$addToken) {
+            DB::rollBack();
+            return $this->api(null,__METHOD__,"Failed to add token to receiver");
+        }
+        
+        $transactionNumber = $this->createTransactionNumber();
+        
+        $validatedRequest["from_user"] = $user->id;
+        $validatedRequest["to_user"] = $receiverUser->id;
+        $validatedRequest["transaction_number"] = intval($transactionNumber);
+        $transfer = $transfer->addNewTransfer($validatedRequest);
 
-        return $this->api(["tranfer_amount" => $transfer->token_amount],__METHOD__);
+        DB::commit();
 
+        return $this->api(["tranfer_amount" => $transfer->token_amount], __METHOD__);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return $this->errorResponse("Operation failed! Tokens have been returned.". $e->getMessage());
+    }
     }
 
     /**
@@ -140,7 +180,6 @@ class TransferController extends BaseUserController
      */
     public function minusUserToken($amount,$user)
     {   
-       
         $user->token_amount -= $amount;
         return $user->save();
     }

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Middleware\CheckAdmin;
-use App\Http\Middleware\CheckAdminManager;
-use App\Http\Middleware\Managment;
 use Illuminate\Http\Request;
+use App\Http\Middleware\Managment;
+use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckAdminManager;
 use App\Http\Controllers\V1\Admin\AdminController;
+use App\Http\Controllers\V1\Admin\GameSettingController;
 
 
 
@@ -44,10 +45,9 @@ use App\Http\Controllers\V1\Admin\AdminController;
                 Route::apiResource("warehouse-level",App\Http\Controllers\V1\Admin\WarehouseLevelController::class);
                 Route::apiResource("warehouse",App\Http\Controllers\V1\Admin\WarehouseController::class);
                 Route::apiResource("giftcart",App\Http\Controllers\V1\Admin\GiftcartController::class);
-                Route::apiResource("game_setting",App\Http\Controllers\V1\Admin\GameSettingController::class);
                 Route::apiResource("policy_and_rule",App\Http\Controllers\V1\Admin\PolicyAndRuleController::class);
                 Route::apiResource("market_history",App\Http\Controllers\V1\Admin\MarketHistoryController::class);
-                
+                Route::apiResource('tutorial_message',App\Http\Controllers\V1\Admin\TutorialMessageController::class);
             });
 
         });

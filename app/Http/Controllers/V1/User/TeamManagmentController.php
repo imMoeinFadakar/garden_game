@@ -2,24 +2,32 @@
 
 namespace App\Http\Controllers\V1\User;
 
-use App\Models\User;
-use App\Models\UserReferral;
-use Illuminate\Http\Request;
+
+use App\Http\Resources\V1\User\TeamManagmentResource;
+use App\Services\TeamManagmentService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\User\UserReferralResource;
 
 class TeamManagmentController extends Controller
 {
-   
-    public function index()
+    /**
+     * Class constructor.
+     */
+    public function __construct(TeamManagmentService $teamManagmentService)
     {
-       
-        $user = User::find(auth()->id());
+        $this->teamManagmentService = $teamManagmentService;
+    }
+    protected TeamManagmentService $teamManagmentService;
 
-        $invites = $user->getInvitesWithIndirect(); 
 
+    public function getAllUserReferralQuentity()
+    {
         
-       return $this->api(UserReferralResource::collection($invites->toArray()),__METHOD__);
+       $user = auth()->user();
+
+        $invites = $user->getTopReferralTreeCountsWithFarmOwners(); 
+
+       return $this->api($invites, __METHOD__);
 
     }
 

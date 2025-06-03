@@ -26,6 +26,7 @@ class FirstAuthRequest extends FormRequest
         return [
             "telegram_id" => "required|integer",
             "name" => "required|string",
+        
         ];
     }
 

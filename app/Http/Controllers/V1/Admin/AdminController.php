@@ -12,10 +12,7 @@ class AdminController extends BaseAdminController
 {   
 
 
-    public function adminOnlyMethod()
-    {
-        dd("here");
-    }
+  
     /**
      * admin/index
      * @param \Illuminate\Http\Request $request

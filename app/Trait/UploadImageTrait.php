@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 trait UploadImageTrait
 {
-    const CDN_URL = 'https://app.zhixgame.com/upload/';
+    const CDN_URL = 'https://appzhixgame.online/upload/';
 
     public function uploadMedia($request, $dirName, $index = 'image_url', $oldPath = null)
     {

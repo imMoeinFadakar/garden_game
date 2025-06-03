@@ -9,41 +9,42 @@ Route::prefix("user")->group(function() {
 
 
 
-    Route::post("auth_user",[App\Http\Controllers\V1\User\FirstAuthController::class,"userLogin"]); // first login
-    Route::get("policy",[App\Http\Controllers\V1\User\PoliciesController::class,"index"]); // all policy
+    Route::post("auth_user",[App\Http\Controllers\V1\User\FirstAuthController::class,"loginUserByTelegramId"]); // first login
+    Route::get("policy",[App\Http\Controllers\V1\User\PoliciesController::class,"getAllPolicy"]); // all policy
 
     Route::middleware(['auth:sanctum','auth'])->group(function(){
 
         // auth 
-        Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findingUser"]); // find user by TL id
-        Route::get("user",[App\Http\Controllers\V1\User\UserController::class,"index"]); // get self user
-        Route::get("get_user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"index"]); // find user avatar
-        Route::post("new_referral",[App\Http\Controllers\V1\User\UserController::class,"newReferral"]); // add new referral 
-        Route::post("register",[App\Http\Controllers\V1\User\RegistrationController::class,"register"]);
+        Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findUserByTelegarmId"]); // find user by TL id
+        Route::get("user",[App\Http\Controllers\V1\User\UserController::class,"getAuthUser"]); // get self user
+        Route::get("get_user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"getUserAvatar"]); // find user avatar
+        Route::post("new_referral",[App\Http\Controllers\V1\User\UserController::class,"addNewReferral"]); // add new referral 
+        Route::post("register",[App\Http\Controllers\V1\User\RegistrationController::class,"addUsernameAndGender"]);
 
         // task 
-        Route::get("tasks", [App\Http\Controllers\V1\User\TasksController::class, "index"]); // all tasks
-        Route::get("user_task",[App\Http\Controllers\V1\User\UserTasksController::class, "index"]); // user tasks
-        Route::post("user_task", [App\Http\Controllers\V1\User\UserTasksController::class, "store"]);
+        Route::get("tasks", [App\Http\Controllers\V1\User\TasksController::class, "getAllTask"]); // all tasks
+        Route::get("user_task",[App\Http\Controllers\V1\User\UserTasksController::class, "getAllUserTasks"]); // user tasks
+        Route::post("user_task", [App\Http\Controllers\V1\User\UserTasksController::class, "addCompletedTask"]);
 
         //badge
-        Route::get("badge", [App\Http\Controllers\V1\User\UserBadgeController::class, "index"]); // user badge
+        Route::get("badge", [App\Http\Controllers\V1\User\UserBadgeController::class, "getUserBadges"]); // user badge
 
         // farm
-        Route::get("farm",[App\Http\Controllers\V1\User\FarmController::class,"index"]); // all farms
-        Route::get("user_farm",[App\Http\Controllers\V1\User\UserFarmController::class,"index"]); // user farms have
-        Route::post("buy_farm",[App\Http\Controllers\V1\User\BuyFarmController::class,"store"]);
+        Route::get("farm",[App\Http\Controllers\V1\User\FarmController::class,"getAllExistsFarmInGame"]); // all farms
+        Route::get("user_farm",[App\Http\Controllers\V1\User\UserFarmController::class,"getAllUserFarm"]); // user farms have
+        Route::post("buy_farm",[App\Http\Controllers\V1\User\BuyFarmController::class,"buyFarmByUser"]);
         Route::get('show_farm/{id}', [FarmController::class, 'show']);
 
         // warehouse 
-        Route::post("new_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"create"]);
-        Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"index"]);
-        Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"store"]);
-        Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseController::class,"storeProduct"]);
-        //sdvdfvfddv
+        Route::post("new_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"createNewWarehouse"]);
+        Route::get("warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"getAllUserwarehouse"]);
+
+        Route::post("user_warehouse",[App\Http\Controllers\V1\User\WarehouseController::class,"updateUserWarehouse"]);
+        Route::post('add_prodcut',[App\Http\Controllers\V1\User\WarehouseController::class,"addNewProduct"]);
+     
         // avatar 
-        Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"store"]);
-        Route::get("avatar", [App\Http\Controllers\V1\User\AvatarController::class, "index"]);
+        Route::post("user_avatar",[App\Http\Controllers\V1\User\UserAvatarController::class,"addNewAvatarForUser"]);
+        Route::get("avatar", [App\Http\Controllers\V1\User\AvatarController::class, "getAllAvatarInGame"]);
 
         //wallet 
         Route::get("get_user_wallet",[App\Http\Controllers\V1\User\WalletController::class,"getUserwallet"]);
@@ -52,18 +53,20 @@ Route::prefix("user")->group(function() {
 
 
         // transaction
-        Route::post("withdrawal",[App\Http\Controllers\V1\User\WithdrawalControler::class,"withdrawal"]);
-        Route::post("use_giftcart",[App\Http\Controllers\V1\User\GiftCartController::class,"useGiftCart"]);
+        Route::post("withdrawal",[App\Http\Controllers\V1\User\WithdrawalControler::class,"addNewWithdrawalRequest"]);
+        Route::post("use_giftcart",[App\Http\Controllers\V1\User\GiftCartController::class,"useGiftCartByUser"]);
         Route::post('pay_reward',[App\Http\Controllers\V1\User\PayRequestControler::class,"newPayingRequest"]);
-        Route::post("transfer",[App\Http\Controllers\V1\User\TransferController::class,"store"]);
-        Route::post('new_exchange',[App\Http\Controllers\V1\User\ExchangeController::class,"newExchange"]);
+        Route::post("transfer",[App\Http\Controllers\V1\User\TransferController::class,"transferTokenByUser"]);
+        Route::post('new_exchange',[App\Http\Controllers\V1\User\ExchangeController::class,"exchangeTokenToGem"]);
 
-        Route::get("user_withdraw",[App\Http\Controllers\V1\User\WithdrawalControler::class,"userWithdraw"]);
-        Route::get("transaction",[App\Http\Controllers\V1\User\WithdrawalControler::class,"index"]);
-        Route::get("user_referral_reward",[App\Http\Controllers\V1\User\PayRequestControler::class,'index']);
-        Route::get('all_transfer',[App\Http\Controllers\V1\User\TransferController::class,"sendTransfer"]);
-        Route::get('my_transfer',[App\Http\Controllers\V1\User\TransferController::class,"receiveTransfer"]);
-        Route::get('my_exchange',[App\Http\Controllers\V1\User\ExchangeController::class,"UserExchange"]);
+        Route::get("user_withdraw",[App\Http\Controllers\V1\User\WithdrawalControler::class,"getUserWithdrawHistory"]);
+        Route::get("transaction",[App\Http\Controllers\V1\User\WithdrawalControler::class,"getUserTransactionHistory"]);
+        Route::get("user_referral_reward",[App\Http\Controllers\V1\User\PayRequestControler::class,'getUserReferralReward']);
+       
+        Route::get('all_transfer',[App\Http\Controllers\V1\User\TransferController::class,"sendTransfer"]); // send
+        Route::get('my_transfer',[App\Http\Controllers\V1\User\TransferController::class,"receiveTransfer"]); // recive
+       
+        Route::get('my_exchange',[App\Http\Controllers\V1\User\ExchangeController::class,"UserExchangeHistory"]);
 
 
         // activate
@@ -72,18 +75,22 @@ Route::prefix("user")->group(function() {
       
         // market
         Route::post("sell_product",[App\Http\Controllers\V1\User\MarketController::class,"sellProduct"]);
-        Route::get("sell_product_history",[App\Http\Controllers\V1\User\MarketController::class,"userMarketHistory"]);
+        Route::get("sell_product_history",[App\Http\Controllers\V1\User\MarketController::class,"getUserMarketHistory"]);
 
-        // team managment
-        Route::get('team',[App\Http\Controllers\V1\User\TeamManagmentController::class,"index"]);
   
         //user 
-        Route::post('find_recipient',[App\Http\Controllers\V1\User\UserController::class,"findUserByReferral"]);
+        Route::post('find_recipient',[App\Http\Controllers\V1\User\UserController::class,"findUserByTransferCartNumber"]);
         
         //user transaction cart
         Route::post('new_cart',[App\Http\Controllers\V1\User\CartUserController::class,'createNewCart']);
         Route::get("user_cart",[App\Http\Controllers\V1\User\CartUserController::class,'getUserCart']);
+        
+        // tutorial message
+        Route::get('tutorial_message',[App\Http\Controllers\V1\User\TutorialMessageController::class, "getTutorialMessage"]);
+        Route::post('Add_user_done_tutorial',[App\Http\Controllers\V1\User\TutorialMessageController::class, "addNewUserToDoneList"]);
+        Route::get('user_done_tutorial',[App\Http\Controllers\V1\User\TutorialMessageController::class, "isUserDoneWithTutorial"]);
 
+        Route::get('team',[App\Http\Controllers\V1\User\TeamManagmentController::class,"getAllUserReferralQuentity"]);
 
 
     });

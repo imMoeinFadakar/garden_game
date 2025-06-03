@@ -8,6 +8,11 @@ use App\Http\Resources\V1\Admin\AvatarResource;
 use App\Models\Avatar;
 use Illuminate\Http\Request;
 
+
+
+/**
+ * avatar:is an image that picked by user
+ */
 class AvatarController extends BaseAdminController
 {
     /**

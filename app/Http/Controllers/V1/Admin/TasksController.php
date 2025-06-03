@@ -6,10 +6,12 @@ use App\Http\Requests\V1\Admin\Task\StoreTaskRequest;
 use App\Http\Requests\V1\Admin\Task\UpdateTaskRequest;
 use App\Http\Resources\V1\Admin\TaskResource;
 use App\Models\Tasks;
+use App\Trait\DeleteCacheTrait;
 use Illuminate\Http\Request;
 
 class TasksController extends BaseAdminController
-{
+{   
+    use DeleteCacheTrait;
     /**
      * task/index
      * @param \Illuminate\Http\Request $request
@@ -37,6 +39,7 @@ class TasksController extends BaseAdminController
     public function store(StoreTaskRequest $request, Tasks $tasks)
     {
        $tasks = $tasks->addNewTasks($request);
+       $this->deleteCache("all_task");
        return $this->api(new TaskResource($tasks->toArray()),__METHOD__);
     }
     /**
@@ -59,6 +62,7 @@ class TasksController extends BaseAdminController
     public function update(UpdateTaskRequest $request, Tasks $task)
     {
         $task->updateTasks($request);
+        $this->deleteCache("all_task");
         return $this->api(new TaskResource($task->toArray()),__METHOD__);
     }
 
@@ -70,6 +74,7 @@ class TasksController extends BaseAdminController
     public function destroy(Tasks $task)
     {
         $task->deleteTasks();
+        $this->deleteCache("all_task");
         return $this->api(new TaskResource($task->toArray()),__METHOD__);
 
     }

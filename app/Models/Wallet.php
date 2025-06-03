@@ -12,6 +12,9 @@ class Wallet extends Model
         "user_id"
     ];
 
+
+    protected $hidden = ['user_id'];
+
     public function addNewWallet( $request){
     return $this->create( $request);
     }

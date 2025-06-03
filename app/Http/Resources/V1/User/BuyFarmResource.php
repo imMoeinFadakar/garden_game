@@ -13,7 +13,7 @@ class BuyFarmResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    {   $request['user_id'] = null;
+    {   
         return parent::toArray($request);
     }
 }

@@ -15,7 +15,7 @@ class UserTasksController extends BaseUserController
      * get task that user had done before
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getAllUserTasks()
     {
 
         $userTask = UserTask::query()
@@ -34,13 +34,13 @@ class UserTasksController extends BaseUserController
      * @param \App\Models\UserTask $userTask
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function store(UserTaskRequest $request, UserTask $userTask)
+    public function addCompletedTask(UserTaskRequest $request, UserTask $userTask)
     {   
 
         $done =  $this->isTaskDoneBefore($request);
 
         if(! $done)
-            return $this->errorResponse('you had done this task before',400);
+            return $this->api(null,__METHOD__,'you had done this task before',400);
 
 
 

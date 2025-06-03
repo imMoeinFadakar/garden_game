@@ -13,4 +13,10 @@ class CartUser extends Model
             'expire_date',
             'cvv' 
     ];
+
+    protected $hidden = [
+        'user_id'
+    ];
+
+
 }

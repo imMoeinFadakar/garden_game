@@ -6,62 +6,59 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\UserAvatar\StoreUserAvatarRequest;
 use App\Http\Resources\V1\User\UserAvatarResource;
 use App\Models\UserAvatar;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class UserAvatarController extends Controller
 {
-    /**
-     * return user avatar and its image
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function index()
+  
+    public function getUserAvatar()
     {
-        $userAvatar = UserAvatar::query()
-        ->where("user_id",auth()->id())
-        ->with(["avatar:id,image_url"])
-        ->first(['id','avatar_id']);
-        if($userAvatar){
+        $cacheKey = 'user_avatar_' . auth()->id();
+
+        $userAvatar = Cache::rememberForever($cacheKey, function () {
+            return UserAvatar::query()
+                ->where("user_id", auth()->id())
+                ->with(["avatar:id,image_url"])
+                ->first(['id', 'avatar_id']);
+        });
+
+        if ($userAvatar) {
             $userAvatar->user_id = null;
-            return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
-        }else{
-            return $this->api(null,__METHOD__,'dont have avatar');
+            return $this->api(new UserAvatarResource($userAvatar->toArray()), __METHOD__);
         }
+
+        return $this->api(null, __METHOD__, 'dont have avatar');
     }
 
-    /**
-     *  get user avatar
-     * @param \App\Http\Requests\V1\User\UserAvatar\StoreUserAvatarRequest $request
-     * @param \App\Models\UserAvatar $userAvatar
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function store(StoreUserAvatarRequest $request,UserAvatar $userAvatar)
-    {   
-        $avatarExists = $this->isUseravatarExists($request->validated());
-        if($avatarExists)
-            return $this->api(null,__METHOD__,'you selected your avatar before');
+   
+    public function addNewAvatarForUser(StoreUserAvatarRequest $request, UserAvatar $userAvatar)
+    {
+        $cacheKey = 'user_avatar_' . auth()->id();
 
+        if (Cache::has($cacheKey) || $this->isUseravatarExists()) {
+            return $this->api(null, __METHOD__, 'you selected your avatar before');
+        }
 
         $validatedRequest = $request->validated();
-
-       
         $validatedRequest["user_id"] = auth()->id();
+
         $userAvatar = $userAvatar->addNewUserAvatar($validatedRequest);
+
+        // ذخیره دائمی در کش
+        Cache::forever($cacheKey, $userAvatar->load('avatar:id,image_url'));
+
         $userAvatar->user_id = null;
-        return $this->api(new UserAvatarResource($userAvatar->toArray()),__METHOD__);
+        return $this->api(new UserAvatarResource($userAvatar->toArray()), __METHOD__);
     }
 
     /**
-     * is user select avatar before 
-     * @param array $validatedRequest
-     * @return bool
+     * Check from DB if user already selected avatar
      */
-    public function isUseravatarExists(array $validatedRequest): bool
+    protected function isUseravatarExists(): bool
     {
         return UserAvatar::query()
-        ->where("user_id",auth()->id())
-        ->exists();
+            ->where("user_id", auth()->id())
+            ->exists();
     }
-
-
 }
+

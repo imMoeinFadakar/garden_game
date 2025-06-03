@@ -12,6 +12,9 @@ class Withdrawal extends Model
         "wallet_id"
     ];
 
+
+    protected $hidden = ['user_id'];
+
     public function addNewWithdrawal( $request){
     return $this->create( $request);
     }

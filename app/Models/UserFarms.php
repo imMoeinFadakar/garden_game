@@ -13,6 +13,11 @@ class UserFarms extends Model
         "farm_power"
     ];
 
+
+    protected $hidden= [
+        'user_id'
+    ];
+
     /**
      * Get the user that owns the UserFarms
      *

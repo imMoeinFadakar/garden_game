@@ -23,7 +23,7 @@ class FindUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-              "referral_code" => "required|exists:users,referral_code"
+              "cart_number" => "required|exists:cart_users,cart_number"
         ];
     }
     public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

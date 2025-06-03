@@ -15,7 +15,7 @@ class UserBadgeController extends BaseUserController
      * get user badge 
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getUserBadges()
     {
         $userBadge = BadgeUser::query()
             ->orderBy("created_at")

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V1\User;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Farms;
 use App\Models\UserFarms;
 use App\Models\Wherehouse;
@@ -13,6 +12,7 @@ use App\Http\Resources\V1\User\warehouseResource;
 use App\Http\Requests\V1\User\createwarehouseRequest;
 use App\Http\Requests\V1\User\AddProduct\AddProdcutRequest;
 use App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest;
+use Illuminate\Support\Facades\Cache;
 
 class WarehouseController extends BaseUserController
 {
@@ -21,37 +21,31 @@ class WarehouseController extends BaseUserController
      * get list of user products
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getAllUserwarehouse()
     {   
 
-        // $warehouse = Wherehouse::query()
-        // ->where("user_id",auth()->id())
-        // ->with(['warehouse_level:id,level_number,farm_id,overcapacity','farm:id,name,prodcut_image_url,header_light_color'])
-        // ->get(['id','farm_id','warehouse_level_id','amount']);
-        
+   $userId = auth()->id();
 
-        $warehouses = Wherehouse::query()
-        ->where("user_id", auth()->id())
-        ->with([
-            'warehouse_level:id,level_number,farm_id,overcapacity',
-            'farm:id,name,prodcut_image_url,header_light_color',
-        ])
-        ->get(['id', 'farm_id', 'warehouse_level_id', 'amount']);
+   
+    $warehouses = Cache::remember("user_{$userId}_warehouses", 300, function () use ($userId) {
+        return Wherehouse::query()
+            ->where("user_id", $userId)
+            ->with([
+                'warehouse_level:id,level_number,farm_id,overcapacity',
+                'farm:id,name,prodcut_image_url,header_light_color',
+            ])
+            ->get(['id', 'farm_id', 'warehouse_level_id', 'amount']);
+    });
 
-
-
-
-        return $this->api(warehouseResource::collection($warehouses),__METHOD__);
-
+    return $this->api(warehouseResource::collection($warehouses), __METHOD__);
     }
 
     /**
-     * create new warehouse
      * @param \App\Http\Requests\V1\User\createwarehouseRequest $request
      * @param \App\Models\Wherehouse $warehouseProducts
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function create(createwarehouseRequest $request,Wherehouse $Wherehouse)
+    public function createNewWarehouse(createwarehouseRequest $request,Wherehouse $Wherehouse)
     {
         $user = auth()->user(); // find  user`
         if($user->warehouse_status === "inactive") // is user warehouse active?
@@ -78,6 +72,8 @@ class WarehouseController extends BaseUserController
         if(! $warehouseLevel)
             return $this->api(null,__METHOD__,'operation failed , call support for warehouse level');
 
+
+
             //craete new warhouse
             $newWarehouse = [
                 "user_id" => auth()->id(),
@@ -87,7 +83,7 @@ class WarehouseController extends BaseUserController
             ];
            $warehouse =   Wherehouse::query()->create($newWarehouse);
 
-    
+            Cache::forget("user_" . auth()->id() . "_warehouses");
             $warehouse->user_id = null;
             return $this->api(new warehouseResource($warehouse->toArray()),__METHOD__);
             
@@ -150,7 +146,7 @@ class WarehouseController extends BaseUserController
      * @param \App\Http\Requests\V1\User\Warehouse\UpdatewarehouseRequest $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function store(UpdatewarehouseRequest $request)
+    public function updateUserWarehouse(UpdatewarehouseRequest $request)
     {
          // find auth user
         $validared = $request->Validated();
@@ -181,6 +177,9 @@ class WarehouseController extends BaseUserController
             $userWarehouse->save();
 
             $userWarehouse->load(['warehouse_level:id,level_number,overcapacity']); // get new level option
+            
+             Cache::forget("user_" . auth()->id() . "_warehouses");
+            
             $userWarehouse->user_id = null;
             return $this->api(new warehouseResource($userWarehouse->toArray()),__METHOD__);
         }
@@ -277,7 +276,7 @@ class WarehouseController extends BaseUserController
     }
 
 
-    public function storeProduct(AddProdcutRequest $request)
+    public function addNewProduct(AddProdcutRequest $request)
     {
 
 
@@ -375,7 +374,7 @@ class WarehouseController extends BaseUserController
             $Warehouse->save();
 
             $this->deleteTempraryReward($reward);
-
+            Cache::forget("user_" . auth()->id() . "_warehouses");
 
             return $this->api(new warehouseResource($Warehouse->toArray()),__METHOD__);
 

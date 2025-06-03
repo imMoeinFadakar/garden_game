@@ -15,16 +15,20 @@ class UserFarmController extends BaseUserController
      * get user farm
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function index()
-    {
-        $userFarm = UserFarms::query()
-            ->orderBy("id")
-            ->where("user_id",auth()->id())
-            ->with(["farm:id,name,farm_image_url,flage_image_url,description,power,prodcut_image_url"])
-            ->get(['id',"farm_id",'farm_power']);
+ public function getAllUserFarm()
+{
+    $cacheKey = "user_farms_" . auth()->id();
 
-        return $this->api(UserFarmResource::collection($userFarm),__METHOD__);
-    }
+    $userFarm = cache()->remember($cacheKey, now()->addMinutes(1), function () {
+        return UserFarms::query()
+            ->orderBy("id")
+            ->where("user_id", auth()->id())
+            ->with(["farm:id,name,farm_image_url,flage_image_url,description,power,prodcut_image_url"])
+            ->get(['id', "farm_id", 'farm_power']);
+    });
+
+    return $this->api(UserFarmResource::collection($userFarm), __METHOD__);
+}
 
 
 }

@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\V1\User;
 
 
-use App\Models\Farms;
 use App\Models\User;
+use App\Models\Farms;
 use App\Models\UserFarms;
 use App\Models\UserReferral;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Resources\V1\User\BuyFarmResource;
 use App\Http\Requests\V1\User\BuyFarm\BuyfarmRequest;
+use Throwable;
 
 class BuyFarmController extends BaseUserController
 {
@@ -21,56 +23,88 @@ class BuyFarmController extends BaseUserController
      * @param \App\Models\UserFarms $userFarms
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function store(BuyfarmRequest $request,UserFarms $userFarms)
+    public function buyFarmByUser(BuyfarmRequest $request,UserFarms $userFarms)
     {
-        // get:user referral , farm , user Wallet
-        $user = $this->findUser(auth()->id()); // find or 
-        $farm = $this->getFarm($request->farm_id);
-        
-        $userFarm = $this->userFarmExists($farm->id,$user->id);
-        if($userFarm)
-            return $this->api(null,__METHOD__,"you already have this farm ");
+
+        $user = auth()->user();
+        $farm = $this->findFarm($request->farm_id);
+
+        if(! $farm)
+            return $this->api(null,
+        __METHOD__,
+        "farm does not exists",
+        409);
+
+
+        $hasUserFarm = $this->hadUserThisFarmBefore($farm->id,$user->id);
+
+        if($hasUserFarm)
+            return $this->api(null,
+        __METHOD__,
+        "you already have this farm ");
     
 
-    $userReferral = $this->userReferralNum(); // find count user referral
+        $countUserReferral = $this->userReferralAmount(); // find count user referral
     
-    // check user have enough resource
-    $userToken =  $this->userHaveEnoughResource($user->token_amount,$farm->require_token);// has user enough token
-    $userGem = $this->userHaveEnoughResource($user->gem_amount,$farm->require_gem); // has user enough gem
-     $userReffralAmount = $this->userHaveEnoughResource($userReferral,$farm->require_referral); // has user enough referral
+        DB::beginTransaction();
+        try{
+
+             if($user->token_amount < $farm->require_token ||
+                $user->gem_amount < $farm->require_gem ||   
+                $countUserReferral < $farm->require_referral)
+                {
+                    return $this->api(null, __METHOD__, "you dont have enough resource to buy this farm", 422);
+                }       
+
+                $user->update([
+                'token_amount' => $user->token_amount - $farm->require_token,
+                'gem_amount' => $user->gem_amount - $farm->require_gem,
+                ]);
+
+                $newUserFarm = $userFarms->addNewUserFarms([
+                     'user_id' => $user->id,
+                    'farm_id' => $farm->id,
+                    'farm_power' => $farm->power,
+                ]);
+
+                 DB::commit();
+                return $this->api(new BuyFarmResource($newUserFarm), __METHOD__);
+
+        }catch(Throwable $e){
+
+             \DB::rollBack();
+            return $this->api(null, __METHOD__, "Failed to buy farm", 500);
+
+        }
+
+
+    //     // $userToken = $this->userHaveEnoughResource($user->token_amount,$farm->require_token);// token
+    //     // $userGem = $this->userHaveEnoughResource($user->gem_amount,$farm->require_gem); //  gem
+    //     // $userReffralAmount = $this->userHaveEnoughResource($userReferral,$farm->require_referral); // referral
      
+    //     // if(! $userReffralAmount || ! $userGem || ! $userToken)
+    //     //     return $this->api(null,
+    //     // __METHOD__,
+    //     // "you dont have enough resource to buy this farm");
+
         
-
-
-     if(! $userReffralAmount || ! $userGem || ! $userToken)
-        return $this->api(null,__METHOD__,"you dont have enough resource to buy this farm");
-
+    // // minuse user resource from its wallet
+    //     $newUserToken = $this->deductUserResource($user->token_amount,$farm->require_token);
+    //     $newUserGem = $this->deductUserResource($user->gem_amount,$farm->require_gem);
     
+    //     $this->updateUserResource($newUserGem,$newUserToken);
+
+
+    //     $request->merge(['user_id'=>auth()->id(),'farm_power'=>$farm->power]);
+
+
+    //     $userFarm = $userFarms->addNewUserFarms($request->all());
     
-    // minuse user resource from its wallet
-    $newUserToken = $this->minuseUserResource($user->token_amount,$farm->require_token);
-    $newUserGem = $this->minuseUserResource($user->gem_amount,$farm->require_gem);
-    
-    // add new resource amount in user 
-    $this->insertNewUservalues($newUserGem,$newUserToken);
 
-    $userFarmRequest = $request->validated();
-    $userFarmRequest["user_id"] = auth()->id();
-    $userFarmRequest["farm_power"] = $farm->power  ;
-    $userFarm = $userFarms->addNewUserFarms($userFarmRequest);
-    
-       
+    //     $newfarm =  $userFarm->only(['farm_power','reward','farm_id','created_at']);
 
-
-        $newfarm  =[
-            "farm_power" => $userFarm->farm_power,
-            "reward" =>$userFarm->farm_power,
-            "farm_id" => $userFarm->farm_id,
-            'created_at' => $userFarm->created_at
-        ];
-
-
-        return $this->api(new BuyFarmResource($newfarm),__METHOD__);
+        
+    //     return $this->api(new BuyFarmResource($newfarm),__METHOD__);
     }
 
  
@@ -81,7 +115,7 @@ class BuyFarmController extends BaseUserController
      * @param int $userId
      * @return bool
      */
-    public function userFarmExists(int $farmId,int $userId): bool
+    public function hadUserThisFarmBefore(int $farmId,int $userId): bool
     {
         return UserFarms::query()
         ->where("user_id",$userId)
@@ -94,9 +128,12 @@ class BuyFarmController extends BaseUserController
      * @param int $token
      * @return int
      */
-    public function insertNewUservalues(int $gem,int $token): int
+    public function updateUserResource(int $gem,int $token): int
     {
-       return User::insertNewUserValue($gem,$token);
+        return  auth()->user()->update([
+            "token_amount" => $token,
+            "gem_amount" => $gem
+        ]);
     }
 
     /**
@@ -104,7 +141,7 @@ class BuyFarmController extends BaseUserController
      * @param int $farmResource
      * @return int
      */
-    public function minuseUserResource(int $userResource,int $farmResource): int
+    public function deductUserResource(int $userResource,int $farmResource): int
     {
        return $userResource - $farmResource;
     }
@@ -113,7 +150,7 @@ class BuyFarmController extends BaseUserController
      * return user referral number
      * @return int
      */
-    public function userReferralNum(): int
+    public function userReferralAmount(): int
     {
         return UserReferral::userReferralNum(); 
     }
@@ -125,38 +162,18 @@ class BuyFarmController extends BaseUserController
     public function userHaveEnoughResource(int $UserResource,int $farmRequireResource): bool
     {       
 
-        if($UserResource <= $farmRequireResource)
+        if($UserResource < $farmRequireResource)
             return false;
 
 
         return true;
     }
 
-    /**
-     * Summary of getFarm
-     * @param mixed $farmId
-     * @return Collection<int, Farms>|mixed|\Illuminate\Http\JsonResponse
-     */
-    public function getFarm($farmId)
+  
+    public function findFarm(int $farmId)
     {
-        $farm = Farms::findFarm($farmId);
-        if(! $farm)
-            return $this->errorResponse("farm does not exists",403);
-
-        return $farm;
+        return  Farms::find($farmId)??null;
     }
-
-    /**
-     * find user
-     * @param mixed $userId
-     * @return Collection<int, User>
-     */
-    public function findUser($userId)
-    {
-        return  User::find($userId);
-    }
-
-
 
 
 }

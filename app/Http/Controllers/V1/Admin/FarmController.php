@@ -6,6 +6,7 @@ use App\Http\Requests\V1\Admin\Farm\StoreFarmRequest;
 use App\Http\Requests\V1\Admin\Farm\UpdateFarmRequest;
 use App\Http\Resources\V1\Admin\FarmResource;
 use App\Models\Farms;
+use Cache;
 use Illuminate\Http\Request;
 
 class FarmController extends BaseAdminController
@@ -37,6 +38,7 @@ class FarmController extends BaseAdminController
     public function store(StoreFarmRequest $request,Farms $farms)
     {
         $farms = $farms->addNewFarm($request);
+        $this->deleteAllFarmCaches();
         return $this->api(new FarmResource($farms->toArray()),__METHOD__);
     }
     /**
@@ -46,6 +48,7 @@ class FarmController extends BaseAdminController
      */
     public function show(Farms $farm)
     {
+
         return $this->api(new FarmResource($farm->toArray()),__METHOD__);
 
     }
@@ -59,6 +62,7 @@ class FarmController extends BaseAdminController
     public function update(UpdateFarmRequest $request, Farms $farm )
     {
         $farm->updateFarm($request);
+        $this->deleteAllFarmCaches();
         return $this->api(new FarmResource($farm->toArray()),__METHOD__);
 
     }
@@ -71,7 +75,18 @@ class FarmController extends BaseAdminController
     public function destroy(Farms $farm)
     {
         $farm->deleteFarm();
+        $this->deleteAllFarmCaches();
         return $this->api(new FarmResource($farm->toArray()),__METHOD__);
 
     }
+
+
+    protected function deleteAllFarmCaches()
+    {
+        Cache::forget("index_farm");
+        Cache::forget("show_farm");
+    }
+
+
+
 }

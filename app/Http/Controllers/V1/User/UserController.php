@@ -7,6 +7,7 @@ use App\Http\Requests\V1\User\FindUserRequest;
 use App\Http\Requests\V1\User\newReffralRequest;
 use App\Http\Requests\V1\User\UserRequest;
 use App\Http\Resources\V1\User\UserResource;
+use App\Models\CartUser;
 use App\Models\User;
 use App\Models\UserReferral;
 use Illuminate\Http\Request;
@@ -18,9 +19,9 @@ class UserController extends BaseUserController
      * get user
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getAuthUser()
     {
-        $user = User::find(auth()->id());
+        $user = auth()->user();
         $user->id = null;
         return $this->api(new UserResource($user->toArray()),__METHOD__);
         
@@ -31,7 +32,7 @@ class UserController extends BaseUserController
      * @param \App\Http\Requests\V1\User\UserRequest $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function findingUser(UserRequest $request)
+    public function findUserByTelegarmId(UserRequest $request)
     {
         $findUser = User::query()
         ->where("telegram_id",$request->telegram_id)
@@ -50,7 +51,7 @@ class UserController extends BaseUserController
      * @param \App\Http\Requests\V1\User\newReffralRequest $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function newReferral(newReffralRequest $request)
+    public function addNewReferral(newReffralRequest $request)
     {
         $invatingUser = $this->findUserByReferralCode($request->referral_code);
         $invantedUser = auth()->user();
@@ -101,17 +102,25 @@ class UserController extends BaseUserController
         ->first();
     }
 
-    public function findUserByReferral(FindUserRequest $request,User $user)
+    public function findUserByTransferCartNumber(FindUserRequest $request)
     {        
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        $user = $user->query()
-        ->where("referral_code",'=',$validated['referral_code'])
-        ->first(['name','username','status']);
+        $reciverUserId = $this->findUserId($data);
 
-        return $this->api(new UserResource($user->toArray()),__METHOD__);
+        $reciverUser = User::find($reciverUserId);
 
+        return $this->api(new UserResource($reciverUser->toArray()),__METHOD__);
     }
+
+   
+    protected function findUserId(array $data)
+    {
+        return CartUser::query()
+        ->where('cart_number',$data['cart_number'])
+        ->value('user_id');
+    }
+
 
 
 

@@ -3,13 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Str;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Str;
 
 class User extends Authenticatable
 {
@@ -45,7 +46,15 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-
+    /**
+     * Get the cart_user associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function cart()
+    {
+        return $this->hasOne(CartUser::class, 'user_id', 'id');
+    }
 
 
     /**
@@ -65,40 +74,85 @@ class User extends Authenticatable
     public function directInvites()  
     {  
         // Define the relationship to get UserReferral records where this user is the inviter  
-        return $this->hasMany(UserReferral::class, 'invading_user');   
+        return $this->hasMany(UserReferral::class, 'invading_user','id');   
+    
     }  
 
-    public function getInvitesWithIndirect()  
-    {  
-        // Fetch direct invites along with their indirect invites  
-        $directInvites = $this->directInvites()
-        ->with('reffred:id,name,username')
-        ->withCount('reffred')
-        ->orderBy("reffred_count",'desc')
-        ->limit(5)
-        ->get();  
 
-        // Map through each direct invite to get their indirect invites  
-        $invitationData = $directInvites->map(function ($invite) {  
-           
-            $indirectInvites = UserReferral::where('invading_user', $invite->invented_user)  
-                ->with('reffred:id,name,username')
-                ->limit(5) 
-                ->get(['id','gender']);  
-            $referralcount = $indirectInvites->count();
 
-            $invite['invented_user'] = null;
-            $invite['invading_user'] = null;
-            $invite["indirect_invites"] = $indirectInvites;
-            $invite["count"] = $referralcount;
+    public function getTopReferralTreeCountsWithFarmOwners()
+    {
+        $cacheKey = "referral_tree_with_farms_" . auth()->id();
 
-            return [  
-                $invite
-            ];  
-        });  
+        return Cache::remember($cacheKey, now()->addMinutes( 10), function () {
 
-        return $invitationData;  
+            $directWithFarm = $this->directInvites()
+                ->whereIn('invented_user', function ($q) {
+                    $q->select('user_id')->from('user_farms');
+                })
+                ->with(['reffred:id,username'])
+                ->get();
+
+            $topDirectInvites = $directWithFarm
+                ->map(function ($invite) {
+                    $referrerId = $invite->invented_user;
+                    $level1 = UserReferral::where('invading_user', $referrerId)
+                        ->pluck('invented_user')->toArray();
+
+                    return [
+                        'invite' => $invite,
+                        'level_1_user_ids' => $level1,
+                        'level_1_total' => count($level1),
+                    ];
+                })
+                ->sortByDesc('level_1_total')
+                ->take(5);
+
+            $topUserIds = $topDirectInvites->pluck('invite.invented_user')->toArray();
+
+            $referralTree = $topDirectInvites->map(function ($data) {
+                $invite = $data['invite'];
+                $referrerId = $invite->invented_user;
+
+                $level1WithFarms = UserReferral::where('invading_user', $referrerId)
+                    ->pluck('invented_user')
+                    ->filter(fn($id) => UserFarms::where('user_id', $id)->exists())
+                    ->values()->toArray();
+
+                $level2WithFarms = UserReferral::whereIn('invading_user', $level1WithFarms)
+                    ->pluck('invented_user')
+                    ->filter(fn($id) => UserFarms::where('user_id', $id)->exists())
+                    ->values()->toArray();
+
+                $level3WithFarms = UserReferral::whereIn('invading_user', $level2WithFarms)
+                    ->pluck('invented_user')
+                    ->filter(fn($id) => UserFarms::where('user_id', $id)->exists())
+                    ->values()->toArray();
+
+                return [
+                    'username' => optional($invite->reffred)->username,
+                    'level_1_count' => count($level1WithFarms),
+                    'level_2_count' => count($level2WithFarms),
+                    'level_3_count' => count($level3WithFarms),
+                ];
+            });
+
+            $totalDirectCount = $directWithFarm
+                ->filter(fn($invite) => !in_array($invite->invented_user, $topUserIds))
+                ->count();
+
+            return [
+                'total_direct_count' => $totalDirectCount,
+                'referral_tree' => $referralTree->values(),
+            ];
+        });
     }
+
+
+
+
+
+
 
 
     public function addNewUser( $request){

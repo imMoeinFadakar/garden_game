@@ -8,6 +8,9 @@ use App\Http\Resources\V1\Admin\BadgeFarmsResource;
 use App\Models\BadgeFarm;
 use Illuminate\Http\Request;
 
+/**
+ * relation between 
+ */
 class BadgeFarmsController extends BaseAdminController
 {
     /**

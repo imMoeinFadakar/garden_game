@@ -26,8 +26,8 @@ class SecondStepAuth extends FormRequest
     public function rules(): array
     {
         return [
-            "username" => "required|unique:users,username",
-            "avatar_id" => "required|exists:avatars,id",
+            "username" => "required|integer|unique:users,username",
+            "avatar_id" => "required|integer|exists:avatars,id",
         ];
     }
 

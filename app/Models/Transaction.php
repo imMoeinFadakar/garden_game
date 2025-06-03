@@ -10,14 +10,9 @@ class Transaction extends Model
         "user_id",
         "status",
         "type",
-        "amount"
+        "amount",
+        'transaction_number'
     ];
-
-
-    
-
-
-
 
     /**
      * Get the user that owns the Transaction
