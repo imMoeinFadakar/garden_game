@@ -7,17 +7,22 @@ use App\Http\Requests\V1\User\UserTask\UserTaskRequest;
 use App\Http\Resources\V1\User\TaskResource;
 use App\Models\Tasks;
 use App\Models\UserTask;
+use App\Trait\UserActiveTrait;
 use Cache;
 use Illuminate\Http\Request;
 
 class TasksController extends BaseUserController
-{
+{   
+   
     /**
      * get all tasks
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function getAllTask()
-    {
+    {   
+
+        
+
         $cacheKey = "all_task";
 
         $AllTask = Cache::remember($cacheKey,

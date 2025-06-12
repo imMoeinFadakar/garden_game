@@ -19,8 +19,6 @@ class ExchangeController extends BaseUserController
         $this->exchangeService = $exchangeService;
     }
 
-
-
     /**
      * Display a listing of the resource.
      */

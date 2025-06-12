@@ -16,16 +16,31 @@ class FarmController extends BaseUserController
      */
     public function getAllExistsFarmInGame()
     {
-        $cacheKey = "index_farm";
-        $farms = Cache::rememberForever($cacheKey,function(){
 
+
+        Cache::forget("index_farm");
+
+        
+        $farms = Cache::rememberForever('index_farm', function () {
             return Farms::all();
-
-
         });
 
-        return $this->api(FarmResource::collection($farms),__METHOD__);
+      
+        $farms->map(function ($farm) {
+            $randomPrice = $this->getRandomPrice(
+                $farm->min_token_value,
+                $farm->max_token_value,
+                $farm->id
+            );
+
+            $farm->setAttribute('random_price', $randomPrice);
+        });
+
+        return $this->api(FarmResource::collection($farms), __METHOD__);
     }
+
+
+
 
     /**
      * show/farm
@@ -36,13 +51,28 @@ class FarmController extends BaseUserController
     public function show(Farms $farms,$id)
     {   
         $cacheKey = "show_farm";
-        $farms = Cache::rememberForever($cacheKey,function() use($farms,$id){
+
+        $farms = Cache::remember($cacheKey,
+        now()->addDay(),
+        function() use($farms,$id){
 
             return $farms->find($id);
 
         });
         return $this->api(new FarmResource($farms),__METHOD__);
     }
+
+
+   protected function getRandomPrice(int $minPrice, int $maxPrice, int $farmId)
+{
+        $cacheKey = "random_price_farm_" . $farmId;
+
+        return Cache::remember($cacheKey, now()->addDay(), function () use ($minPrice, $maxPrice) {
+            return random_int($minPrice, $maxPrice);
+        });
+}
+
+
 
 
 }

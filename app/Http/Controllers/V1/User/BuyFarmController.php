@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Farms;
 use App\Models\UserFarms;
 use App\Models\UserReferral;
+use App\Trait\UserActiveTrait;
+use Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Resources\V1\User\BuyFarmResource;
@@ -15,6 +17,7 @@ use Throwable;
 
 class BuyFarmController extends BaseUserController
 {
+    use UserActiveTrait;
   
  
     /**
@@ -68,6 +71,9 @@ class BuyFarmController extends BaseUserController
                 ]);
 
                  DB::commit();
+                 $cacheKey = "user_farms_" . auth()->id();
+                Cache::forget($cacheKey);
+
                 return $this->api(new BuyFarmResource($newUserFarm), __METHOD__);
 
         }catch(Throwable $e){
@@ -77,34 +83,6 @@ class BuyFarmController extends BaseUserController
 
         }
 
-
-    //     // $userToken = $this->userHaveEnoughResource($user->token_amount,$farm->require_token);// token
-    //     // $userGem = $this->userHaveEnoughResource($user->gem_amount,$farm->require_gem); //  gem
-    //     // $userReffralAmount = $this->userHaveEnoughResource($userReferral,$farm->require_referral); // referral
-     
-    //     // if(! $userReffralAmount || ! $userGem || ! $userToken)
-    //     //     return $this->api(null,
-    //     // __METHOD__,
-    //     // "you dont have enough resource to buy this farm");
-
-        
-    // // minuse user resource from its wallet
-    //     $newUserToken = $this->deductUserResource($user->token_amount,$farm->require_token);
-    //     $newUserGem = $this->deductUserResource($user->gem_amount,$farm->require_gem);
-    
-    //     $this->updateUserResource($newUserGem,$newUserToken);
-
-
-    //     $request->merge(['user_id'=>auth()->id(),'farm_power'=>$farm->power]);
-
-
-    //     $userFarm = $userFarms->addNewUserFarms($request->all());
-    
-
-    //     $newfarm =  $userFarm->only(['farm_power','reward','farm_id','created_at']);
-
-        
-    //     return $this->api(new BuyFarmResource($newfarm),__METHOD__);
     }
 
  

@@ -77,7 +77,7 @@ class CartUserController extends BaseUserController
         return $newUserCart->only(['cart_number', 'expire_date', 'cvv']);
     }
 
-    public function HasUserCart()
+    public function HasUserCart(): bool
     {
         return CartUser::query()
             ->where('user_id', auth()->id())

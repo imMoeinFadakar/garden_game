@@ -21,6 +21,9 @@ return new class extends Migration
             $table->enum("market_status",["active","inactive"])
             ->default("inactive");
 
+            $table->enum('has_parent',['true','false'])->default('false');
+
+
             $table->enum("warehouse_status",["active","inactive"])
             ->default("inactive");
 

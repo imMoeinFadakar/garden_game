@@ -16,12 +16,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         
+        $this->call(UpdateUserHasParentSeeder::class);
 
-        Admin::create([
-            'fullname' => 'moein fadakar',
-            'email' => 'moein@gmail.com',
-            "password" => Hash::make("moeinfadakar"),
-            "type" => "manager"
-        ]);
+        // Admin::create([
+        //     'fullname' => 'moein fadakar',
+        //     'email' => 'moein@gmail.com',
+        //     "password" => Hash::make("moeinfadakar"),
+        //     "type" => "manager"
+        // ]);
     }
 }

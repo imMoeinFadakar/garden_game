@@ -34,6 +34,7 @@ class User extends Authenticatable
         'gem_amount',
         'referral_code',
         'remember_token',
+        'has_parent'
     ];
 
     /**

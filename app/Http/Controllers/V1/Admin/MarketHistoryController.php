@@ -26,8 +26,6 @@ class MarketHistoryController extends BaseAdminController
 
     }
 
-
-
     /**
      * Display the specified resource.
      */
@@ -35,7 +33,5 @@ class MarketHistoryController extends BaseAdminController
     {
         return $this->api(new MarketHistoryResource($marketHistory->toArray()),__METHOD__);
     }
-
- 
-
+    
 }

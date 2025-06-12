@@ -6,18 +6,20 @@ use App\Http\Requests\V1\User\UserTask\UserTaskRequest;
 use App\Http\Resources\V1\User\UserTaskResource;
 use App\Models\Tasks;
 use App\Models\UserTask;
+use App\Trait\UserActiveTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 class UserTasksController extends BaseUserController
-{
+{   
+    
     /**
      * get task that user had done before
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function getAllUserTasks()
     {
-
+        
         $userTask = UserTask::query()
             ->orderBy("id")
             ->where("user_id", auth()->id())

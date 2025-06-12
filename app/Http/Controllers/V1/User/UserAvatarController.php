@@ -6,13 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\UserAvatar\StoreUserAvatarRequest;
 use App\Http\Resources\V1\User\UserAvatarResource;
 use App\Models\UserAvatar;
+use App\Trait\UserActiveTrait;
 use Illuminate\Support\Facades\Cache;
 
 class UserAvatarController extends Controller
 {
-  
+    use UserActiveTrait;
     public function getUserAvatar()
-    {
+    {   
+
+     
+
+
         $cacheKey = 'user_avatar_' . auth()->id();
 
         $userAvatar = Cache::rememberForever($cacheKey, function () {

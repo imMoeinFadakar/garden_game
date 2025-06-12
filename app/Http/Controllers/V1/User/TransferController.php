@@ -15,62 +15,40 @@ use App\Http\Resources\V1\User\TransferResource;
 class TransferController extends BaseUserController
 {      
     use RandomNumberTrait;
+public function receiveTransfer(Request $request)
+{
+    return $this->getUserTransfers('to_user', 'receive', $request);
+}
 
-    public function receiveTransfer(Request $request)
-    {
+public function sendTransfer(Request $request)
+{
+    return $this->getUserTransfers('from_user', 'send', $request);
+}
 
-        $cacheKey = "get_user_recived_token_" . auth()->id();
+private function getUserTransfers(string $userField, string $type, Request $request)
+{
+    $cacheKey = "user_{$type}_transfers_" . auth()->id();
 
-        $transfer = Cache::remember($cacheKey , 300,function() use($request){
+    // پاک‌سازی کش برای اطمینان از دریافت آخرین اطلاعات
+    Cache::forget($cacheKey);
 
-            return Transfer::query()
-            ->where('to_user',auth()->id())
-            ->when(isset($request->id),fn($query)=>$query->where('id',$request->id))
-            ->when(isset($request->token_amount),fn($query)=>$query->where('token_amount',$request->token_amount))
-            ->get(['id','token_amount','created_at'])
-            ->each(function($transfer){
-
-                $transfer->setAttribute('type','receive');
-
+    $transfers = Cache::remember($cacheKey, 300, function () use ($userField, $type, $request) {
+        return Transfer::query()
+            ->where($userField, auth()->id())
+            ->when($request->filled('id'), fn($query) => $query->where('id', $request->id))
+            ->when($request->filled('token_amount'), fn($query) => $query->where('token_amount', $request->token_amount))
+            ->get(['id', 'token_amount', 'created_at'])
+            ->each(function ($transfer) use ($type) {
+                $transfer->setAttribute('type', $type);
             });
-            
+    });
 
-        });
-
-        return $this->api(TransferResource::collection($transfer->toArray()),__METHOD__);
-        
-    }
-
+    return $this->api(TransferResource::collection($transfers->toArray()), __METHOD__);
+}
 
 
     /**
-     * get 
-     * @param \Illuminate\Http\Request $request
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function sendTransfer(Request $request)
-    {   
-         $cacheKey = "get_user_recived_token_" . auth()->id();
-
-        $transfer = Cache::remember($cacheKey,300,function(){
-
-            return Transfer::query()
-            ->where('from_user',auth()->id())
-            ->get(['id','token_amount','created_at'])
-            ->each(function($transfer){
-
-                $transfer->setAttribute('type','send');
-
-            });
-
-
-        });
-         
-        return $this->api(TransferResource::collection($transfer->toArray()),__METHOD__);
-    }
-
-    /**
-     * transfer from user to another user
+     * transfer from user to an other user
      * @param \App\Http\Requests\V1\User\Transfer\TransferRequest $request
      * @param \App\Models\Transfer $transfer
      * @return mixed|\Illuminate\Http\JsonResponse
@@ -134,6 +112,11 @@ class TransferController extends BaseUserController
         $transfer = $transfer->addNewTransfer($validatedRequest);
 
         DB::commit();
+
+
+        Cache::forget(  "get_user_recived_token_" . auth()->id());
+        Cache::forget(  "get_user_send_token_" . auth()->id());
+
 
         return $this->api(["tranfer_amount" => $transfer->token_amount], __METHOD__);
     } catch (\Exception $e) {

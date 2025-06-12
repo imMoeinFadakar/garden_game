@@ -6,6 +6,7 @@ use App\Models\MarketHistory;
 use App\Models\User;
 use App\Models\Farms;
 use App\Models\Wherehouse;
+use Cache;
 use Illuminate\Support\Facades\DB;
 use Dotenv\Exception\ValidationException;
 
@@ -41,6 +42,10 @@ class MarketService{
             $user->increment('token_amount',$benefit);
         
             $this->newMarketHistory($benefit,$user,$farm,$data);
+
+            $cacheKey = "user_market_history_" . auth()->id();
+
+            Cache::forget($cacheKey);
 
         });
 

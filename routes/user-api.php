@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\player;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\User\FarmController;
@@ -12,7 +13,7 @@ Route::prefix("user")->group(function() {
     Route::post("auth_user",[App\Http\Controllers\V1\User\FirstAuthController::class,"loginUserByTelegramId"]); // first login
     Route::get("policy",[App\Http\Controllers\V1\User\PoliciesController::class,"getAllPolicy"]); // all policy
 
-    Route::middleware(['auth:sanctum','auth'])->group(function(){
+    Route::middleware(['auth:sanctum','auth','check.user.status'])->group(function(){
 
         // auth 
         Route::post("find_user",[App\Http\Controllers\V1\User\UserController::class,"findUserByTelegarmId"]); // find user by TL id
@@ -90,9 +91,10 @@ Route::prefix("user")->group(function() {
         Route::post('Add_user_done_tutorial',[App\Http\Controllers\V1\User\TutorialMessageController::class, "addNewUserToDoneList"]);
         Route::get('user_done_tutorial',[App\Http\Controllers\V1\User\TutorialMessageController::class, "isUserDoneWithTutorial"]);
 
+        // teammate
         Route::get('team',[App\Http\Controllers\V1\User\TeamManagmentController::class,"getAllUserReferralQuentity"]);
-
-
+        Route::get('all_teammate_request',[App\Http\Controllers\V1\User\TeammateRequestController::class,"getAllTeammateRequestCount"]);
+        Route::post('new_teammate_request',[App\Http\Controllers\V1\User\TeammateRequestController::class,"addNewTeammateRequest"]);
     });
  
 

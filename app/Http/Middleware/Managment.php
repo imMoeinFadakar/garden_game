@@ -19,13 +19,7 @@ class Managment
     public function handle(Request $request, Closure $next): Response
     {
 
+        return $next($request);
 
-        $admin = Auth::guard('admins')->user();  
-
-        if ($admin && $admin->type === 'manager') {  
-            return $next($request);  
-        }  
-
-        return response()->json(['message' => 'Forbidden'], 403);  
     }
 }

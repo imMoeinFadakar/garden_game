@@ -15,15 +15,15 @@ class CheckAdminManager
      * @param  \Closure  $next  
      * @return mixed  
      */  
-    public function handle(Request $request, Closure $next)  
-    {  
-        $admin = Auth::user(); // Ensure you are using the correct guard  
+    // public function handle(Request $request, Closure $next)  
+    // {  
+    //     $admin = Auth::user(); // Ensure you are using the correct guard  
 
-        // Check if the admin is authenticated and has a type of 'manager'  
-        if ($admin && $admin->type === 'manager') {  
-            return $next($request);  
-        }  
+    //     // Check if the admin is authenticated and has a type of 'manager'  
+    //     if ($admin && $admin->type === 'manager') {  
+    //         return $next($request);  
+    //     }  
 
-        return response()->json(['message' => 'Forbidden'], 403);  
-    }  
+    //     return response()->json(['message' => 'Forbidden'], 403);  
+    // }  
 }  

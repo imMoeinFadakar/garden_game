@@ -10,6 +10,12 @@ class Farms extends Model
     use UploadImageTrait;
 
     protected $table = "farms";
+
+    protected $hidden = [
+        'min_token_value',
+        'max_token_value'
+    ];
+
     protected  $fillable =[
         "name",
         "min_token_value",

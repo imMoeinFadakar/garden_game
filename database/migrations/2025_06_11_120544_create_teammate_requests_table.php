@@ -11,22 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transfers', function (Blueprint $table) {
+        Schema::create('teammate_requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("token_amount");
 
-            $table->foreignId('from_user')
-            ->constrained("users")
+            $table->foreignId('user_id')
+            ->constrained('users')
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
 
-
-            $table->unsignedBigInteger("transaction_number");
-
-            $table->foreignId('to_user')
-            ->constrained("users")
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+            $table->enum('status',['pending','done'])->default('pending');
 
             $table->timestamps();
         });
@@ -37,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transfers');
+        Schema::dropIfExists('teammate_requests');
     }
 };
